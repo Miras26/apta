@@ -111,8 +111,8 @@ button:active{transform:scale(0.96)}
     </div>
     </sc-if>
     <sc-if value="{{isDiary}}" hint-placeholder-val="{{ false }}">
-    <div role="region" aria-label="Күнделік беттері, оңға-солға жылжытыңыз" onPointerDown="{{dDown}}" onPointerMove="{{dMove}}" onPointerUp="{{dUp}}" onPointerLeave="{{dUp}}" onPointerCancel="{{dUp}}" ref="{{diaryRef}}" style="position: relative; height: 584px; margin-top: -6px; margin-bottom: -40px; overflow: hidden; touch-action: pan-y; animation: aptaFade 0.3s ease both">
-      <div style="position: absolute; left: 0; right: 0; top: 10px; bottom: 46px; animation: aptaFloat 6s ease-in-out infinite">
+    <div role="region" aria-label="Күнделік беттері, оңға-солға жылжытыңыз" onPointerDown="{{dDown}}" onPointerMove="{{dMove}}" onPointerUp="{{dUp}}" onPointerLeave="{{dUp}}" onPointerCancel="{{dUp}}" ref="{{diaryRef}}" style="position: relative; height: {{dRegH}}px; margin-top: -6px; margin-bottom: -40px; overflow: hidden; touch-action: pan-y; animation: aptaFade 0.3s ease both">
+      <div style="position: absolute; left: 0; right: 0; top: 10px; bottom: 46px">
       <div style="{{dTrack}}">
         <sc-for list="{{diary}}" as="n" hint-placeholder-count="3">
           <div style="{{n.wrap}}">
@@ -842,7 +842,8 @@ class Component extends DCLogic {
     const CARD_BG = C.light ? 'linear-gradient(180deg, rgba(118,122,130,0.78) 0%, rgba(74,76,84,0.82) 50%, rgba(138,138,144,0.78) 100%)' : 'linear-gradient(180deg, rgba(92,96,104,0.62) 0%, rgba(46,48,54,0.7) 50%, rgba(104,104,110,0.6) 100%)';
     const LEAK = [['155,123,255', '90,170,255'], ['255,138,61', '255,123,172'], ['90,170,255', '200,245,66'], ['200,245,66', '155,123,255']];
     const GRAIN = "position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0.22; mix-blend-mode: overlay; background-image: url('data:image/svg+xml," + encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.4 -0.2'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>").replace(/'/g, '%27').replace(/%2523/g, '%23') + "');";
-    const DH = 528;
+    const AH = (() => { try { const g = document.getElementById('apta-stage'); const v = g && parseFloat(g.style.getPropertyValue('--appH')); return v || 844; } catch (e) { return 844; } })();
+    const DH = Math.max(360, Math.min(528, Math.round(AH - 302)));
     const squircle = (w, h, R, k) => { const pts = []; const q = (cx, cy, a0) => { for (let j = 0; j <= 18; j++) { const t = a0 + (Math.PI / 2) * j / 18; const c = Math.cos(t), s2 = Math.sin(t);
         pts.push([cx + R * Math.sign(c) * Math.pow(Math.abs(c), 2 / k), cy + R * Math.sign(s2) * Math.pow(Math.abs(s2), 2 / k)]); } };
       q(w - R, R, -Math.PI / 2); q(w - R, h - R, 0); q(R, h - R, Math.PI / 2); q(R, R, Math.PI);
@@ -1077,7 +1078,7 @@ class Component extends DCLogic {
         ask('«' + f.name + '» папкасын өшіру керек пе?', 'Ішіндегі жазбалар өшпейді, «Барлығы» бөлімінде қалады.', () => { const S = this.state; this.setState({ folders: S.folders.filter(x => x.id !== fid), notes: S.notes.map(n => n.folder === fid ? { ...n, folder: null } : n), folderOpen: null }); }); },
       mapsEmpty: st.maps.length === 0,
       isList: st.layout === 'list', isGrid: st.layout === 'grid', layoutLabel: st.layout === 'list' ? 'Галерея түрінде' : 'Тізім түрінде', toggleLayout: () => this.setState({ layout: this.state.layout === 'list' ? 'grid' : 'list' }),
-      diary, maps,
+      diary, maps, dRegH: DH + 56,
       dTrack: 'display: flex; gap: ' + DG + 'px; height: 100%; transform: translateX(' + ((390 - DW) / 2 - dIdx * (DW + DG) + (st.dragX || 0)).toFixed(1) + 'px); transition: ' + (st.dragging ? 'none' : 'transform 0.45s cubic-bezier(.2,.9,.3,1)') + ';',
       dDown: (e) => { const el = e.currentTarget; const r = el.getBoundingClientRect(); this._dScale = (r.width / (el.offsetWidth || r.width)) || 1; this._dx0 = e.clientX; this._dMoved = false; },
       dMove: (e) => { if (this._dx0 == null) return; let dx = (e.clientX - this._dx0) / this._dScale; if (Math.abs(dx) > 6) this._dMoved = true; if (!this._dMoved) return;

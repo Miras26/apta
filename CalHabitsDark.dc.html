@@ -43,20 +43,9 @@ button:active{transform:scale(0.96)}
   <div aria-hidden="true" style="position: absolute; left: -110px; top: 360px; width: 320px; height: 320px; border-radius: 50%; background: #9B7BFF; opacity: 0.2; filter: blur(60px)"></div>
   <div aria-hidden="true" style="position: absolute; left: 180px; top: 520px; width: 300px; height: 300px; border-radius: 50%; background: #C8F542; opacity: 0.2; filter: blur(60px)"></div>
   <div aria-hidden="true" style="position: absolute; left: -90px; top: 640px; width: 340px; height: 340px; border-radius: 50%; background: #3CC6B8; opacity: 0.2; filter: blur(60px)"></div>
-  <div class="apta-scroll" ref="{{setScroller}}" style="position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-top: 132px; box-sizing: border-box">
+  <div class="apta-scroll" ref="{{setScroller}}" style="position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-top: 196px; box-sizing: border-box">
 
-    <sc-if value="{{isCal}}" hint-placeholder-val="{{ true }}">
-      <button aria-label="Әдеттерді ашу. Бүгін {{hDone}} / {{hTotal}}" onClick="{{openHabits}}" onPointerDown="{{pvDown}}" onPointerMove="{{pvMove}}" onPointerUp="{{pvUp}}" style="position: relative; display: flex; align-items: center; gap: 14px; width: calc(100% - 32px); margin: 0 16px; padding: 14px 14px 14px 18px; border-radius: 30px; text-align: left; color: #F5F4F1; touch-action: pan-x; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
-        <span style="display: flex; flex-direction: column; gap: 4px; flex: 1 1 auto; min-width: 0">
-          <span style="font-size: 11px; color: rgba(245,244,241,0.72)">Әдеттер</span>
-          <span style="font-size: 15px; font-weight: 600">Бүгін {{hDone}} / {{hTotal}}</span>
-        </span>
-        <span aria-hidden="true" style="display: flex; gap: 6px; align-items: flex-end; height: 28px">
-          <sc-for list="{{pvBars}}" as="q" hint-placeholder-count="7"><span style="{{q.s}}"></span></sc-for>
-        </span>
-        <span style="position: relative; width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.15); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"/></svg></span>
-      </button>
-    </sc-if>
+    <sc-if value="{{isCal}}" hint-placeholder-val="{{ true }}"><div aria-hidden="true" style="margin-top: -16px"></div></sc-if>
 
     <sc-if value="{{viewMenu}}" hint-placeholder-val="{{ false }}">
       <div style="position: relative; height: 0; z-index: 5">
@@ -217,6 +206,11 @@ button:active{transform:scale(0.96)}
     <button aria-label="Іздеу" onClick="{{srOpenFn}}" style="position: relative; flex-shrink: 0; width: 44px; height: 44px; box-sizing: border-box; padding: 0; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button>
     <a href="ProfDark.dc.html" aria-label="Профиль" style="position: relative; flex-shrink: 0; width: 44px; height: 44px; box-sizing: border-box; border-radius: 22px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px; font-weight: 500; color: #F5F4F1; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); {{avBtn}}">{{avLetter}}</a>
   </header>
+  <div style="position: absolute; z-index: 19; left: 0; right: 0; top: 112px; box-sizing: border-box; padding: 6px 20px 18px; background: rgba(11,11,13,0.55); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 16px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 16px), transparent)">
+    <div role="tablist" aria-label="Күнтізбе бөлімдері" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; padding: 4px; border-radius: 30px; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+      <sc-for list="{{sections}}" as="o" hint-placeholder-count="2"><button role="tab" aria-selected="{{o.sel}}" onClick="{{o.pick}}" style="{{o.style}}"><sc-if value="{{o.iCal}}" hint-placeholder-val="{{ true }}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg></sc-if><sc-if value="{{o.iHab}}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8"/></svg></sc-if>{{o.label}}</button></sc-for>
+    </div>
+  </div>
   <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 150px; background: rgba(0,0,0,0.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); -webkit-mask-image: linear-gradient(to bottom, transparent, #000 60%); mask-image: linear-gradient(to bottom, transparent, #000 60%); pointer-events: none"></div>
 
   <sc-if value="{{menuOpen}}" hint-placeholder-val="{{ false }}">
@@ -317,7 +311,7 @@ button:active{transform:scale(0.96)}
         <button onClick="{{tePostpone}}" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 84px; border-radius: 30px; border: none; font-size: 11px; font-weight: 500; background: rgba(20,20,23,0.78); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 1px rgba(150,150,160,0.55), inset 0 12px 22px -8px rgba(150,150,160,0.9), inset 0 0 16px rgba(150,150,160,0.55); color: #FFFFFF"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>Кейінге</button>
         <button onClick="{{teDelete}}" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 84px; border-radius: 30px; border: none; font-size: 11px; font-weight: 500; background: rgba(30,6,8,0.78); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 1px rgba(229,72,77,0.55), inset 0 12px 22px -8px rgba(229,72,77,0.9), inset 0 0 16px rgba(229,72,77,0.55); color: #FFFFFF"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 12.5h9l1-12.5"/></svg>Өшіру</button>
       </div>
-      <button onClick="{{teSave}}" style="height: 52px; margin-top: 4px; border: none; border-radius: 26px; background: #F5F4F1; color: #111111; font-size: 15px; font-weight: 600">Сақтау</button>
+      <button onClick="{{teSave}}" aria-disabled="{{teOff}}" style="height: 52px; margin-top: 4px; border: none; border-radius: 26px; background: #F5F4F1; color: #111111; font-size: 15px; font-weight: 600; transition: opacity 0.2s ease; opacity: {{teOp}}">Сақтау</button>
     </section>
   </sc-if>
   <sc-if value="{{kbOpen}}" hint-placeholder-val="{{ false }}">
@@ -528,7 +522,7 @@ class Component extends DCLogic {
   appSeeds() { return { habits: this.state.hl.map(h => ({ id: h[0], name: h[1] })) }; }
   appEmpty() { return { hl: [], hw: {}, tdone: {} }; }
   hydrate(S) { const p = {}; const T = S.tasks;
-    if (T) Object.assign(p, { tdone: T.done || {}, tedit: T.edits || {}, tdel: T.del || {}, tmov: T.moved || {}, extra: T.extra || [], anyOrd: T.anyOrd || [] });
+    if (T) Object.assign(p, { tdone: T.done || {}, tedit: T.edits || {}, tdel: T.del || {}, tmov: T.moved || {}, extra: (T.extra || []).filter(x => x.title || ((T.edits || {})[x.id] || {}).title), anyOrd: T.anyOrd || [] });
     const H = S.habits; if (H) { if (H.list) p.hl = H.list.map(h => [h.id, h.name, h.days && h.days.length < 7 ? h.days : undefined, h.target || 1]);
       if (H.log) { const hw = JSON.parse(JSON.stringify(this.state.hw || {})); const tg = {}; (H.list || []).forEach(h => { tg[h.id] = h.target || 1; });
         Object.keys(H.log).forEach(hid => { hw[hid] = hw[hid] || {}; Object.keys(H.log[hid]).forEach(d => { hw[hid][d] = (H.log[hid][d] || 0) >= (tg[hid] || 1); }); });
@@ -603,7 +597,8 @@ class Component extends DCLogic {
     /* sections + views */
     const SECT = [['cal', 'Күнтізбе'], ['habits', 'Әдеттер']];
     const sections = SECT.map(([k, label]) => ({ label, sel: st.section === k ? 'true' : 'false',
-      style: 'height: 40px; border-radius: 22px; font-size: 13px; font-weight: ' + (st.section === k ? 600 : 400) + '; color: ' + C.fg + ';' + (st.section === k ? ' ' + C.glassStrong : ' border: none; background: transparent;'),
+      iCal: k === 'cal', iHab: k === 'habits',
+      style: 'height: 42px; border-radius: 22px; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0 6px; font-size: 13px; font-weight: ' + (st.section === k ? 600 : 400) + '; color: ' + C.fg + '; opacity: ' + (st.section === k ? 1 : 0.75) + ';' + (st.section === k ? ' ' + C.glassStrong : ' border: none; background: transparent;'),
       pick: () => this.setState({ section: k, viewMenu: false, n: 0, swapN: this.state.swapN + 1 }) }));
     const TABS = [['month', 'Ай'], ['week', 'Апта'], ['3', '3 күн'], ['day', 'Күн']];
     const views = TABS.map(([k, label]) => ({ label, sel: st.view === k ? 'true' : 'false',
@@ -626,7 +621,7 @@ class Component extends DCLogic {
         pick: () => { if (this._fired) return; this.setState({ sel: off }); }
       });
     }
-    const agendaList = (byDay[sel] || []).slice().sort((a, b) => { if (!a.time && !b.time) { const ia = st.anyOrd.indexOf(a.id), ib = st.anyOrd.indexOf(b.id); return (ia < 0 ? 1e3 : ia) - (ib < 0 ? 1e3 : ib); } return (a.time || '99').localeCompare(b.time || '99'); });
+    const agendaList = (byDay[sel] || []).slice().sort((a, b) => { const da = DONE[a.id] ? 1 : 0, db = DONE[b.id] ? 1 : 0; if (da !== db) return da - db; if (!a.time && !b.time) { const ia = st.anyOrd.indexOf(a.id), ib = st.anyOrd.indexOf(b.id); return (ia < 0 ? 1e3 : ia) - (ib < 0 ? 1e3 : ib); } return (a.time || '99').localeCompare(b.time || '99'); });
     const VD = st.vdrag; const gIds = { timed: agendaList.filter(x => x.time).map(x => x.id), any: agendaList.filter(x => !x.time).map(x => x.id) };
     const vFrom = VD ? gIds[VD.grp].indexOf(VD.id) : -1; const vTo = VD ? Math.max(0, Math.min(gIds[VD.grp].length - 1, vFrom + Math.round(VD.dy / VD.h))) : -1;
     this._vTo = vTo; this._vIds = VD ? gIds[VD.grp] : [];
@@ -761,7 +756,9 @@ class Component extends DCLogic {
       edgeUp: (e) => { const g = this._edge; this._edge = null; if (!g) return; const dx = e.clientX - g.x; if (g.side === 'L' && dx > 60 && this.state.section === 'habits') this.setState({ section: 'cal', n: 0, swapN: this.state.swapN + 1 }); else if (g.side === 'R' && dx < -60 && this.state.section === 'cal') this.setState({ section: 'habits', n: 0, swapN: this.state.swapN + 1 }); },
       newHabit: () => this.setState({ hs: 'new', hsT: 1, hsName: '', hsD: [1,1,1,1,1,1,1], kbOpen: true, kf: 'hs', kbMode: 'abc' }),
       teOpen: !!st.te, teTitle: st.teTitle, teDesc: st.teDesc,
-      teClose: () => this.setState({ te: null, kbOpen: false, timeOpen: false }),
+      teOff: (st.te && !(st.teTitle || '').trim() && !((TASKS.find(y => y.id === st.te) || {}).title)) ? 'true' : 'false',
+      teOp: (st.te && !(st.teTitle || '').trim() && !((TASKS.find(y => y.id === st.te) || {}).title)) ? 0.4 : 1,
+      teClose: () => { const S = this.state; const x = TASKS.find(y => y.id === S.te); if (x && !x.title) { const mv = { ...S.tmov }; delete mv[S.te]; this.setState({ extra: S.extra.filter(y => y.id !== S.te), tmov: mv, te: null, kbOpen: false, timeOpen: false }); } else this.setState({ te: null, kbOpen: false, timeOpen: false }); },
       teFocusT: () => this.setState({ kbOpen: true, kf: 'tt', timeOpen: false }), teFocusD: () => this.setState({ kbOpen: true, kf: 'td', timeOpen: false }),
       teCellT: C.wglass + (st.kbOpen && st.kf === 'tt' ? '; box-shadow: inset 0 0 0 1.5px ' + accent : ''), teCellD: C.wglass + (st.kbOpen && st.kf === 'td' ? '; box-shadow: inset 0 0 0 1.5px ' + accent : ''),
       teCaretT: !!st.kbOpen && st.kf === 'tt', teCaretD: !!st.kbOpen && st.kf === 'td',
@@ -787,7 +784,7 @@ class Component extends DCLogic {
       onMinScroll: (e) => { const el = e.currentTarget; clearTimeout(this._wm); this._wm = setTimeout(() => { const i = Math.max(0, Math.min(11, Math.round(el.scrollTop / 36))); const h = (this.state.teTime || '12:00').split(':')[0]; this.setState({ teTime: h + ':' + String(i * 5).padStart(2, '0') }); }, 90); },
       tePostpone: () => { const S = this.state; const x = TASKS.find(y => y.id === S.te); this.setState({ tmov: { ...S.tmov, [S.te]: (x ? x.d : 0) + 1 }, te: null, kbOpen: false }); },
       teDelete: () => { const S = this.state; this.setState({ tdel: { ...S.tdel, [S.te]: true }, te: null, kbOpen: false }); },
-      teSave: () => { const S = this.state; const dN = S.teDay || 0; this.setState({ tmov: { ...S.tmov, [S.te]: dN }, sel: dN, tedit: { ...S.tedit, [S.te]: { title: (S.teTitle || '').trim() || 'Жаңа тапсырма', desc: (S.teDesc || '').trim() || undefined, time: S.teTime || undefined } }, te: null, kbOpen: false, timeOpen: false }); },
+      teSave: () => { const S = this.state; const prev = TASKS.find(y => y.id === S.te); const ttl = (S.teTitle || '').trim() || (prev && prev.title) || ''; if (!ttl) return; const dN = S.teDay || 0; this.setState({ tmov: { ...S.tmov, [S.te]: dN }, sel: dN, tedit: { ...S.tedit, [S.te]: { title: ttl, desc: (S.teDesc || '').trim() || undefined, time: S.teTime || undefined } }, te: null, kbOpen: false, timeOpen: false }); },
       hsT: st.hsT, hsTText: st.hsT === 1 ? 'Күніне бір рет' : 'Күніне ' + st.hsT + ' рет',
       hsMinus: () => this.setState({ hsT: Math.max(1, this.state.hsT - 1) }), hsPlus: () => this.setState({ hsT: Math.min(12, this.state.hsT + 1) }),
       hsOpen: !!st.hs, hsEditing: !!st.hs && st.hs !== 'new', hsTitle: st.hs === 'new' ? 'Жаңа әдет' : 'Әдет', hsSaveText: st.hs === 'new' ? 'Қосу' : 'Сақтау',
@@ -830,7 +827,7 @@ class Component extends DCLogic {
       hwPrev: () => go(-1), hwNext: () => go(1), hwToday: () => this.setState({ hwOff: 0, n: 0 }),
       addTask: () => { const id = 'x' + Date.now(); this.setState({ extra: this.state.extra.concat({ id, d: this.state.sel, title: '' }), te: id, teDay: this.state.sel, teDateOpen: false, teTitle: '', teDesc: '', teTime: '', timeOpen: false, kbOpen: true, kf: 'tt', kbMode: 'abc' }); },
       setScroller: (el) => { this._sc = el; },
-      tlRef: (el) => { const key = st.view + ':' + st.start + ':' + st.tlN; if (el && el._k !== key) { el._k = key; const sc = this._sc; if (!sc) return; const y = 6 * 44; setTimeout(() => { const top = el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop; sc.scrollTo({ top: Math.max(top + y - 222, 0), behavior: 'auto' }); }, 60); } },
+      tlRef: (el) => { const key = st.view + ':' + st.start + ':' + st.tlN; if (el && el._k !== key) { el._k = key; const sc = this._sc; if (!sc) return; const y = 6 * 44; setTimeout(() => { const top = el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop; sc.scrollTo({ top: Math.max(top + y - 286, 0), behavior: 'auto' }); }, 60); } },
       monthName: MN[mFirst.getMonth()] + ' ' + mFirst.getFullYear(), wdHeads: WS.map(n => ({ n })), cells,
       gridStyle: 'display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); row-gap: 2px;' + slide(st.n, st.dir),
       agendaTitle: rel + ' · ' + selD.getDate() + ' ' + MN[selD.getMonth()].toLowerCase(), agenda, agendaEmpty: agenda.length === 0, streaks,
