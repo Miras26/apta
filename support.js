@@ -157,11 +157,12 @@
     '.apta-nf{position:absolute;z-index:50;box-sizing:border-box;margin:0;padding:0;border:none;outline:none;background:transparent;resize:none;overflow:hidden;' +
     '-webkit-user-select:text;user-select:text;-webkit-tap-highlight-color:transparent;border-radius:0;appearance:none}' +
     '.apta-nf.rich{color:transparent!important;-webkit-text-fill-color:transparent}' +
-    '.apta-nf::selection{background:rgba(120,160,255,0.35)}';
+    '.apta-nf::selection{background:rgba(120,160,255,0.35)}' +
+    '#apta-stage section[role="dialog"]{max-height:calc(var(--appH, 844px) - var(--kbH, 0px) - 64px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}';
   document.head.appendChild(css);
   window.__aptaKbH = 0;
   var KB = { full: 0, scale: 1, onChange: null };
-  function kbSet(px) { var h = Math.max(0, Math.round(px / (KB.scale || 1))); if (h < 60) h = 0; if (h !== window.__aptaKbH) { window.__aptaKbH = h; if (KB.onChange) KB.onChange(); } }
+  function kbSet(px) { var h = Math.max(0, Math.round(px / (KB.scale || 1))); if (h < 60) h = 0; if (h !== window.__aptaKbH) { window.__aptaKbH = h; var st = document.getElementById('apta-stage'); if (st) st.style.setProperty('--kbH', h + 'px'); if (KB.onChange) KB.onChange(); } }
   try { if ('virtualKeyboard' in navigator) { navigator.virtualKeyboard.overlaysContent = true; navigator.virtualKeyboard.addEventListener('geometrychange', function (e) { kbSet(e.target.boundingRect.height); }); } } catch (x) {}
   if (window.visualViewport) visualViewport.addEventListener('resize', function () { if (!('virtualKeyboard' in navigator)) kbSet(Math.max(0, (KB.full || window.innerHeight) - visualViewport.height)); });
   var NF = { el: null, row: null, key: null, comp: null, stage: null, sel: null };
@@ -177,7 +178,8 @@
     var e = NF.el, r = NF.row; if (!e || !r || !r.isConnected) return;
     var rr = r.getBoundingClientRect(), sr = NF.stage.getBoundingClientRect(); var s = scale || (sr.width / 390) || 1;
     var pr = r.parentElement ? r.parentElement.getBoundingClientRect() : rr, pcs = r.parentElement ? getComputedStyle(r.parentElement) : null;
-    var right = Math.max(rr.right, pr.right - (pcs ? parseFloat(pcs.paddingRight) || 0 : 0) * s);
+    var cs0 = getComputedStyle(r); var centered = cs0.textAlign === 'center' || cs0.justifyContent === 'center';
+    var right = centered ? rr.right : Math.max(rr.right, pr.right - (pcs ? parseFloat(pcs.paddingRight) || 0 : 0) * s);
     var w = (right - rr.left) / s, h = rr.height / s, k = r.offsetWidth ? (rr.width / s) / r.offsetWidth : 1; if (Math.abs(k - 1) < 0.03) k = 1;
     var cs = getComputedStyle(r);
     e.style.left = (rr.left - sr.left) / s + 'px'; e.style.top = (rr.top - sr.top) / s + 'px'; e.style.width = Math.max(w, 24) + 'px'; e.style.height = Math.max(h, parseFloat(cs.fontSize) * 1.3 * k) + 'px';
