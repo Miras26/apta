@@ -1,0 +1,1083 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<title>Апта — басты экран, қараңғы</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0B0B0D">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+@keyframes aptaBanner{from{opacity:0;transform:translateY(-30px) scale(.96)}to{opacity:1;transform:none}}
+body{margin:0}
+a{color:#F5F4F1}a:hover{color:#F5F4F1}
+button{font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s ease}
+button:active{transform:scale(0.96)}
+.apta-scroll::-webkit-scrollbar{display:none}
+@keyframes aptaSheet{from{transform:translateY(105%)}to{transform:none}}
+@keyframes aptaFade{from{opacity:0}to{opacity:1}}
+@keyframes aptaMenu{from{opacity:0;transform:scale(.6) translateY(24px)}to{opacity:1;transform:none}}
+@keyframes aptaItem{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes aptaPop{0%{transform:scale(.4)}60%{transform:scale(1.18)}100%{transform:scale(1)}}
+@keyframes aptaToast{0%{opacity:0;transform:translate(-50%,24px)}10%{opacity:1;transform:translate(-50%,0)}88%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,24px)}}
+@keyframes aptaToastB{0%{opacity:0;transform:translate(-50%,24px)}10%{opacity:1;transform:translate(-50%,0)}88%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,24px)}}
+@keyframes aptaShakeA{0%,100%{transform:none}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+@keyframes aptaShakeB{0%,100%{transform:none}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+@keyframes aptaWave{0%{transform:scale(1)}35%{transform:scale(1.9)}70%{transform:scale(.8)}100%{transform:scale(1)}}
+@keyframes aptaDrop{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+@keyframes aptaSlideLA{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes aptaSlideLB{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes aptaSlideRA{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+@keyframes aptaSlideRB{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+@keyframes aptaSlideLA{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes aptaBlink{0%{opacity:1}50%{opacity:0}}
+@keyframes aptaGlow{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</helmet>
+<div style="{{rootVars}} width: 390px; height: 844px; position: relative; overflow: hidden; background: #0B0B0D; font-family: 'Golos Text', system-ui, sans-serif; font-weight: 400; color: #F5F4F1; user-select: none; -webkit-user-select: none">
+  <div aria-hidden="true" style="position: absolute; left: -90px; top: 60px; width: 300px; height: 300px; border-radius: 50%; background: #FF7BAC; opacity: 0.2; filter: blur(60px)"></div>
+  <div aria-hidden="true" style="position: absolute; left: 170px; top: 150px; width: 320px; height: 320px; border-radius: 50%; background: #FF8A3D; opacity: 0.2; filter: blur(60px)"></div>
+  <div aria-hidden="true" style="position: absolute; left: -110px; top: 360px; width: 320px; height: 320px; border-radius: 50%; background: #9B7BFF; opacity: 0.2; filter: blur(60px)"></div>
+  <div aria-hidden="true" style="position: absolute; left: 180px; top: 520px; width: 300px; height: 300px; border-radius: 50%; background: #C8F542; opacity: 0.2; filter: blur(60px)"></div>
+  <div aria-hidden="true" style="position: absolute; left: -90px; top: 640px; width: 340px; height: 340px; border-radius: 50%; background: #3CC6B8; opacity: 0.2; filter: blur(60px)"></div>
+
+  <div class="apta-scroll" ref="{{setRoot}}" style="position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-top: 108px; box-sizing: border-box">
+
+  <div onPointerDown="{{stripDown}}" onPointerMove="{{stripMove}}" onPointerUp="{{stripUp}}" onPointerCancel="{{stripUp}}" style="position: relative; margin: 24px 16px 0; padding: 8px 8px 0; border-radius: 36px; touch-action: pan-y; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+    <sc-if value="{{weekMode}}" hint-placeholder-val="{{ true }}">
+      <div style="{{weekWrap}}">
+        <sc-for list="{{days}}" as="d" hint-placeholder-count="7">
+          <button aria-label="{{d.label}}" aria-pressed="{{d.pressed}}" onClick="{{d.pick}}" style="{{d.style}}">
+            <span style="font-size: 11px; color: rgba(245,244,241,0.72)">{{d.name}}</span>
+            <span style="{{d.numStyle}}">{{d.num}}</span>
+            <span style="{{d.dot}}"></span>
+          </button>
+        </sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{monthOpen}}" hint-placeholder-val="{{ false }}">
+      <div style="{{monthWrap}}">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 0 8px 12px">
+          <span style="font-size: 15px; font-weight: 600">{{monthName}}</span>
+          <span style="display: flex; gap: 4px">
+            <button aria-label="Алдыңғы ай" onClick="{{prevMonth}}" style="width: 40px; height: 40px; border: none; border-radius: 20px; background: transparent; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6l-6 6 6 6"/></svg></button>
+            <button aria-label="Келесі ай" onClick="{{nextMonth}}" style="width: 40px; height: 40px; border: none; border-radius: 20px; background: transparent; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></button>
+          </span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); padding-bottom: 4px">
+          <sc-for list="{{wdHeads}}" as="w" hint-placeholder-count="7"><span style="text-align: center; font-size: 11px; color: rgba(245,244,241,0.72)">{{w.n}}</span></sc-for>
+        </div>
+        <div style="{{gridStyle}}">
+          <sc-for list="{{monthCells}}" as="m" hint-placeholder-count="35">
+            <button aria-label="{{m.label}}" onClick="{{m.pick}}" style="{{m.style}}"><span>{{m.num}}</span><span style="{{m.dot}}"></span></button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+    <button aria-label="{{grabLabel}}" aria-expanded="{{monthAria}}" onClick="{{toggleMonth}}" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 24px; border: none; background: transparent; padding: 0"><span style="width: 36px; height: 4px; border-radius: 2px; background: #F5F4F1; opacity: 0.25"></span></button>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 16px 16px 0">
+    <button aria-label="{{tasksCardLabel}}" onClick="{{openSummary}}" style="position: relative; text-align: left; font-family: inherit; box-sizing: border-box; padding: 18px; border-radius: 36px; border: none; display: flex; flex-direction: column; justify-content: space-between; gap: 16px; background: rgba(23,6,27,0.78); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 1px rgba(212,84,184,0.55), inset 0 22px 40px -10px rgba(212,84,184,0.9), inset 0 0 30px rgba(212,84,184,0.6), inset 0 -14px 30px -12px rgba(212,84,184,0.45), 0 12px 30px rgba(0,0,0,0.3); color: #FFFFFF">
+      <span style="display: flex; justify-content: space-between; align-items: center; width: 100%">
+        <span style="font-size: 11px; color: rgba(255,255,255,0.74)">{{tasksTitle}}</span>
+        <span style="position: relative; width: 28px; height: 28px; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-7 7"/><path d="M10 20H4v-6"/><path d="M4 20l7-7"/></svg></span>
+      </span>
+      <span style="display: flex; flex-direction: column; gap: 14px; width: 100%">
+        <span role="img" aria-label="{{countLabel}}" style="{{count.box}}"><sc-for list="{{count.dots}}" as="p" hint-placeholder-count="30"><span style="{{p.style}}"></span></sc-for></span>
+        <span style="display: flex; gap: 4px">
+          <sc-for list="{{bars}}" as="b" hint-placeholder-count="5"><span style="{{b.style}}"></span></sc-for>
+        </span>
+      </span>
+    </button>
+
+    <div style="position: relative; box-sizing: border-box; padding: 18px; border-radius: 36px; display: flex; flex-direction: column; gap: 12px; background: rgba(6,10,34,0.78); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 1px rgba(82,102,240,0.55), inset 0 22px 40px -10px rgba(82,102,240,0.9), inset 0 0 30px rgba(82,102,240,0.6), inset 0 -14px 30px -12px rgba(82,102,240,0.45), 0 12px 30px rgba(0,0,0,0.3); color: #FFFFFF">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-left: 2px">
+        <span style="font-size: 11px; color: rgba(255,255,255,0.74)">Әдеттер</span>
+        <button aria-label="Барлық әдеттерді ашу" onClick="{{openHabits}}" style="height: 44px; margin: -8px -4px -8px 0; padding: 0; border: none; background: transparent; display: flex; align-items: center">
+          <span style="position: relative; display: flex; align-items: center; gap: 4px; height: 28px; padding: 0 8px 0 10px; border-radius: 14px; font-size: 11px; font-weight: 500; color: #FFFFFF; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none">+{{moreCount}} <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-7 7"/><path d="M10 20H4v-6"/><path d="M4 20l7-7"/></svg></span>
+        </button>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+        <sc-for list="{{homeHabits}}" as="h" hint-placeholder-count="4">
+          <button aria-label="{{h.aria}}" aria-pressed="{{h.pressed}}" onClick="{{h.tap}}" onPointerDown="{{h.lpd}}" onPointerUp="{{h.lpu}}" onPointerLeave="{{h.lpu}}" onContextMenu="{{h.noCtx}}" style="{{h.cellStyle}}">
+            <span style="font-size: 11px; font-weight: 500; line-height: 1.2; text-align: center; max-width: 100%; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{h.name}}</span>
+            <span style="{{h.wrap}}">
+              <sc-if value="{{h.showOn}}" hint-placeholder-val="{{ false }}"><span style="{{h.onStyle}}"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></sc-if>
+              <sc-if value="{{h.showOff}}" hint-placeholder-val="{{ true }}"><span style="{{h.offStyle}}"></span></sc-if>
+              <sc-if value="{{h.showSeg}}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t0}}" style="{{h.s0}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t1}}" style="{{h.s1}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t2}}" style="{{h.s2}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t3}}" style="{{h.s3}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t4}}" style="{{h.s4}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t5}}" style="{{h.s5}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t6}}" style="{{h.s6}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t7}}" style="{{h.s7}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t8}}" style="{{h.s8}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t9}}" style="{{h.s9}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t10}}" style="{{h.s10}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t11}}" style="{{h.s11}}"></circle></svg></sc-if>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin: 24px 16px 0; display: flex; flex-direction: column; gap: 8px">
+    <h2 style="margin: 0 0 8px 8px; font-size: 18px; font-weight: 600; letter-spacing: -0.2px">Кесте</h2>
+    <sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}">
+      <div style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 40px 24px 36px; border-radius: 36px; text-align: center; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+        <button aria-label="Тапсырма қосу" onClick="{{addFirst}}" style="position: relative; width: 88px; height: 88px; border-radius: 44px; border: none; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.15); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)"><svg aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        <span style="font-size: 15px; font-weight: 600">{{emptyTitle}}</span>
+        <span style="font-size: 13px; color: rgba(245,244,241,0.72); max-width: 240px; line-height: 1.4">Тапсырма қосу үшін «+» батырмасын басыңыз</span>
+      </div>
+    </sc-if>
+    <sc-for list="{{timed}}" as="t" hint-placeholder-count="3">
+      <sc-if value="{{t.nowBefore}}" hint-placeholder-val="{{ false }}">
+        <div data-flip="nowline" aria-label="Қазір {{nowTime}}" style="display: flex; align-items: center; gap: 8px; height: 18px; padding: 0 8px">
+          <span style="font-size: 11px; font-weight: 600">{{nowTime}}</span>
+          <span style="width: 7px; height: 7px; border-radius: 4px; background: {{accent}}; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.3)"></span>
+          <span style="flex-grow: 1; height: 1px; background: {{accent}}; opacity: 0.8"></span>
+        </div>
+      </sc-if>
+      <div data-flip="{{t.id}}" style="{{t.wrapStyle}}">
+        <div aria-hidden="true" style="{{t.leftAct}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--onacc, #111111)"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Орындалды</span></div>
+        <div aria-hidden="true" style="{{t.rightAct}}"><span>Кейінге</span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></div>
+        <div onPointerDown="{{t.pd}}" onPointerMove="{{t.pm}}" onPointerUp="{{t.pu}}" onPointerCancel="{{t.pc}}" onClick="{{t.open}}" style="{{t.rowStyle}}"><sc-if value="{{t.plain}}" hint-placeholder-val="{{ true }}"></sc-if>
+          <sc-if value="{{t.hasTime}}" hint-placeholder-val="{{ true }}">
+            <div style="width: 52px; flex-shrink: 0; display: flex; flex-direction: column; gap: 2px">
+              <span style="{{t.timeStyle}}">{{t.time}}</span>
+              <sc-if value="{{t.late}}" hint-placeholder-val="{{ false }}"><span style="font-size: 11px; font-weight: 500; color: #FF6B6B">кешікті</span></sc-if>
+            </div>
+          </sc-if>
+          <span style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="{{t.titleStyle}}">{{t.title}}</span><sc-if value="{{t.hasDesc}}" hint-placeholder-val="{{ false }}"><span style="{{t.descStyle}}">{{t.desc}}</span></sc-if></span>
+          <button aria-label="{{t.label}}" aria-pressed="{{t.pressed}}" onClick="{{t.toggle}}" style="width: 44px; height: 44px; flex-shrink: 0; margin: -8px -8px -8px 0; border: none; background: transparent; display: flex; align-items: center; justify-content: center">
+            <span style="{{t.dotStyle}}"><sc-if value="{{t.done}}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></sc-if></span>
+          </button>
+        </div>
+      </div>
+    </sc-for>
+    <sc-if value="{{hasAnytime}}" hint-placeholder-val="{{ true }}"><h3 data-flip="h-any" style="margin: 16px 0 0 8px; font-size: 11px; font-weight: 400; color: rgba(245,244,241,0.72)">Кез келген уақытта</h3></sc-if>
+    <sc-for list="{{anytime}}" as="t" hint-placeholder-count="2">
+      <div data-flip="{{t.id}}" style="{{t.wrapStyle}}">
+        <div aria-hidden="true" style="{{t.leftAct}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Орындалды</span></div>
+        <div aria-hidden="true" style="{{t.rightAct}}"><span>Кейінге</span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></div>
+        <div onPointerDown="{{t.pd}}" onPointerMove="{{t.pm}}" onPointerUp="{{t.pu}}" onPointerCancel="{{t.pc}}" onClick="{{t.open}}" style="{{t.rowStyle}}"><sc-if value="{{t.plain}}" hint-placeholder-val="{{ true }}"></sc-if>
+          <sc-if value="{{t.hasTime}}" hint-placeholder-val="{{ true }}">
+            <div style="width: 52px; flex-shrink: 0; display: flex; flex-direction: column; gap: 2px">
+              <span style="{{t.timeStyle}}">{{t.time}}</span>
+              <sc-if value="{{t.late}}" hint-placeholder-val="{{ false }}"><span style="font-size: 11px; font-weight: 500; color: #FF6B6B">кешікті</span></sc-if>
+            </div>
+          </sc-if>
+          <span style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="{{t.titleStyle}}">{{t.title}}</span><sc-if value="{{t.hasDesc}}" hint-placeholder-val="{{ false }}"><span style="{{t.descStyle}}">{{t.desc}}</span></sc-if></span>
+          <button aria-label="{{t.label}}" aria-pressed="{{t.pressed}}" onClick="{{t.toggle}}" style="width: 44px; height: 44px; flex-shrink: 0; margin: -8px -8px -8px 0; border: none; background: transparent; display: flex; align-items: center; justify-content: center">
+            <span style="{{t.dotStyle}}"><sc-if value="{{t.done}}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></sc-if></span>
+          </button>
+        </div>
+      </div>
+    </sc-for>
+    <sc-if value="{{showAddRow}}" hint-placeholder-val="{{ true }}">
+      <button data-flip="addrow" onClick="{{addTask}}" style="display: flex; align-items: center; justify-content: center; gap: 8px; height: 52px; margin-top: 8px; border-radius: 22px; border: 1px dashed rgba(255,255,255,0.25); background: transparent; color: rgba(245,244,241,0.72); font-size: 13px; font-weight: 500"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(245,244,241,0.72)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Тапсырма қосу</button>
+    </sc-if>
+    <sc-if value="{{hasDone}}" hint-placeholder-val="{{ true }}">
+      <div data-flip="h-done" style="display: flex; justify-content: space-between; align-items: center; margin: 16px 0 0 8px">
+        <h3 style="margin: 0; font-size: 11px; font-weight: 400; color: rgba(245,244,241,0.72)">Орындалды · {{doneTotal}}</h3>
+        <sc-if value="{{doneMore}}" hint-placeholder-val="{{ false }}">
+          <button aria-expanded="{{doneExpandedAria}}" onClick="{{toggleDone}}" style="display: flex; align-items: center; gap: 4px; height: 44px; margin: -12px 0; padding: 0 8px; border: none; background: transparent; color: rgba(245,244,241,0.72); font-size: 11px; font-weight: 500">{{doneToggleText}}<span style="{{chevStyle}}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(245,244,241,0.72)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"/></svg></span></button>
+        </sc-if>
+      </div>
+    </sc-if>
+    <sc-for list="{{doneList}}" as="t" hint-placeholder-count="1">
+      <div data-flip="{{t.id}}" style="{{t.wrapStyle}}">
+        <div aria-hidden="true" style="{{t.leftAct}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Орындалды</span></div>
+        <div aria-hidden="true" style="{{t.rightAct}}"><span>Кейінге</span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></div>
+        <div onPointerDown="{{t.pd}}" onPointerMove="{{t.pm}}" onPointerUp="{{t.pu}}" onPointerCancel="{{t.pc}}" onClick="{{t.open}}" style="{{t.rowStyle}}"><sc-if value="{{t.plain}}" hint-placeholder-val="{{ true }}"></sc-if>
+          <sc-if value="{{t.hasTime}}" hint-placeholder-val="{{ true }}">
+            <div style="width: 52px; flex-shrink: 0; display: flex; flex-direction: column; gap: 2px">
+              <span style="{{t.timeStyle}}">{{t.time}}</span>
+              <sc-if value="{{t.late}}" hint-placeholder-val="{{ false }}"><span style="font-size: 11px; font-weight: 500; color: #FF6B6B">кешікті</span></sc-if>
+            </div>
+          </sc-if>
+          <span style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="{{t.titleStyle}}">{{t.title}}</span><sc-if value="{{t.hasDesc}}" hint-placeholder-val="{{ false }}"><span style="{{t.descStyle}}">{{t.desc}}</span></sc-if></span>
+          <button aria-label="{{t.label}}" aria-pressed="{{t.pressed}}" onClick="{{t.toggle}}" style="width: 44px; height: 44px; flex-shrink: 0; margin: -8px -8px -8px 0; border: none; background: transparent; display: flex; align-items: center; justify-content: center">
+            <span style="{{t.dotStyle}}"><sc-if value="{{t.done}}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></sc-if></span>
+          </button>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="height: 140px"></div>
+  </div>
+
+  <header style="position: absolute; left: 0; right: 0; top: 0; z-index: 20; box-sizing: border-box; padding: 54px 16px 18px; display: flex; align-items: center; gap: 12px; background: rgba(11,11,13,0.55); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 18px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 18px), transparent)">
+    <span aria-hidden="true" style="width: 44px; height: 44px; flex-shrink: 0"></span>
+    <div style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+      <span style="font-size: 11px; color: rgba(245,244,241,0.72); white-space: nowrap">{{dateLine}}</span>
+      <h1 style="margin: 0; position: relative"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap">{{titleText}}</span><span aria-hidden="true" style="{{title.box}}"><sc-for list="{{title.dots}}" as="p" hint-placeholder-count="60"><span style="{{p.style}}"></span></sc-for></span></h1>
+    </div>
+    <button aria-label="Іздеу" onClick="{{srOpenFn}}" style="position: relative; flex-shrink: 0; width: 44px; height: 44px; box-sizing: border-box; padding: 0; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button>
+    <a href="ProfDark.dc.html" aria-label="Профиль" style="position: relative; flex-shrink: 0; width: 44px; height: 44px; box-sizing: border-box; border-radius: 22px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px; font-weight: 500; color: #F5F4F1; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); {{avBtn}}">{{avLetter}}</a>
+  </header>
+  <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 150px; background: rgba(0,0,0,0.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); -webkit-mask-image: linear-gradient(to bottom, transparent, #000 60%); mask-image: linear-gradient(to bottom, transparent, #000 60%); pointer-events: none"></div>
+
+  <sc-if value="{{toastOn}}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="{{toastStyle}}; z-index: 29">
+      <span style="font-size: 13px; font-weight: 500">{{toastText}}</span>
+      <sc-if value="{{toastUndo}}" hint-placeholder-val="{{ true }}"><button aria-label="Қайтару" onClick="{{undo}}" style="width: 40px; height: 40px; border: none; border-radius: 20px; background: #F5F4F1; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg></button></sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{menuOpen}}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{closeMenu}}" style="position: absolute; inset: 0; z-index: 26; background: rgba(11,11,13,0.3); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); animation: aptaFade 0.25s ease both"></div>
+    <div role="menu" aria-label="Жылдам қосу" style="position: absolute; z-index: 27; right: 16px; bottom: 106px; width: 220px; box-sizing: border-box; display: flex; flex-direction: column; gap: 0; padding: 8px; border-radius: 30px; transform-origin: 88% 100%; animation: aptaMenu 0.32s cubic-bezier(.2,.9,.3,1.1) both; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); color: #F5F4F1">
+        <a href="#" role="menuitem" onClick="{{menuTask}}" style="display: flex; align-items: center; gap: 14px; height: 52px; padding: 0 12px; border-radius: 14px; text-decoration: none; color: #F5F4F1; font-size: 13px; font-weight: 500; animation: aptaItem 0.36s cubic-bezier(.2,.9,.3,1.15) both; animation-delay: 60ms"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 9.2l1.6 1.6L12.6 7.8"/><path d="M14.8 9.5h1.7"/><path d="M8 15h8.5"/></svg>Тапсырма</a>
+        <a href="#" role="menuitem" onClick="{{menuHabit}}" style="display: flex; align-items: center; gap: 14px; height: 52px; padding: 0 12px; border-radius: 14px; text-decoration: none; color: #F5F4F1; font-size: 13px; font-weight: 500; animation: aptaItem 0.36s cubic-bezier(.2,.9,.3,1.15) both; animation-delay: 100ms"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8"/></svg>Әдет</a>
+        <a href="FinDark.dc.html" role="menuitem" onClick="{{goNewExpense}}" style="display: flex; align-items: center; gap: 14px; height: 52px; padding: 0 12px; border-radius: 14px; text-decoration: none; color: #F5F4F1; font-size: 13px; font-weight: 500; animation: aptaItem 0.36s cubic-bezier(.2,.9,.3,1.15) both; animation-delay: 140ms"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 14.5h2"/></svg>Шығын</a>
+        <a href="NotesDark.dc.html" role="menuitem" onClick="{{goNewNote}}" style="display: flex; align-items: center; gap: 14px; height: 52px; padding: 0 12px; border-radius: 14px; text-decoration: none; color: #F5F4F1; font-size: 13px; font-weight: 500; animation: aptaItem 0.36s cubic-bezier(.2,.9,.3,1.15) both; animation-delay: 180ms"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>Жазба</a>
+    </div>
+  </sc-if>
+
+  <nav aria-label="Негізгі мәзір" style="position: absolute; z-index: 28; left: 16px; right: 16px; bottom: 26px; display: flex; align-items: center; gap: 8px">
+    <div style="position: relative; flex-grow: 1; display: flex; justify-content: space-between; align-items: center; height: 64px; box-sizing: border-box; padding: 0 6px; border-radius: 32px; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+      <a href="#" aria-label="Бүгін" aria-current="page" style="width: 72px; height: 52px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.15); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg></a>
+      <a href="CalDark.dc.html" aria-label="Күнтізбе" style="width: 52px; height: 52px; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></a>
+      <a href="FinDark.dc.html" aria-label="Қаржы" style="width: 52px; height: 52px; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 14.5h2"/></svg></a>
+      <a href="NotesDark.dc.html" aria-label="Жазбалар" style="width: 52px; height: 52px; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></a>
+    </div>
+    <sc-if value="{{plusVisible}}" hint-placeholder-val="{{ true }}"><button aria-label="Қосу" aria-expanded="{{menuExpanded}}" onClick="{{togglePlus}}" style="position: relative; z-index: 2; width: 64px; height: 64px; border-radius: 32px; border: none; background: #F5F4F1; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,0.15)">
+      <span style="{{plusIcon}}"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
+    </button></sc-if>
+  </nav>
+
+  <sc-if value="{{habitsOpen}}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{closeHabits}}" style="position: absolute; inset: 0; z-index: 30; background: rgba(11,11,13,0.3); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); animation: aptaFade 0.25s ease both"></div>
+    <section role="dialog" aria-label="Барлық әдеттер" style="position: absolute; z-index: 31; left: 8px; right: 8px; bottom: 8px; box-sizing: border-box; padding: 20px 16px 28px; border-radius: 36px; display: flex; flex-direction: column; gap: 16px; animation: aptaSheet 0.42s cubic-bezier(.2,.9,.3,1.05) both; background: rgba(6,10,34,0.78); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 1px rgba(82,102,240,0.55), inset 0 22px 40px -10px rgba(82,102,240,0.9), inset 0 0 30px rgba(82,102,240,0.6), inset 0 -14px 30px -12px rgba(82,102,240,0.45), 0 12px 30px rgba(0,0,0,0.3); color: #FFFFFF">
+      <div aria-hidden="true" style="align-self: center; width: 36px; height: 4px; border-radius: 2px; background: #FFFFFF; opacity: 0.3; margin-top: -8px"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-left: 8px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 600">Әдеттер</h2>
+          <span style="font-size: 11px; color: rgba(255,255,255,0.74)">Бүгін {{habitsDone}} / {{habitsTotal}}</span>
+        </div>
+        <button aria-label="Жабу" onClick="{{closeHabits}}" style="position: relative; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+        <sc-for list="{{allHabits}}" as="h" hint-placeholder-count="7">
+          <button aria-label="{{h.aria}}" aria-pressed="{{h.pressed}}" onClick="{{h.tap}}" onPointerDown="{{h.lpd}}" onPointerUp="{{h.lpu}}" onPointerLeave="{{h.lpu}}" onContextMenu="{{h.noCtx}}" style="{{h.cellStyle}}">
+            <span style="font-size: 11px; font-weight: 500; line-height: 1.2; text-align: center; max-width: 100%; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{h.name}}</span>
+            <span style="{{h.wrap}}">
+              <sc-if value="{{h.showOn}}" hint-placeholder-val="{{ false }}"><span style="{{h.onStyle}}"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></sc-if>
+              <sc-if value="{{h.showOff}}" hint-placeholder-val="{{ true }}"><span style="{{h.offStyle}}"></span></sc-if>
+              <sc-if value="{{h.showSeg}}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t0}}" style="{{h.s0}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t1}}" style="{{h.s1}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t2}}" style="{{h.s2}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t3}}" style="{{h.s3}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t4}}" style="{{h.s4}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t5}}" style="{{h.s5}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t6}}" style="{{h.s6}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t7}}" style="{{h.s7}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t8}}" style="{{h.s8}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t9}}" style="{{h.s9}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t10}}" style="{{h.s10}}"></circle><circle cx="11" cy="11" r="9.5" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="{{h.da}}" transform="{{h.t11}}" style="{{h.s11}}"></circle></svg></sc-if>
+            </span>
+          </button>
+        </sc-for>
+        <button aria-label="Жаңа әдет қосу" onClick="{{openNewHabit}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 70px; border-radius: 14px; border: 1px dashed rgba(255,255,255,0.4); background: transparent; color: rgba(255,255,255,0.74)"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span style="font-size: 11px; font-weight: 500">Жаңа әдет</span></button>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{editOpen}}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{closeEdit}}" style="position: absolute; inset: 0; z-index: 30; background: rgba(11,11,13,0.3); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); animation: aptaFade 0.25s ease both"></div>
+    <section role="dialog" aria-label="Тапсырманы өзгерту" style="position: absolute; z-index: 31; left: 8px; right: 8px; {{sheetBottom}}; box-sizing: border-box; padding: 20px 16px 24px; border-radius: 36px; display: flex; flex-direction: column; gap: 12px; transition: bottom 0.32s cubic-bezier(.2,.9,.3,1); animation: aptaSheet 0.42s cubic-bezier(.2,.9,.3,1.05) both; background: rgba(26,26,30,0.82); border: 0.5px solid rgba(255,255,255,0.12); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.18), 0 -10px 40px rgba(0,0,0,0.45); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); color: #FFFFFF">
+      <div aria-hidden="true" style="align-self: center; width: 36px; height: 4px; border-radius: 2px; background: #FFFFFF; opacity: 0.3; margin-top: -8px"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-left: 8px; margin-bottom: 4px">
+        <h2 style="margin: 0; font-size: 18px; font-weight: 600">Тапсырма</h2>
+        <button aria-label="Жабу" onClick="{{closeEdit}}" style="position: relative; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <button aria-label="Атауы: {{editTitle}}" onClick="{{focusTitle}}" style="position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 12px 16px; border-radius: 30px; text-align: left; color: #FFFFFF; {{titleCell}}">
+        <span style="font-size: 11px; color: rgba(255,255,255,0.74)">Атауы</span>
+        <span style="display: flex; align-items: center; min-height: 26px; max-width: 100%; font-size: 15px; font-weight: 500"><span style="{{titleTextStyle}}">{{titleShown}}</span><sc-if value="{{titleCaret}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="width: 2px; height: 20px; margin-left: 1px; border-radius: 1px; background: {{accent}}; animation: aptaBlink 1s steps(1) infinite"></span></sc-if></span>
+      </button>
+      <button aria-label="Сипаттамасы: {{editDesc}}" onClick="{{focusDesc}}" style="position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 12px 16px; border-radius: 30px; text-align: left; color: #FFFFFF; {{descCell}}">
+        <span style="font-size: 11px; color: rgba(255,255,255,0.74)">Сипаттамасы · міндетті емес</span>
+        <span style="display: block; min-height: 22px; max-width: 100%; font-size: 13px; line-height: 1.4; overflow-wrap: anywhere"><span style="{{descTextStyle}}">{{descShown}}</span><sc-if value="{{descCaret}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="display: inline-block; vertical-align: -3px; width: 2px; height: 18px; margin-left: 1px; border-radius: 1px; background: {{accent}}; animation: aptaBlink 1s steps(1) infinite"></span></sc-if></span>
+      </button>
+      <div style="position: relative; display: flex; flex-direction: column; border-radius: 30px; {{timeCell}}">
+        <button aria-label="Уақыты: {{timeShown}}" aria-expanded="{{timeAria}}" onClick="{{toggleTime}}" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: none; background: transparent; color: #FFFFFF; text-align: left">
+          <span style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 11px; color: rgba(255,255,255,0.74)">Уақыты · міндетті емес</span>
+            <span style="font-size: 15px; font-weight: 500">{{timeShown}}</span>
+          </span>
+          <span style="{{timeChev}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"/></svg></span>
+        </button>
+        <sc-if value="{{timeOpen}}" hint-placeholder-val="{{ false }}">
+          <div style="position: relative; display: flex; justify-content: center; align-items: center; gap: 4px; height: 180px; margin: 0 12px 8px; animation: aptaFade 0.25s ease both">
+            <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 72px; height: 36px; border-radius: 12px; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"></div>
+            <div ref="{{hourRef}}" onScroll="{{onHourScroll}}" style="position: relative; height: 180px; width: 72px; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; padding: 72px 0; box-sizing: border-box; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent)">
+              <sc-for list="{{hours}}" as="h" hint-placeholder-count="24"><div style="{{h.style}}">{{h.v}}</div></sc-for>
+            </div>
+            <span style="position: relative; font-size: 22px; font-weight: 500">:</span>
+            <div ref="{{minRef}}" onScroll="{{onMinScroll}}" style="position: relative; height: 180px; width: 72px; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; padding: 72px 0; box-sizing: border-box; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent)">
+              <sc-for list="{{mins}}" as="h" hint-placeholder-count="12"><div style="{{h.style}}">{{h.v}}</div></sc-for>
+            </div>
+          </div>
+          <button onClick="{{clearTime}}" style="align-self: center; height: 36px; margin: 0 0 12px; padding: 0 16px; border: none; border-radius: 18px; background: transparent; color: rgba(255,255,255,0.74); font-size: 13px; font-weight: 500">Уақытсыз</button>
+        </sc-if>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px; padding: 2px 0 4px">
+        <span style="padding: 0 4px; font-size: 11px; color: rgba(255,255,255,0.74)">Еске салу</span>
+        <div role="radiogroup" aria-label="Еске салу" style="display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -2px; padding: 0 2px">
+          <sc-for list="{{remOpts}}" as="r" hint-placeholder-count="5"><button role="radio" aria-checked="{{r.sel}}" onClick="{{r.pick}}" style="{{r.style}}">{{r.label}}</button></sc-for>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+        <button onClick="{{editPostpone}}" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 84px; border-radius: 30px; border: none; font-size: 11px; font-weight: 500; background: rgba(20,20,23,0.78); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 1px rgba(150,150,160,0.55), inset 0 22px 40px -10px rgba(150,150,160,0.9), inset 0 0 30px rgba(150,150,160,0.6), inset 0 -14px 30px -12px rgba(150,150,160,0.45), 0 12px 30px rgba(0,0,0,0.3); color: #FFFFFF; color: #FFFFFF"><span style="position: relative; width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>Кейінге</button>
+        <button onClick="{{editDelete}}" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 84px; border-radius: 30px; border: none; font-size: 11px; font-weight: 500; background: rgba(30,6,8,0.78); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 1px rgba(229,72,77,0.55), inset 0 22px 40px -10px rgba(229,72,77,0.9), inset 0 0 30px rgba(229,72,77,0.6), inset 0 -14px 30px -12px rgba(229,72,77,0.45), 0 12px 30px rgba(0,0,0,0.3); color: #FFFFFF; color: #FFFFFF"><span style="position: relative; width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 12.5h9l1-12.5"/></svg></span>Өшіру</button>
+      </div>
+      <button onClick="{{editSave}}" style="height: 52px; margin-top: 4px; border: none; border-radius: 26px; background: #F5F4F1; color: #111111; font-size: 15px; font-weight: 600">Сақтау</button>
+    </section>
+
+  </sc-if>
+
+  <sc-if value="{{summaryOpen}}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{closeSummary}}" style="position: absolute; inset: 0; z-index: 30; background: rgba(11,11,13,0.3); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); animation: aptaFade 0.25s ease both"></div>
+    <section role="dialog" aria-label="Күн қорытындысы" style="position: absolute; z-index: 31; left: 8px; right: 8px; bottom: 8px; box-sizing: border-box; padding: 20px 16px 24px; border-radius: 36px; display: flex; flex-direction: column; gap: 16px; animation: aptaSheet 0.42s cubic-bezier(.2,.9,.3,1.05) both; background: rgba(23,6,27,0.78); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 1px rgba(212,84,184,0.55), inset 0 22px 40px -10px rgba(212,84,184,0.9), inset 0 0 30px rgba(212,84,184,0.6), inset 0 -14px 30px -12px rgba(212,84,184,0.45), 0 12px 30px rgba(0,0,0,0.3); color: #FFFFFF">
+      <div aria-hidden="true" style="align-self: center; width: 36px; height: 4px; border-radius: 2px; background: #FFFFFF; opacity: 0.3; margin-top: -8px"></div>
+      <sc-if value="{{sumMain}}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-left: 8px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 600">Күн қорытындысы</h2>
+          <span style="font-size: 11px; color: rgba(255,255,255,0.74)">Дүйсенбі · 23 қараша</span>
+        </div>
+        <button aria-label="Жабу" onClick="{{closeSummary}}" style="position: relative; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 12px 0 4px">
+        <span role="img" aria-label="{{countLabel}}" style="{{bigCount.box}}"><sc-for list="{{bigCount.dots}}" as="p" hint-placeholder-count="30"><span style="{{p.style}}"></span></sc-for></span>
+        <span style="font-size: 13px; font-weight: 500">{{summaryLine}}</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+        <button aria-label="Орындалды: {{sDone}}. Тізімді ашу" onClick="{{sumOpen_done}}" style="position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px 16px; border-radius: 30px; text-align: left; color: #FFFFFF; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><span style="display: flex; justify-content: space-between; width: 100%; font-size: 11px; color: rgba(255,255,255,0.74)">Орындалды<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.74)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></span><span style="font-size: 22px; font-weight: 500">{{sDone}}</span></button>
+        <button aria-label="Кешікті: {{sLate}}. Тізімді ашу" onClick="{{sumOpen_late}}" style="position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px 16px; border-radius: 30px; text-align: left; color: #FFFFFF; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><span style="display: flex; justify-content: space-between; width: 100%; font-size: 11px; color: rgba(255,255,255,0.74)">Кешікті<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.74)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></span><span style="font-size: 22px; font-weight: 500">{{sLate}}</span></button>
+        <button aria-label="Кейінге: {{sPost}}. Тізімді ашу" onClick="{{sumOpen_post}}" style="position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px 16px; border-radius: 30px; text-align: left; color: #FFFFFF; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><span style="display: flex; justify-content: space-between; width: 100%; font-size: 11px; color: rgba(255,255,255,0.74)">Кейінге<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.74)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></span><span style="font-size: 22px; font-weight: 500">{{sPost}}</span></button>
+        <button aria-label="Әдеттер: {{sHabits}}. Тізімді ашу" onClick="{{sumOpen_habits}}" style="position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px 16px; border-radius: 30px; text-align: left; color: #FFFFFF; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><span style="display: flex; justify-content: space-between; width: 100%; font-size: 11px; color: rgba(255,255,255,0.74)">Әдеттер<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.74)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></span><span style="font-size: 22px; font-weight: 500">{{sHabits}}</span></button>
+      </div>
+      <a href="NotesDiary.dc.html" style="position: relative; display: flex; align-items: center; gap: 14px; padding: 14px 14px 14px 16px; border-radius: 30px; text-decoration: none; color: #FFFFFF; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none">
+        <span style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 20px; display: flex; align-items: center; justify-content: center; background: {{accent}}"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="color: var(--onacc, #111111)"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/></svg></span>
+        <span style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 3px"><span style="font-size: 15px; font-weight: 600">Бүгін қалай өтті?</span><span style="font-size: 11px; color: rgba(255,255,255,0.74)">Күнделікке бірер сөз жазып қойыңыз</span></span>
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.74)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg>
+      </a>
+      <div style="position: relative; display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 30px; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none">
+        <span style="font-size: 11px; color: rgba(255,255,255,0.74)">Кеңес</span>
+        <span style="font-size: 13px; line-height: 1.4">Ертеңгі ең қиын тапсырманы бүгін кешке таңдап қойыңыз.</span>
+      </div>
+      <button onClick="{{saveImg}}" style="display: flex; align-items: center; justify-content: center; gap: 10px; height: 52px; border: none; border-radius: 26px; background: #F5F4F1; color: #111111; font-size: 13px; font-weight: 600"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="M7 11l5 5 5-5"/><path d="M5 20h14"/></svg>Сурет етіп сақтау</button>
+      </sc-if>
+      <sc-if value="{{sumDetail}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; align-items: center; gap: 12px; animation: aptaSlideLA 0.3s cubic-bezier(.2,.9,.3,1) both">
+          <button aria-label="Артқа" onClick="{{sumBack}}" style="position: relative; flex-shrink: 0; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6l-6 6 6 6"/></svg></button>
+          <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px">
+            <h2 style="margin: 0; font-size: 18px; font-weight: 600">{{sumTitle}}</h2>
+            <span style="font-size: 11px; color: rgba(255,255,255,0.74)">Дүйсенбі · 23 қараша · {{sumCount}}</span>
+          </div>
+          <button aria-label="Жабу" onClick="{{closeSummary}}" style="position: relative; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; max-height: 420px; overflow-y: auto; scrollbar-width: none; animation: aptaSlideLB 0.3s cubic-bezier(.2,.9,.3,1) both">
+          <sc-if value="{{sumEmpty}}" hint-placeholder-val="{{ false }}"><div style="position: relative; padding: 20px; border-radius: 30px; text-align: center; font-size: 13px; color: rgba(255,255,255,0.74); background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none">Әзірге бос</div></sc-if>
+          <sc-for list="{{sumItems}}" as="i" hint-placeholder-count="3">
+            <div style="position: relative; display: flex; align-items: center; gap: 10px; min-height: 52px; box-sizing: border-box; padding: 8px 16px; border-radius: 30px; color: #FFFFFF; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none">
+              <span style="width: 44px; flex-shrink: 0; font-size: 11px; font-weight: 500; color: {{i.timeColor}}">{{i.time}}</span>
+              <span style="flex: 1 1 auto; min-width: 0; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{i.title}}</span>
+              <span style="{{i.badge}}">{{i.right}}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </section>
+  </sc-if>
+  <sc-if value="{{nhOpen}}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{closeNewHabit}}" style="position: absolute; inset: 0; z-index: 30; background: rgba(11,11,13,0.3); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); animation: aptaFade 0.25s ease both"></div>
+    <section role="dialog" aria-label="{{nhTitle}}" style="position: absolute; z-index: 31; left: 8px; right: 8px; {{nhBottom}}; box-sizing: border-box; padding: 20px 16px 24px; border-radius: 36px; display: flex; flex-direction: column; gap: 12px; transition: bottom 0.32s cubic-bezier(.2,.9,.3,1); animation: aptaSheet 0.42s cubic-bezier(.2,.9,.3,1.05) both; background: rgba(26,26,30,0.82); border: 0.5px solid rgba(255,255,255,0.12); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.18), 0 -10px 40px rgba(0,0,0,0.45); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); color: #FFFFFF">
+      <div aria-hidden="true" style="align-self: center; width: 36px; height: 4px; border-radius: 2px; background: #FFFFFF; opacity: 0.3; margin-top: -8px"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-left: 8px; margin-bottom: 4px">
+        <h2 style="margin: 0; font-size: 18px; font-weight: 600">{{nhTitle}}</h2>
+        <button aria-label="Жабу" onClick="{{closeNewHabit}}" style="position: relative; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <button aria-label="Атауы: {{nhName}}" onClick="{{focusNh}}" style="position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 12px 16px; border-radius: 30px; text-align: left; color: #FFFFFF; {{nhCell}}">
+        <span style="font-size: 11px; color: rgba(255,255,255,0.74)">Атауы</span>
+        <span style="display: flex; align-items: center; min-height: 26px; max-width: 100%; font-size: 15px; font-weight: 500"><span style="{{nhTextStyle}}">{{nhShown}}</span><sc-if value="{{nhCaret}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="width: 2px; height: 20px; margin-left: 1px; border-radius: 1px; background: {{accent}}; animation: aptaBlink 1s steps(1) infinite"></span></sc-if></span>
+      </button>
+      <div style="position: relative; display: flex; justify-content: space-between; align-items: center; padding: 12px 12px 12px 16px; border-radius: 30px; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none">
+        <span style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 11px; color: rgba(255,255,255,0.74)">Күніне неше рет</span>
+          <span style="font-size: 15px; font-weight: 500">{{nhTargetText}}</span>
+        </span>
+        <span style="display: flex; align-items: center; gap: 8px">
+          <button aria-label="Азайту" onClick="{{nhMinus}}" style="position: relative; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg></button>
+          <span style="min-width: 24px; text-align: center; font-size: 18px; font-weight: 600">{{nhTarget}}</span>
+          <button aria-label="Көбейту" onClick="{{nhPlus}}" style="position: relative; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>
+        </span>
+      </div>
+      <div style="position: relative; display: flex; flex-direction: column; gap: 10px; padding: 12px 12px 14px 16px; border-radius: 30px; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none">
+        <span style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 11px; color: rgba(255,255,255,0.74)">Қай күндері</span><span style="font-size: 11px; font-weight: 500">{{nhDaysText}}</span></span>
+        <span style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px">
+          <sc-for list="{{nhDays}}" as="w" hint-placeholder-count="7"><button aria-label="{{w.label}}" aria-pressed="{{w.pressed}}" onClick="{{w.toggle}}" style="{{w.style}}">{{w.n}}</button></sc-for>
+        </span>
+      </div>
+      <sc-if value="{{nhEditing}}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{nhDelete}}" style="position: relative; display: flex; align-items: center; justify-content: center; gap: 8px; height: 52px; border-radius: 26px; border: none; font-size: 13px; font-weight: 500; background: rgba(30,6,8,0.78); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 1px rgba(229,72,77,0.55), inset 0 22px 40px -10px rgba(229,72,77,0.9), inset 0 0 30px rgba(229,72,77,0.6), inset 0 -14px 30px -12px rgba(229,72,77,0.45), 0 12px 30px rgba(0,0,0,0.3); color: #FFFFFF; color: #FFFFFF"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 12.5h9l1-12.5"/></svg>Әдетті өшіру</button>
+      </sc-if>
+      <button onClick="{{nhSave}}" style="height: 52px; margin-top: 4px; border: none; border-radius: 26px; background: #F5F4F1; color: #111111; font-size: 15px; font-weight: 600">{{nhSaveText}}</button>
+    </section>
+  </sc-if>
+    <sc-if value="{{kbOpen}}" hint-placeholder-val="{{ false }}">
+      <div role="group" aria-label="Пернетақта" style="position: absolute; z-index: 40; left: 0; right: 0; bottom: 0; box-sizing: border-box; padding: 8px 4px 30px; display: flex; flex-direction: column; gap: 9px; animation: aptaSheet 0.3s cubic-bezier(.2,.9,.3,1) both; background: rgba(30,30,34,0.86); backdrop-filter: blur(30px) saturate(160%); -webkit-backdrop-filter: blur(30px) saturate(160%); border-top: 0.5px solid rgba(255,255,255,0.14)">
+        <sc-for list="{{kbRows}}" as="r" hint-placeholder-count="5">
+          <div style="display: flex; justify-content: center; gap: 4px">
+            <sc-for list="{{r.keys}}" as="k" hint-placeholder-count="11"><button aria-label="{{k.label}}" onClick="{{k.press}}" style="{{k.style}}">{{k.t}}</button></sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+  <sc-if value="{{bnOn}}" hint-placeholder-val="{{ false }}">
+    <div role="alert" style="position: absolute; z-index: 60; left: 12px; right: 12px; top: 12px; box-sizing: border-box; padding: 12px 10px 12px 14px; border-radius: 30px; display: flex; align-items: center; gap: 12px; animation: aptaBanner 0.45s cubic-bezier(.2,.9,.3,1.1) both; background: rgba(255,255,255,0.15); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+      <span style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 20px; display: flex; align-items: center; justify-content: center; background: {{accent}}"><span style="display: flex; color: var(--onacc, var(--onacc, #111111))"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span></span>
+      <span style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: rgba(245,244,241,0.72)">{{bnKind}} · қазір</span><span style="font-size: 15px; font-weight: 600; color: #F5F4F1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{bnTitle}}</span></span>
+      <button aria-label="Жабу" onClick="{{bnClose}}" style="width: 32px; height: 32px; flex-shrink: 0; padding: 0; border: none; border-radius: 16px; background: transparent; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+  </sc-if>
+  <sc-if value="{{srOpen}}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-label="Іздеу" style="position: absolute; inset: 0; z-index: 50; display: flex; flex-direction: column; background: rgba(11,11,13,0.86); backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%); animation: aptaFade 0.22s ease both">
+      <div style="display: flex; align-items: center; gap: 8px; padding: 54px 16px 12px">
+        <div onClick="{{srFocus}}" style="position: relative; flex: 1 1 auto; min-width: 0; height: 48px; box-sizing: border-box; padding: 0 8px 0 14px; border-radius: 24px; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(245,244,241,0.72)" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+          <span style="flex: 1 1 auto; min-width: 0; font-size: 15px; color: #F5F4F1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis"><span style="{{srQStyle}}">{{srQShown}}</span><sc-if value="{{srCaret}}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="display: inline-block; vertical-align: -3px; width: 2px; height: 18px; margin-left: 1px; border-radius: 1px; background: {{accent}}; animation: aptaBlink 1s steps(1) infinite"></span></sc-if></span>
+          <sc-if value="{{srHasQ}}" hint-placeholder-val="{{ false }}"><button aria-label="Тазалау" onClick="{{srClear}}" style="width: 30px; height: 30px; flex-shrink: 0; padding: 0; border: none; border-radius: 15px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></sc-if>
+        </div>
+        <button onClick="{{srClose}}" style="height: 44px; padding: 0 6px; border: none; background: transparent; color: #F5F4F1; font-size: 15px; font-weight: 500">Жабу</button>
+      </div>
+      <div class="apta-scroll" style="flex: 1 1 auto; min-height: 0; overflow-y: auto; scrollbar-width: none; padding: 4px 16px {{srPadB}}px">
+        <div role="group" aria-label="Бөлімдер" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px">
+          <sc-for list="{{srScopes}}" as="o" hint-placeholder-count="7"><button aria-pressed="{{o.sel}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button></sc-for>
+        </div>
+        <sc-for list="{{srGroups}}" as="g" hint-placeholder-count="2">
+          <div style="margin-bottom: 18px">
+            <span style="display: block; margin: 0 8px 8px; font-size: 11px; font-weight: 500; color: rgba(245,244,241,0.72)">{{g.label}} · {{g.count}}</span>
+            <div style="position: relative; border-radius: 30px; overflow: hidden; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+              <sc-for list="{{g.items}}" as="r" hint-placeholder-count="3">
+                <a href="{{r.href}}" style="{{r.style}}">
+                  <span style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 3px"><span style="font-size: 15px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.title}}</span><span style="font-size: 11px; color: rgba(245,244,241,0.72); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.sub}}</span></span>
+                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(245,244,241,0.72)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+                </a>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{srEmpty}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 48px 24px; text-align: center"><svg aria-hidden="true" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="rgba(245,244,241,0.72)" stroke-width="1.3" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5M8.5 11h5"/></svg><span style="font-size: 15px; font-weight: 600; color: #F5F4F1">Ештеңе табылмады</span><span style="font-size: 13px; line-height: 1.45; color: rgba(245,244,241,0.72)">«{{srQ}}» сөзі бар тапсырма, әдет, жазба немесе шығын жоқ. Басқа сөзбен іздеп көріңіз.</span></div>
+        </sc-if>
+        <sc-if value="{{srHint}}" hint-placeholder-val="{{ true }}">
+          <div style="padding: 8px 8px 0; font-size: 13px; line-height: 1.5; color: rgba(245,244,241,0.72)">Тапсырмалардан, әдеттерден, күнтізбеден, қаржыдан, жазбалардан, күнделік пен майндмэптен және баптаулардан іздейді.</div>
+        </sc-if>
+      </div>
+      <sc-if value="{{srKb}}" hint-placeholder-val="{{ true }}">
+        <div role="group" aria-label="Пернетақта" style="position: absolute; z-index: 52; left: 0; right: 0; bottom: 0; box-sizing: border-box; padding: 8px 4px 30px; display: flex; flex-direction: column; gap: 9px; animation: aptaSheet 0.3s cubic-bezier(.2,.9,.3,1) both; background: rgba(30,30,34,0.86); backdrop-filter: blur(30px) saturate(160%); -webkit-backdrop-filter: blur(30px) saturate(160%); border-top: 0.5px solid rgba(255,255,255,0.14)">
+          <sc-for list="{{srRows}}" as="kr" hint-placeholder-count="5">
+            <div style="display: flex; justify-content: center; gap: 4px">
+              <sc-for list="{{kr.keys}}" as="kk" hint-placeholder-count="11"><button aria-label="{{kk.label}}" onClick="{{kk.press}}" style="{{kk.style}}">{{kk.t}}</button></sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#C8F542","options":["#C8F542","#FF8A3D","#9B7BFF","#3CC6B8"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+
+  sGet() { try { return JSON.parse(localStorage.getItem('apta.v1') || '{}') || {}; } catch (e) { return this._mem || {}; } }
+  sPut(patch) { const next = { ...this.sGet(), ...patch }; this._mem = next; try { localStorage.setItem('apta.v1', JSON.stringify(next)); } catch (e) {} return next; }
+  boardName() { return 'Dark.dc.html'; }
+  accentNow() { const p = this.sGet().profile || {}; return p.accent || this.props.accent || '#C8F542'; }
+  onAccent(c) { const h = (c || '#C8F542').replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(x => x + x).join('') : h, 16); const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? 'var(--onacc, #111111)' : '#FFFFFF'; }
+  sBoot() {
+    if (this._booted) return; this._booted = true;
+    const S0 = this.sGet();
+    if (this.hydrate) { try { Object.assign(this.state, this.hydrate(S0)); } catch (e) {} }
+    const it = S0.intent; if (it && it.board === this.boardName() && this.onIntent) { try { Object.assign(this.state, this.onIntent(it.action) || {}); } catch (e) {} this.sPut({ intent: null }); }
+    try { window.addEventListener('storage', (e) => { if (e.key !== 'apta.v1') return; const S = this.sGet(); const p = this.hydrate ? this.hydrate(S) : {};
+      const it2 = S.intent; let q = {}; if (it2 && it2.board === this.boardName() && this.onIntent) { q = this.onIntent(it2.action) || {}; this.sPut({ intent: null }); }
+      this._skipPersist = true; this.setState({ ...p, ...q, _sv: Date.now() }); }); } catch (e) {}
+    try { clearInterval(this._remT); this._remT = setInterval(() => this.checkRem(), 4000); } catch (e) {}
+  }
+  intentTo(board, action) { return () => { this.sPut({ intent: { board, action, at: Date.now() } }); }; }
+  persistNow() {
+    if (!this.dehydrate) return; if (this._skipPersist) { this._skipPersist = false; this._lastP = null; }
+    let patch; try { patch = this.dehydrate(this.state, this.sGet()); } catch (e) { return; }
+    if (!patch) return; const j = JSON.stringify(patch); if (j === this._lastP) return; this._lastP = j;
+    const cur = this.sGet(); const changed = Object.keys(patch).some(k => JSON.stringify(cur[k]) !== JSON.stringify(patch[k])); if (changed) this.sPut(patch);
+  }
+  sTrash(item) { const S = this.sGet(); const t = (S.trash || []).filter(x => x.id !== item.id); this.sPut({ trash: [{ ...item, at: Date.now() }].concat(t).slice(0, 40) }); }
+  remSet(id, title, at, kind) { const S = this.sGet(); const list = (S.rem || []).filter(r => r.id !== id); if (at) list.push({ id, title, at, kind, fired: false });
+    this.sPut({ rem: list }); if (at) { try { if (typeof Notification !== 'undefined' && Notification.permission === 'default') Notification.requestPermission(); } catch (e) {} } }
+  checkRem() { const S = this.sGet(); const now = Date.now(); const due = (S.rem || []).find(r => !r.fired && r.at <= now); if (!due) return;
+    this.sPut({ rem: (S.rem || []).map(r => r.id === due.id ? { ...r, fired: true } : r) });
+    try { if (typeof Notification !== 'undefined' && Notification.permission === 'granted') { const o = { body: due.title, icon: 'icon-192.png', badge: 'icon-192.png', tag: due.id, vibrate: [120, 60, 120] }; if (navigator.serviceWorker && navigator.serviceWorker.controller) navigator.serviceWorker.ready.then(r => r.showNotification('Апта · еске салу', o)).catch(() => {}); else new Notification('Апта · еске салу', o); } } catch (e) {}
+    clearTimeout(this._bnT); this.setState({ banner: { title: due.title, kind: due.kind } }); this._bnT = setTimeout(() => this.setState({ banner: null }), 7000); }
+  srVals(accent) {
+    const st = this.state; const FG = "#F5F4F1", SUB = "rgba(245,244,241,0.72)", LINE = "rgba(255,255,255,0.1)", KEY = "rgba(255,255,255,0.22)", KEYALT = "rgba(255,255,255,0.1)", RING = "rgba(255,255,255,0.22)";
+    const IDX = [["task", "Магистратура сабағы", "Бүгін · 09:00", "Dark.dc.html"], ["task", "Ғылыми жетекшіге хат жазу", "Бүгін · 11:30", "Dark.dc.html"], ["task", "«Оқыту әдістеріндегі инновациялар» эссесі", "Бүгін · 15:00", "Dark.dc.html"], ["task", "Гитара — кавер жаттығуы", "Бүгін · 19:00", "Dark.dc.html"], ["task", "Апта дизайнын жалғастыру", "Бүгін", "Dark.dc.html"], ["task", "Пинтерестке реф жинау", "Бүгін", "Dark.dc.html"], ["task", "Кітапханаға бару", "Ертең · 10:00", "Dark.dc.html"], ["task", "Табулатура жазу", "Ертең · 16:00", "Dark.dc.html"], ["task", "Эссені қайта оқу", "Ертең", "Dark.dc.html"], ["task", "Ғылыми семинар", "25.11 · 15:00", "Dark.dc.html"], ["task", "Эссені тапсыру", "26.11 · 09:00", "Dark.dc.html"], ["task", "Апталық жоспар құру", "28.11", "Dark.dc.html"], ["task", "Ашық сабаққа дайындық", "02.12 · 12:00", "Dark.dc.html"], ["habit", "Су", "Күніне 8 рет", "CalHabitsDark.dc.html"], ["habit", "Домбыра", "Күн сайын · 12 күндік серия", "CalHabitsDark.dc.html"], ["habit", "Кітап", "Күн сайын", "CalHabitsDark.dc.html"], ["habit", "Телефонсыз", "Күн сайын", "CalHabitsDark.dc.html"], ["habit", "Гитара", "Күн сайын", "CalHabitsDark.dc.html"], ["habit", "Ерте тұру", "Күн сайын", "CalHabitsDark.dc.html"], ["habit", "Спорт", "Дс, Ср, Жм", "CalHabitsDark.dc.html"], ["fin", "Түскі ас", "Тамақ · −2 500 ₸ · бүгін", "FinDark.dc.html"], ["fin", "Автобус", "Жол · −200 ₸ · бүгін", "FinDark.dc.html"], ["fin", "Кофе", "Тамақ · −900 ₸ · бүгін", "FinDark.dc.html"], ["fin", "Кітап — «Дизайн негіздері»", "Оқу · −4 900 ₸ · кеше", "FinDark.dc.html"], ["fin", "Стипендия", "Кіріс · +40 000 ₸ · кеше", "FinDark.dc.html"], ["fin", "Кино", "Ойын-сауық · −2 600 ₸ · кеше", "FinDark.dc.html"], ["fin", "Талдау", "Қаржы · аналитика, диаграммалар", "FinDark.dc.html"], ["note", "Апта идеялары", "Идеялар · Қосымшаға қосатындар, виджет, апталық есеп", "NotesDark.dc.html"], ["note", "Ән — жоба", "Музыка · Түнгі қала, терезеде бір шам", "NotesDark.dc.html"], ["note", "Эссе жоспары", "Оқу · Жобалық оқыту, комикс арқылы сабақ", "NotesDark.dc.html"], ["note", "Сатып алу", "Пенал, лампа, тышқанға кілемше, ноутбукке подставка", "NotesDark.dc.html"], ["note", "Стендап — тақырыптар", "Автобустағы әңгімелер, магистратура", "NotesDark.dc.html"], ["note", "Бөлме жоспары", "Сызба · үстелді терезеге жақындату", "NotesDark.dc.html"], ["note", "Оқитын кітаптар", "Оқу · «Абай жолы», типографика негіздері", "NotesDark.dc.html"], ["note", "Оқу", "Папка", "NotesDark.dc.html"], ["note", "Музыка", "Папка", "NotesDark.dc.html"], ["note", "Идеялар", "Папка", "NotesDark.dc.html"], ["diary", "22 қараша", "Сабақ жақсы өтті. Кешке домбырада жаңа күй үйрендім", "NotesDiaryDark.dc.html"], ["diary", "21 қараша", "Ата-анамның үйінде болдым. Інімнің сабағына көмектестім", "NotesDiaryDark.dc.html"], ["diary", "19 қараша", "Шаршадым, бірақ эссенің жоспары дайын", "NotesDiaryDark.dc.html"], ["map", "Апта қосымшасы", "Тапсырмалар, әдеттер, қаржы, жазбалар, күнделік, кіріс, шығын", "NotesMap.dc.html"], ["map", "Табыс жоспары", "Табулатура, тоқыма, дизайн, сату", "NotesMap.dc.html"], ["set", "Тақырып", "Профиль · ашық, қараңғы, жүйе", "ProfDark.dc.html"], ["set", "Акцент түсі", "Профиль · лайм, қызғылт сары, күлгін", "ProfDark.dc.html"], ["set", "Хабарламалар", "Профиль · еске салу", "ProfDark.dc.html"], ["set", "Күнделікке шақыру", "Профиль · күн сайын 21:00", "ProfDark.dc.html"], ["set", "Күнделік құлпы", "Профиль · Face ID", "ProfDark.dc.html"], ["set", "Апта басы", "Профиль · дүйсенбі", "ProfDark.dc.html"], ["set", "Тіл", "Профиль · қазақша", "ProfDark.dc.html"]];
+    const SS = this.sGet(); const EX = [];
+    (((SS.notes || {}).notes) || []).filter(n => n.kind === 'note' && n.title).forEach(n => EX.push(['note', n.title, 'Жазба', "NotesDark.dc.html"]));
+    (((SS.notes || {}).maps) || []).forEach(m => { const r = (m.nodes || []).find(x => !x.p); if (r && r.text) EX.push(['map', r.text, (m.nodes || []).length + ' ой', "NotesMap.dc.html"]); });
+    (((SS.fin || {}).tx) || []).forEach(x => EX.push(['fin', x.title, (x.v > 0 ? '+' : '−') + Math.abs(x.v) + ' ₸', "FinDark.dc.html"]));
+    (((SS.tasks || {}).extra) || []).filter(x => x.title).forEach(x => EX.push(['task', x.title, 'Тапсырма', "Dark.dc.html"]));
+    (((SS.habits || {}).list) || []).forEach(h => EX.push(['habit', h.name, 'Әдет', "CalHabitsDark.dc.html"]));
+    const ALL = IDX.concat(EX.filter(e => !IDX.some(i => i[0] === e[0] && i[1] === e[1])));
+    const GROUPS = [["task", "Тапсырмалар"], ["habit", "Әдеттер"], ["fin", "Қаржы"], ["note", "Жазбалар"], ["diary", "Күнделік"], ["map", "Майндмэп"], ["set", "Баптаулар"]];
+    const q = (st.srQ || '').trim().toLocaleLowerCase('kk');
+    const scope = st.srScope || null;
+    const hits = ALL.filter(it => (!scope || it[0] === scope) && (!q || (it[1] + ' ' + it[2]).toLocaleLowerCase('kk').includes(q)));
+    const showAll = !!scope || !!q;
+    const groups = showAll ? GROUPS.map(([g, label]) => { const its = hits.filter(h => h[0] === g); return { label, count: String(its.length), items: its.map((h, i) => ({ title: h[1], sub: h[2], href: h[3],
+      style: 'display: flex; align-items: center; gap: 12px; min-height: 60px; box-sizing: border-box; padding: 10px 16px 10px 18px; text-decoration: none; color: ' + FG + ';' + (i ? ' border-top: 0.5px solid ' + LINE + ';' : '') })) }; }).filter(g => g.items.length) : [];
+    const typeKey = (ch) => { const S = this.state; const v = S.srQ || '';
+      if (ch === '⌫') return this.setState({ srQ: v.slice(0, -1) });
+      if (ch === '⇧') return this.setState({ srShift: !S.srShift });
+      if (ch === 'Табу') return this.setState({ srKbOn: false });
+      if (ch === '123') return this.setState({ srMode: 'num' });
+      if (ch === 'АБВ') return this.setState({ srMode: 'abc' });
+      const c = ch === 'space' ? ' ' : (S.srShift ? ch.toUpperCase() : ch); this.setState({ srQ: v + c, srShift: false }); };
+    const KB = st.srMode === 'num' ? [['1','2','3','4','5','6','7','8','9','0'], ['-','/',':',';','(',')','₸','&','@','"'], ['#','%','+','=','*','.',',','?','!','⌫'], ['АБВ','space','Табу']]
+      : [['ә','і','ң','ғ','ү','ұ','қ','ө','һ'], ['й','ц','у','к','е','н','г','ш','щ','з','х'], ['ф','ы','в','а','п','р','о','л','д','ж','э'], ['⇧','я','ч','с','м','и','т','ь','б','ю','⌫'], ['123','space','Табу']];
+    const SP = ['⇧','⌫','123','АБВ','Табу'];
+    const keyBase = 'height: 42px; border: none; border-radius: 8px; font-family: inherit; font-size: 18px; color: ' + FG + '; box-shadow: 0 1px 0 rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; padding: 0;';
+    const rows = KB.map(r => ({ keys: r.map(ch => { const sp = SP.includes(ch);
+      const w = ch === 'space' ? 'flex: 1 1 auto;' : (ch === 'Табу' ? 'width: 88px;' : (sp ? 'width: 42px;' : (st.srMode === 'num' ? 'width: 32px;' : 'width: 29px;')));
+      const bg = ch === 'Табу' ? 'background: ' + accent + '; color: var(--onacc, #111111); font-size: 15px; font-weight: 600;' : (sp ? 'background: ' + KEYALT + '; font-size: 15px;' : 'background: ' + KEY + ';');
+      return { t: ch === 'space' ? 'бос орын' : (st.srShift && ch.length === 1 && !sp ? ch.toUpperCase() : ch), label: ch === 'space' ? 'бос орын' : ch, style: keyBase + w + bg, press: () => typeKey(ch) }; }) }));
+    const kbOn = st.srKbOn !== false;
+    this.persistNow();
+    return {
+      rootVars: '--onacc: ' + this.onAccent(accent) + ';',
+      ...(() => { const P = this.sGet().profile || {}; const av = P.avatar; const ini = ((P.name || 'Мирас')[0] || 'М').toUpperCase();
+        return { avLetter: av ? '' : ini, avBtn: av ? "background: url('" + av + "') center / cover no-repeat; border: none; color: transparent;" : '' }; })(),
+      bnOn: !!this.state.banner, bnTitle: this.state.banner ? this.state.banner.title : '', bnKind: this.state.banner && this.state.banner.kind === 'task' ? 'Тапсырма' : 'Жазба',
+      bnClose: () => { clearTimeout(this._bnT); this.setState({ banner: null }); },
+      goNewTask: this.intentTo("Dark.dc.html", 'newTask'), goNewHabit: this.intentTo("Dark.dc.html", 'newHabit'),
+      goNewExpense: this.intentTo("FinDark.dc.html", 'newExpense'), goNewNote: this.intentTo("NotesDark.dc.html", 'newNote'),
+      srOpen: !!st.srOn, srOpenFn: () => this.setState({ srOn: true, srQ: '', srScope: null, srKbOn: true, srMode: 'abc', srShift: false }),
+      srClose: () => this.setState({ srOn: false }), srFocus: () => this.setState({ srKbOn: true }), srClear: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ srQ: '', srKbOn: true }); },
+      srQ: st.srQ || '', srQShown: st.srQ || (kbOn ? '' : 'Іздеу'), srQStyle: st.srQ ? '' : 'opacity: 0.45;', srCaret: kbOn, srHasQ: !!st.srQ,
+      srScopes: [[null, 'Барлығы']].concat(GROUPS).map(([g, label]) => { const sel = (st.srScope || null) === g; return { label, sel: sel ? 'true' : 'false', pick: () => this.setState({ srScope: g }),
+        style: 'height: 34px; padding: 0 12px; border-radius: 17px; font-size: 13px; font-weight: 500; ' + (sel ? 'border: none; background: ' + accent + '; color: var(--onacc, #111111);' : 'border: 1px solid ' + RING + '; background: transparent; color: ' + FG + ';') }; }),
+      srGroups: groups, srEmpty: showAll && !groups.length, srHint: !showAll, srKb: kbOn, srRows: rows, srPadB: kbOn ? 300 : 40
+    };
+  }
+  constructor(props) {
+    super(props);
+    this.state = {
+      sel: 0, monthOpen: false, monthOff: 0, monthDir: 1, monthN: 0, weekN: 0, weekDir: 1, moved: {},
+      hl: [{ id: 'water', name: 'Су', target: 8 }, { id: 'dombyra', name: 'Домбыра', target: 1 }, { id: 'kitap', name: 'Кітап', target: 1 }, { id: 'phone', name: 'Телефонсыз', target: 1 }, { id: 'gitara', name: 'Гитара', target: 1 }, { id: 'ertu', name: 'Ерте тұру', target: 1 }, { id: 'sport', name: 'Спорт', target: 1, days: [0, 2, 4] }],
+      cnt: { 0: { water: 5, dombyra: 1, kitap: 1, ertu: 1 } }, hShake: {},
+      nhOpen: false, nhEdit: null, nhName: '', nhTarget: 1, nhD: [1,1,1,1,1,1,1],
+      done: { t0: true }, settled: { t0: true }, doneOrder: ['t0'], post: {}, extra: [],
+      menuOpen: false, habitsOpen: false, summaryOpen: false, sumView: null, doneExpanded: false,
+      toast: null, toastN: 0, drag: null, vdrag: null, anyOrd: [], del: {}, edits: {}, editId: null, editTitle: '', editTime: '', kbOpen: false, timeOpen: false, kbShift: false, kbField: 'title', kbMode: 'abc', editDesc: ''
+    };
+  }
+  hydrate(S) { const p = {}; const T = S.tasks;
+    if (T) { Object.assign(p, { done: T.done || {}, edits: T.edits || {}, del: T.del || {}, moved: T.moved || {}, extra: T.extra || [], anyOrd: T.anyOrd || [], post: T.post || {}, doneOrder: T.doneOrder || [], trem: T.trem || {} });
+      p.settled = Object.fromEntries(Object.keys(T.done || {}).filter(k => T.done[k]).map(k => [k, true])); }
+    const H = S.habits; if (H) { if (H.list) p.hl = H.list.map(h => ({ ...h }));
+      if (H.log) { const cnt = {}; Object.keys(H.log).forEach(hid => Object.keys(H.log[hid]).forEach(d => { (cnt[d] = cnt[d] || {})[hid] = H.log[hid][d]; })); p.cnt = cnt; } }
+    return p; }
+  dehydrate(st, S) { const H = S.habits || {}; const log = JSON.parse(JSON.stringify(H.log || {}));
+    Object.keys(st.cnt || {}).forEach(d => Object.keys(st.cnt[d] || {}).forEach(hid => { (log[hid] = log[hid] || {})[d] = st.cnt[d][hid]; }));
+    return { tasks: { done: st.done, edits: st.edits, del: st.del, moved: st.moved, extra: st.extra, anyOrd: st.anyOrd, post: st.post, doneOrder: st.doneOrder, trem: st.trem || {} }, habits: { list: st.hl, log } }; }
+  onIntent(a) { const S = this.state;
+    if (a === 'newTask') { const id = 'n' + Date.now(); return { extra: S.extra.concat({ id, title: '', d: S.sel }), editId: id, editTitle: '', editRem: null, editDesc: '', editTime: '', kbOpen: true, kbField: 'title', kbMode: 'abc', timeOpen: false, menuOpen: false }; }
+    if (a === 'newHabit') return { nhOpen: true, nhEdit: null, nhName: '', nhTarget: 1, nhD: [1,1,1,1,1,1,1], kbOpen: true, kbField: 'nh', kbMode: 'abc', menuOpen: false };
+    return {}; }
+  componentWillUnmount() { clearTimeout(this._tt); clearTimeout(this._ft); this.vStopAuto(); }
+  vDragUpdate() { const a = this._vArm; if (!a) return; const sc = this._root ? this._root.scrollTop - a.sc0 : 0; this.setState({ vdrag: { id: a.id, grp: a.grp, h: a.h, dy: (a.cy - a.y0) / a.k + sc } }); }
+  vAuto() { if (this._vAs || !this._root || typeof requestAnimationFrame !== 'function') return; this._vAs = true;
+    const step = () => { const a = this._vArm; if (!this._vAs || !a) { this._vAs = false; return; } const el = this._root; const r = el.getBoundingClientRect(); const y = (a.cy - r.top) / a.k, H = el.offsetHeight || 844;
+      let v = 0; if (y < 170) v = -Math.min(16, (170 - y) / 5 + 2); else if (y > H - 150) v = Math.min(16, (y - (H - 150)) / 5 + 2);
+      if (v) { const b = el.scrollTop; el.scrollTop = Math.max(0, Math.min(el.scrollHeight - el.clientHeight, b + v)); if (el.scrollTop !== b) this.vDragUpdate(); }
+      this._vRaf = requestAnimationFrame(step); };
+    this._vRaf = requestAnimationFrame(step); }
+  vStopAuto() { this._vAs = false; if (typeof cancelAnimationFrame === 'function') cancelAnimationFrame(this._vRaf); }
+  measure() {
+    const m = {};
+    try { (this._root || document).querySelectorAll('[data-flip]').forEach(el => { m[el.getAttribute('data-flip')] = el.getBoundingClientRect().top; }); } catch (e) {}
+    return m;
+  }
+  flip(before) {
+    try {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      (this._root || document).querySelectorAll('[data-flip]').forEach(el => {
+        const id = el.getAttribute('data-flip');
+        const now = el.getBoundingClientRect().top;
+        if (!(id in before)) {
+          el.animate([{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.2,.8,.2,1)', delay: 160, fill: 'backwards' });
+          return;
+        }
+        const dy = before[id] - now;
+        if (Math.abs(dy) < 1) return;
+        el.animate([{ transform: 'translateY(' + dy + 'px)' }, { transform: 'none' }], { duration: 560, easing: 'cubic-bezier(.22,.9,.24,1)' });
+      });
+    } catch (e) {}
+  }
+  moveState(patch) {
+    this._pf = this.measure();
+    this.setState(patch);
+    clearTimeout(this._ft);
+    this._ft = setTimeout(() => this.flushFlip(), 0);
+  }
+  flushFlip() { if (!this._pf) return; const b = this._pf; this._pf = null; this.flip(b); }
+  componentDidUpdate() { this.flushFlip(); }
+
+  showToast(toast, patch) {
+    clearTimeout(this._tt);
+    const S = this.state;
+    const settled = { ...S.settled, ...(patch && patch.settled) };
+    if (S.toast && S.toast.kind === 'done' && (!toast || S.toast.id !== toast.id)) settled[S.toast.id] = true;
+    this.moveState({ ...patch, settled, toast, toastN: S.toastN + 1 });
+    this._tt = setTimeout(() => {
+      const cur = this.state.toast;
+      if (!cur) return;
+      const p = { toast: null };
+      if (cur.kind === 'done') p.settled = { ...this.state.settled, [cur.id]: true };
+      this.moveState(p);
+    }, 2800);
+  }
+
+  renderVals() {
+    this.sBoot();
+    const C = {"fg": "#F5F4F1", "sub": "rgba(245,244,241,0.72)", "strike": "rgba(245,244,241,0.62)", "ring": "rgba(245,244,241,0.38)", "late": "#FF6B6B", "glass": "background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)", "glassStrong": "background: rgba(255,255,255,0.15); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)", "orange": "background: rgba(28,9,4,0.78); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 1px rgba(242,104,58,0.55), inset 0 12px 22px -8px rgba(242,104,58,0.9), inset 0 0 16px rgba(242,104,58,0.55), 0 10px 24px rgba(0,0,0,0.3); color: #FFFFFF", "edge": "0 0 0 0.5px rgba(0,0,0,0.3)", "oFg": "#FFFFFF", "oSub": "rgba(255,255,255,0.74)", "oSeg": "rgba(255,255,255,0.3)", "oRing": "rgba(255,255,255,0.34)", "oBar": "rgba(255,255,255,0.22)", "wglass": "background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none", "cell": "position: relative; display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 10px; min-height: 70px; box-sizing: border-box; padding: 11px 4px 10px; border-radius: 14px; color: #FFFFFF; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none", "doneRow": "background: rgba(0,0,0,0.38); border: 0.5px solid rgba(255,255,255,0.05)", "key": "rgba(255,255,255,0.22)", "keyAlt": "rgba(255,255,255,0.1)"};
+    const accent = this.accentNow();
+    const st = this.state;
+    const ACC = 'background: ' + accent + '; box-shadow: ' + C.edge + ';';
+
+    const G = {
+      '0': ['.###.','#...#','#..##','#.#.#','##..#','#...#','.###.'],
+      '1': ['..#..','.##..','..#..','..#..','..#..','..#..','.###.'],
+      '2': ['.###.','#...#','....#','...#.','..#..','.#...','#####'],
+      '3': ['#####','...#.','..#..','...#.','....#','#...#','.###.'],
+      '4': ['...#.','..##.','.#.#.','#..#.','#####','...#.','...#.'],
+      '5': ['#####','#....','####.','....#','....#','#...#','.###.'],
+      '6': ['..##.','.#...','#....','####.','#...#','#...#','.###.'],
+      '7': ['#####','....#','...#.','..#..','.#...','.#...','.#...'],
+      '8': ['.###.','#...#','#...#','.###.','#...#','#...#','.###.'],
+      '9': ['.###.','#...#','#...#','.####','....#','...#.','.##..'],
+      '/': ['....#','...#.','...#.','..#..','.#...','.#...','#....'],
+      'Б': ['####.','#....','#....','####.','#...#','#...#','####.'],
+      'ү': ['.....','.....','#...#','.#.#.','..#..','..#..','..#..'],
+      'г': ['.....','.....','#####','#....','#....','#....','#....'],
+      'і': ['..#..','.....','.##..','..#..','..#..','..#..','.###.'],
+      'н': ['.....','.....','#...#','#...#','#####','#...#','#...#'],
+      'Е': ['#####','#....','#....','####.','#....','#....','#####'],
+      'А': ['.###.','#...#','#...#','#####','#...#','#...#','#...#'],
+      'К': ['#...#','#..#.','#.#..','##...','#.#..','#..#.','#...#'],
+      'р': ['.....','.....','####.','#...#','####.','#....','#....'],
+      'т': ['.....','.....','#####','..#..','..#..','..#..','..#..'],
+      'е': ['.....','.....','.###.','#...#','#####','#....','.###.'],
+      'ң': ['.....','.....','#..#.','#..#.','####.','#..#.','#..##'],
+      'ғ': ['.....','.....','#####','#....','###..','#....','#....'],
+      'ы': ['.....','.....','#...#','#...#','###.#','#.#.#','###.#'],
+      'к': ['.....','.....','#..#.','#.#..','##...','#.#..','#..#.'],
+      'з': ['.....','.....','.###.','....#','..##.','....#','.###.'],
+      'б': ['..##.','.#...','#....','####.','#...#','#...#','.###.'],
+      '.': ['.....','.....','.....','.....','.....','.##..','.##..'],
+      ' ': ['.....','.....','.....','.....','.....','.....','.....']
+    };
+    const dotText = (str, pitch, d, color, dimFrom, mode) => {
+      const dots = [];
+      let n = 0;
+      const chars = [...str];
+      chars.forEach((ch, ci) => {
+        const g = G[ch]; if (!g) return;
+        g.forEach((row, r) => [...row].forEach((v, c) => {
+          if (v !== '#') return;
+          const x = (ci * 6 + c) * pitch, y = r * pitch;
+          const op = dimFrom != null && ci >= dimFrom ? 0.35 : 1;
+          let anim = '';
+          if (mode === 'in') anim = ' animation: aptaFade 0.5s ease both; animation-delay: ' + (n * 9) + 'ms;';
+          if (mode === 'wave') anim = ' animation: aptaWave 0.9s cubic-bezier(.3,.7,.3,1) both; animation-delay: ' + ((ci * 6 + c) * 28 + r * 10) + 'ms;';
+          n++;
+          dots.push({ style: 'position: absolute; left: ' + x + 'px; top: ' + y + 'px; width: ' + d + 'px; height: ' + d + 'px; border-radius: 50%; background: ' + color + '; opacity: ' + op + ';' + anim });
+        }));
+      });
+      return { dots, box: 'position: relative; display: block; width: ' + ((chars.length * 6 - 1) * pitch) + 'px; height: ' + (7 * pitch) + 'px;' };
+    };
+
+    /* ---------- dates ---------- */
+    const DAY = 86400000;
+    const T0 = new Date(2026, 10, 23);
+    const dOf = (off) => new Date(2026, 10, 23 + off);
+    const offOf = (d) => Math.round((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - T0) / DAY);
+    const MN = ['Қаңтар','Ақпан','Наурыз','Сәуір','Мамыр','Маусым','Шілде','Тамыз','Қыркүйек','Қазан','Қараша','Желтоқсан'];
+    const WD = ['Жексенбі','Дүйсенбі','Сейсенбі','Сәрсенбі','Бейсенбі','Жұма','Сенбі'];
+    const WS = ['Дс','Сс','Ср','Бс','Жм','Сб','Жс'];
+    const sel = st.sel;
+    const selD = dOf(sel);
+    const pad = (n) => String(n).padStart(2, '0');
+    const titleText = sel === 0 ? 'Бүгін' : sel === 1 ? 'Ертең' : sel === 2 ? 'Арғы күні' : pad(selD.getDate()) + '.' + pad(selD.getMonth() + 1);
+    const dateLine = WD[selD.getDay()] + ' · ' + selD.getDate() + ' ' + MN[selD.getMonth()].toLowerCase();
+    const BASE = ([
+      { id: 't0', time: '09:00', title: 'Магистратура сабағы' },
+      { id: 'tl', time: '11:00', title: 'Ғылыми жетекшіге хат жазу' },
+      { id: 't1', time: '14:00', title: '«Оқыту әдістеріндегі инновациялар» эссесі', desc: '500 сөз, кіріспе мен қорытынды' },
+      { id: 't2', time: '18:30', title: 'Гитара — кавер жаттығуы' },
+      { id: 'a0', title: 'Апта дизайнын жалғастыру' },
+      { id: 'a1', title: 'Пинтерестке реф жинау' },
+      { id: 'b0', d: 1, time: '10:00', title: 'Кітапханаға бару' },
+      { id: 'b1', d: 1, time: '16:00', title: 'Табулатура жазу' },
+      { id: 'b2', d: 1, title: 'Эссені қайта оқу' },
+      { id: 'c0', d: 2, time: '15:00', title: 'Ғылыми семинар' },
+      { id: 'e0', d: 3, time: '09:00', title: 'Эссені тапсыру' },
+      { id: 'f0', d: 5, title: 'Апталық жоспар құру' },
+      { id: 'g0', d: 9, time: '12:00', title: 'Ашық сабаққа дайындық' }
+    ]).concat(st.extra).filter(x => !st.del[x.id]).map(x => st.edits[x.id] ? { ...x, ...st.edits[x.id] } : x);
+    const dayOf = (x) => (st.moved[x.id] != null ? st.moved[x.id] : (x.d || 0));
+    const busy = {};
+    BASE.forEach(x => { if (!st.done[x.id]) busy[dayOf(x)] = (busy[dayOf(x)] || 0) + 1; });
+    const pickDay = (off) => () => { if (this._stripFired) return; this.moveState({ sel: off, monthOpen: false, doneExpanded: false }); };
+    const dayStyle = (off, base) => base + (off === sel ? ' ' + C.glassStrong : ' border: none; background: transparent;');
+    const marker = (off) => 'width: 4px; height: 4px; border-radius: 2px;' + (off === 0 ? ' ' + ACC : (busy[off] ? ' background: ' + C.fg + '; opacity: 0.35;' : ' background: transparent;'));
+    const wStart = sel - ((selD.getDay() + 6) % 7);
+    const days = WS.map((n, i) => {
+      const off = wStart + i, d = dOf(off);
+      return {
+        name: n, num: String(d.getDate()), pressed: off === sel ? 'true' : 'false',
+        label: n + ', ' + d.getDate() + ' ' + MN[d.getMonth()].toLowerCase() + (off === 0 ? ', бүгін' : '') + (busy[off] ? ', ' + busy[off] + ' тапсырма' : ''),
+        style: dayStyle(off, 'display: flex; flex-direction: column; align-items: center; gap: 6px; height: 64px; justify-content: center; border-radius: 30px; color: ' + C.fg + ';'),
+        numStyle: 'font-size: 15px; font-weight: ' + (off === sel || off === 0 ? '600' : '400') + ';',
+        dot: marker(off), pick: pickDay(off)
+      };
+    });
+    const mFirst = new Date(2026, 10 + st.monthOff, 1);
+    const mLead = (mFirst.getDay() + 6) % 7;
+    const mDays = new Date(mFirst.getFullYear(), mFirst.getMonth() + 1, 0).getDate();
+    const monthCells = [];
+    for (let i = 0; i < mLead; i++) monthCells.push({ num: '', label: '', style: 'visibility: hidden; height: 44px; border: none;', dot: '', pick: () => {} });
+    for (let dn = 1; dn <= mDays; dn++) {
+      const off = offOf(new Date(mFirst.getFullYear(), mFirst.getMonth(), dn));
+      monthCells.push({
+        num: String(dn), label: dn + ' ' + MN[mFirst.getMonth()].toLowerCase() + (off === 0 ? ', бүгін' : '') + (busy[off] ? ', ' + busy[off] + ' тапсырма' : ''),
+        style: dayStyle(off, 'display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; height: 44px; border-radius: 14px; font-family: inherit; font-size: 15px; font-weight: ' + (off === 0 ? 600 : 400) + '; color: ' + C.fg + '; opacity: ' + (off < 0 ? 0.45 : 1) + ';'),
+        dot: marker(off), pick: pickDay(off)
+      });
+    }
+    const slideName = (dir, n) => (dir > 0 ? 'aptaSlideL' : 'aptaSlideR') + (n % 2 ? 'A' : 'B');
+    const goMonth = (d) => this.setState({ monthOff: this.state.monthOff + d, monthDir: d, monthN: this.state.monthN + 1 });
+    const goWeek = (d) => this.moveState({ sel: this.state.sel + 7 * d, weekDir: d, weekN: this.state.weekN + 1 });
+    const strip = {
+      stripDown: (e) => { this._sd = { x: e.clientX, y: e.clientY, fired: false }; this._stripFired = false; },
+      stripMove: (e) => {
+        const g = this._sd; if (!g || g.fired) return;
+        const dx = e.clientX - g.x, dy = e.clientY - g.y;
+        const S = this.state;
+        if (Math.abs(dy) > 34 && Math.abs(dy) > Math.abs(dx)) {
+          if (dy > 0 && !S.monthOpen) { g.fired = true; this._stripFired = true; this.setState({ monthOpen: true, monthOff: (dOf(S.sel).getFullYear() - 2026) * 12 + dOf(S.sel).getMonth() - 10 }); }
+          else if (dy < 0 && S.monthOpen) { g.fired = true; this._stripFired = true; this.setState({ monthOpen: false }); }
+        } else if (Math.abs(dx) > 46 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+          g.fired = true; this._stripFired = true;
+          if (S.monthOpen) goMonth(dx < 0 ? 1 : -1); else goWeek(dx < 0 ? 1 : -1);
+        }
+      },
+      stripUp: () => { this._sd = null; setTimeout(() => { this._stripFired = false; }, 60); }
+    };
+
+    /* ---------- habits ---------- */
+    const ring22 = 'width: 22px; height: 22px; border-radius: 11px; box-sizing: border-box; display: flex; align-items: center; justify-content: center;';
+    const ON = ring22 + ' ' + ACC + ' animation: aptaPop 0.35s ease;';
+    const OFF = ring22 + ' border: 2px solid ' + C.oRing + '; transition: border-color 0.3s ease;';
+    const future = sel > 0;
+    const cntDay = st.cnt[sel] || {};
+    const RC = 2 * Math.PI * 9.5;
+    const habitVM = (h) => {
+      const n = cntDay[h.id] || 0, T = h.target, full = n >= T;
+      const vm = {
+        name: h.name, pressed: full ? 'true' : 'false',
+        aria: h.name + (T > 1 ? ': ' + n + ' / ' + T : (full ? ': орындалды' : '')) + (future ? ' (болашақ күн)' : '') + '. Өзгерту үшін басып тұрыңыз',
+        cellStyle: C.cell + (future ? '; opacity: 0.5' : ''),
+        showOn: full, showOff: !full && T === 1, showSeg: !full && T > 1, onStyle: ON, offStyle: OFF,
+        wrap: 'display: flex;' + (st.hShake[h.id] ? ' animation: ' + (st.hShake[h.id] % 2 ? 'aptaShakeA' : 'aptaShakeB') + ' 0.4s ease;' : ''),
+        da: (Math.max(RC / Math.max(T, 1) - 3 - 2.2, 0.5)).toFixed(2) + ' ' + RC.toFixed(2),
+        lpd: () => { clearTimeout(this._hlp); this._hlpFired = false; this._hlp = setTimeout(() => { this._hlpFired = true; this.setState({ habitsOpen: false, nhOpen: true, nhEdit: h.id, nhName: h.name, nhTarget: h.target, nhD: [0,1,2,3,4,5,6].map(x => !h.days || h.days.includes(x) ? 1 : 0), kbOpen: false }); }, 480); },
+        lpu: () => { clearTimeout(this._hlp); },
+        noCtx: (e) => { if (e && e.preventDefault) e.preventDefault(); },
+        tap: () => {
+          if (this._hlpFired) { this._hlpFired = false; return; }
+          if (future) return;
+          const S = this.state, cur = (S.cnt[S.sel] || {})[h.id] || 0;
+          let next;
+          if (T === 1) next = cur ? 0 : 1;
+          else { if (cur >= T) { this.setState({ hShake: { ...S.hShake, [h.id]: (S.hShake[h.id] || 0) + 1 } }); return; } next = cur + 1; }
+          const text = T === 1 ? h.name + (next ? ' — белгіленді' : ' — алынды') : h.name + ' +1 · ' + next + '/' + T;
+          this.showToast({ kind: 'habit', id: h.id, day: S.sel, prev: cur, text }, { cnt: { ...S.cnt, [S.sel]: { ...(S.cnt[S.sel] || {}), [h.id]: next } } });
+        }
+      };
+      for (let i = 0; i < 12; i++) {
+        vm['t' + i] = 'rotate(' + (-90 + i * 360 / Math.max(T, 1) + (5.2 / RC) * 180).toFixed(2) + ' 11 11)';
+        vm['s' + i] = i < T ? 'stroke: ' + (i < n ? accent : C.oSeg) + '; transition: stroke 0.35s ease;' : 'display: none;';
+      }
+      return vm;
+    };
+    const wdx = (selD.getDay() + 6) % 7;
+    const dayHl = st.hl.filter(h => !h.days || h.days.includes(wdx));
+    const allHabits = dayHl.map(habitVM);
+    const homeHabits = allHabits.slice(0, 4);
+    const habitsDone = dayHl.filter(h => (cntDay[h.id] || 0) >= h.target).length;
+    const nhDays = WS.map((n, i) => ({ n, label: n + (st.nhD[i] ? ', таңдалды' : ''), pressed: st.nhD[i] ? 'true' : 'false',
+      style: 'height: 40px; border-radius: 14px; font-family: inherit; font-size: 13px; font-weight: ' + (st.nhD[i] ? 600 : 400) + '; color: ' + (st.nhD[i] ? '#111111' : C.oFg) + '; border: ' + (st.nhD[i] ? 'none' : '1px solid ' + C.oRing) + '; background: ' + (st.nhD[i] ? accent : 'transparent') + '; transition: background 0.2s ease;',
+      toggle: () => { const d = this.state.nhD.slice(); d[i] = d[i] ? 0 : 1; if (d.some(Boolean)) this.setState({ nhD: d }); } }));
+    const nSel = st.nhD.filter(Boolean).length;
+    const nhDaysText = nSel === 7 ? 'Күнде' : (nSel === 5 && st.nhD.slice(0, 5).every(Boolean) ? 'Жұмыс күндері' : nSel + ' күн');
+
+    /* ---------- tasks ---------- */
+    const NOW = '13:20';
+    const SRC = BASE.filter(x => dayOf(x) === sel);
+    const gone = (x) => !!st.done[x.id] && !!st.settled[x.id];
+
+    const setDone = (id, v, title) => {
+      const S = this.state;
+      if (v) {
+        this.showToast({ kind: 'done', id, text: 'Тапсырма орындалды' },
+          { done: { ...S.done, [id]: true }, settled: { [id]: false }, doneOrder: S.doneOrder.filter(x => x !== id).concat(id) });
+      } else {
+        const toast = S.toast && S.toast.id === id ? null : S.toast;
+        if (!toast) clearTimeout(this._tt);
+        this.moveState({ done: { ...S.done, [id]: false }, settled: { ...S.settled, [id]: false }, doneOrder: S.doneOrder.filter(x => x !== id), toast });
+      }
+    };
+    const postpone = (id) => { const x = BASE.find(y => y.id === id); const from = x ? dayOf(x) : sel; this.showToast({ kind: 'post', id, prev: this.state.moved[id], text: 'Ертеңге қалдырылды' }, { moved: { ...this.state.moved, [id]: from + 1 }, post: { ...this.state.post, [id]: true }, editId: null, kbOpen: false }); };
+    const remove = (id) => { const x = BASE.find(y => y.id === id); this.remSet('task:' + id, null); this.sTrash({ id: 'task:' + id, title: x ? x.title || 'Тапсырма' : 'Тапсырма', kind: 'Тапсырма', type: 'task', data: { id } }); this.showToast({ kind: 'del', id, text: 'Тапсырма өшірілді' }, { del: { ...this.state.del, [id]: true }, editId: null }); };
+    const openEdit = (x) => this.setState({ editId: x.id, editTitle: x.title, editDesc: x.desc || '', editTime: x.time || '', editRem: (this.state.trem || {})[x.id] || null, kbMode: 'abc', kbOpen: false, timeOpen: false });
+
+    const late = (x) => sel === 0 && x.time && x.time < NOW && !st.done[x.id];
+    const timedSrc = SRC.filter(x => x.time && !gone(x)).sort((a, b) => a.time.localeCompare(b.time));
+    const nextIdx = sel === 0 ? timedSrc.findIndex(x => x.time > NOW && !st.done[x.id]) : -1;
+
+    const anySrc = SRC.filter(x => !x.time && !gone(x)).sort((a, b) => { const ia = st.anyOrd.indexOf(a.id), ib = st.anyOrd.indexOf(b.id); return (ia < 0 ? 1e3 : ia) - (ib < 0 ? 1e3 : ib); });
+    const VD = st.vdrag; const grpIds = { timed: timedSrc.map(x => x.id), any: anySrc.map(x => x.id) };
+    const vFrom = VD ? grpIds[VD.grp].indexOf(VD.id) : -1;
+    const vTo = VD ? Math.max(0, Math.min(grpIds[VD.grp].length - 1, vFrom + Math.round(VD.dy / VD.h))) : -1;
+    this._vTo = vTo; this._vIds = VD ? grpIds[VD.grp] : [];
+    const VE = 'cubic-bezier(.2,.9,.3,1)';
+    const vCss = (id, grp, k) => { if (!VD) return { wrap: 'position: relative; border-radius: 30px;', row: ' translate: 0px 0px; scale: 1; transition-property: transform, translate, scale, opacity; transition-duration: 0.3s; transition-timing-function: ' + VE + ';' };
+      if (id === VD.id) return { wrap: 'position: relative; border-radius: 30px; z-index: 20;', row: ' translate: 0px ' + VD.dy.toFixed(1) + 'px; scale: 1.04; box-shadow: 0 22px 46px rgba(0,0,0,' + (C.light ? 0.2 : 0.5) + '), 0 0 0 2px ' + accent + '; transition: ' + (VD.settle ? 'translate 0.22s ' + VE + ', ' : '') + 'scale 0.2s ' + VE + ', box-shadow 0.2s ease;' };
+      let off = 0; if (grp === VD.grp) { if (vTo > vFrom && k > vFrom && k <= vTo) off = -VD.h; if (vTo < vFrom && k < vFrom && k >= vTo) off = VD.h; }
+      return { wrap: 'position: relative; border-radius: 30px;', row: ' translate: 0px ' + off + 'px; scale: 0.98; opacity: 0.85; transition: translate 0.3s ' + VE + ', scale 0.25s ' + VE + ', opacity 0.25s ease;' }; };
+    const mk = (x, big, inDone, k) => {
+      const id = x.id;
+      const done = !!st.done[id];
+      const isLate = !!late(x) && !inDone;
+      const dx = st.drag && st.drag.id === id ? st.drag.dx : 0;
+      const dragging = !!(st.drag && st.drag.id === id);
+      const pR = Math.min(Math.max(dx, 0) / 90, 1), pL = Math.min(Math.max(-dx, 0) / 90, 1);
+      const act = 'position: absolute; inset: 0; border-radius: 30px; display: flex; align-items: center; gap: 8px; padding: 0 20px; font-size: 13px; font-weight: 600;';
+      const grp = x.time ? 'timed' : 'any'; const vc = inDone ? { wrap: 'position: relative; border-radius: 30px;', row: '' } : vCss(id, grp, k);
+      return {
+        ...x, wrapStyle: vc.wrap, nowBefore: !!x.nowBefore, done, late: isLate, hasTime: !!x.time, hasDesc: !!x.desc, descStyle: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; color: ' + (big ? C.oSub : C.sub) + ';', plain: !big && !inDone, pressed: done ? 'true' : 'false',
+        label: done ? x.title + ': орындалды' : x.title + ': орындалды деп белгілеу',
+        toggle: (e) => { if (e && e.stopPropagation) e.stopPropagation(); if (this._moved) return; setDone(id, !done, x.title); },
+        open: () => { if (this._moved) return; openEdit(x); },
+        timeStyle: 'font-size: 11px; font-weight: 500; color: ' + (isLate ? C.late : (big ? C.oSub : C.sub)) + ';',
+        leftAct: act + ' justify-content: flex-start; color: #111111; background: ' + accent + '; opacity: ' + pR + ';',
+        rightAct: act + ' justify-content: flex-end; color: #FFFFFF; background: #E0643A; opacity: ' + pL + ';',
+        rowStyle: 'position: relative; display: flex; align-items: center; gap: 8px; min-height: 56px; box-sizing: border-box; padding: 8px 16px; border-radius: 30px; touch-action: pan-y; transform: translateX(' + dx + 'px); transition: ' + (dragging ? 'none' : 'transform 0.35s cubic-bezier(.2,.9,.3,1.1)') + '; ' + (inDone ? C.doneRow : (big ? C.orange : C.glass)) + ';' + vc.row.replace('transition-property: transform, translate, scale, opacity; transition-duration: 0.3s; transition-timing-function: ' + VE + ';', 'transition: transform 0.35s cubic-bezier(.2,.9,.3,1.1), translate 0.3s ' + VE + ', scale 0.25s ' + VE + ', opacity 0.25s ease;'),
+        titleStyle: 'flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13px; font-weight: 400; transition: color 0.3s ease;' + (done ? ' text-decoration: line-through; color: ' + C.strike + ';' : ' color: ' + (big ? C.oFg : C.fg) + ';'),
+        dotStyle: 'width: 24px; height: 24px; border-radius: 12px; box-sizing: border-box; display: flex; align-items: center; justify-content: center;' + (done ? ' ' + ACC + ' animation: aptaPop 0.35s ease;' : ' border: 1px solid ' + (isLate ? C.late : (big ? C.oRing : C.ring)) + ';'),
+        pd: (e) => { this._moved = false; this._drag = { id, x0: e.clientX, y0: e.clientY, active: false }; if (inDone) return;
+          const el = e.currentTarget; const wrap = el.closest ? el.closest('[data-flip]') : el; const r = el.getBoundingClientRect(); const kk = (r.width / (el.offsetWidth || r.width)) || 1; const pid = e.pointerId;
+          clearTimeout(this._vT); this._vT = setTimeout(() => { this._vT = null; this._drag = null; this._moved = true; try { el.setPointerCapture(pid); } catch (er) {}
+            this._vArm = { id, grp, k: kk, y0: e.clientY, cy: e.clientY, h: ((wrap && wrap.offsetHeight) || 56) + 8, sc0: this._root ? this._root.scrollTop : 0 }; this.vDragUpdate(); this.vAuto(); }, 420); },
+        pm: (e) => {
+          if (this._vArm && this._vArm.id === id) { this._vArm.cy = e.clientY; this.vDragUpdate(); return; }
+          const d = this._drag; if (!d || d.id !== id) return;
+          const ddx = e.clientX - d.x0, ddy = e.clientY - d.y0;
+          if (this._vT && Math.hypot(ddx, ddy) > 8) { clearTimeout(this._vT); this._vT = null; }
+          if (!d.active) {
+            if (Math.abs(ddx) > 10 && Math.abs(ddx) > Math.abs(ddy) * 1.3) { d.active = true; this._moved = true; try { e.currentTarget.setPointerCapture(e.pointerId); } catch (er) {} }
+            else if (Math.abs(ddy) > 10) { this._drag = null; return; }
+            else return;
+          }
+          this.setState({ drag: { id, dx: Math.max(-150, Math.min(done ? 0 : 150, ddx)) } });
+        },
+        pu: () => {
+          clearTimeout(this._vT); this._vT = null;
+          if (this._vArm && this._vArm.id === id) { const a = this._vArm; this._vArm = null; this.vStopAuto(); const ids = this._vIds.slice(); const from = ids.indexOf(id), to = this._vTo;
+            setTimeout(() => { this._moved = false; }, 60);
+            if (from < 0 || to < 0 || to === from) { this.setState({ vdrag: { ...this.state.vdrag, dy: 0, settle: true } }); setTimeout(() => this.setState({ vdrag: null }), 230); return; }
+            this.setState({ vdrag: { ...this.state.vdrag, dy: (to - from) * a.h, settle: true } });
+            setTimeout(() => { const S = this.state; const order = ids.slice(); order.splice(to, 0, order.splice(from, 1)[0]);
+              if (a.grp === 'timed') { const slots = ids.map(i2 => (BASE.find(y => y.id === i2) || {}).time).filter(Boolean).sort(); const ed = { ...S.edits };
+                order.forEach((i2, j) => { const cur = BASE.find(y => y.id === i2); if (cur && cur.time !== slots[j]) ed[i2] = { ...(ed[i2] || {}), time: slots[j] }; });
+                this.setState({ vdrag: null, edits: ed }); }
+              else this.setState({ vdrag: null, anyOrd: order });
+            }, 230);
+            return; }
+          const d = this._drag; this._drag = null;
+          const cur = this.state.drag && this.state.drag.id === id ? this.state.drag.dx : 0;
+          if (d && d.active) setTimeout(() => { this._moved = false; }, 50);
+          this.setState({ drag: null });
+          if (cur > 90 && !done) setDone(id, true, x.title);
+          else if (cur < -90) postpone(id);
+        },
+        pc: () => { clearTimeout(this._vT); this._vT = null; this._vArm = null; this.vStopAuto(); this._drag = null; this._moved = false; this.setState({ drag: null, vdrag: null }); }
+      };
+    };
+    const nowIdx = sel === 0 ? timedSrc.findIndex(x => x.time > NOW) : -1;
+    const timed = timedSrc.map((x, i) => mk({ ...x, nowBefore: i === nowIdx }, i === nextIdx, false, i));
+    const anytime = anySrc.map((x, i) => mk(x, false, false, i));
+    const doneAll = st.doneOrder.map(id => SRC.find(x => x.id === id)).filter(x => x && gone(x)).reverse();
+    const doneList = (st.doneExpanded ? doneAll : doneAll.slice(0, 3)).map((x, i) => mk(x, false, true, i));
+    const totalCount = SRC.length;
+    const doneCount = SRC.filter(x => st.done[x.id]).length;
+    const lateCount = SRC.filter(x => late(x)).length;
+    const allDone = totalCount > 0 && doneCount === totalCount;
+    const bars = SRC.map((_, i) => ({ style: 'flex: 1 1 0; height: 4px; border-radius: 2px; transition: background 0.35s ease; ' + (i < doneCount ? ACC : 'background: ' + C.oBar + ';') }));
+
+    const badge = (bg, fg) => 'flex-shrink: 0; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; background: ' + bg + '; color: ' + fg + ';';
+    const taskItem = (x, right, b) => ({ time: x.time || '—', title: x.title, right, badge: b, timeColor: C.oSub });
+    let sumItems = [];
+    if (st.sumView === 'done') sumItems = SRC.filter(x => st.done[x.id]).map(x => taskItem(x, '✓', badge(accent, 'var(--onacc, #111111)')));
+    else if (st.sumView === 'late') sumItems = SRC.filter(x => late(x)).map(x => ({ ...taskItem(x, 'кешікті', badge('rgba(229,72,77,0.15)', C.late)), timeColor: C.late }));
+    else if (st.sumView === 'post') sumItems = BASE.filter(x => st.post[x.id]).map(x => taskItem(x, 'ертең', badge('rgba(150,150,160,0.2)', C.oFg)));
+    else if (st.sumView === 'habits') sumItems = dayHl.map(h => { const n = cntDay[h.id] || 0, ok = n >= h.target; return { time: '', title: h.name, right: h.target > 1 ? n + ' / ' + h.target : (ok ? '✓' : '—'), badge: ok ? badge(accent, 'var(--onacc, #111111)') : badge('rgba(150,150,160,0.2)', C.oFg), timeColor: C.oSub }; });
+    const open = !!st.menuOpen;
+    const T = st.toast;
+    const [curH, curM] = (st.editTime || '12:00').split(':').map(Number);
+    const wheelItem = (sel) => 'height: 36px; display: flex; align-items: center; justify-content: center; scroll-snap-align: center; font-size: ' + (sel ? 22 : 18) + 'px; font-weight: ' + (sel ? 600 : 400) + '; color: ' + C.oFg + '; opacity: ' + (sel ? 1 : 0.4) + '; transition: opacity 0.2s ease, font-size 0.2s ease;';
+    const KB_ABC = [['ә','і','ң','ғ','ү','ұ','қ','ө','һ'], ['й','ц','у','к','е','н','г','ш','щ','з','х'], ['ф','ы','в','а','п','р','о','л','д','ж','э'], ['⇧','я','ч','с','м','и','т','ь','б','ю','⌫'], ['123','space','Дайын']];
+    const KB_NUM = [['1','2','3','4','5','6','7','8','9','0'], ['-','/',':',';','(',')','₸','&','@','"'], ['#','%','+','=','*','.',',','?','!','⌫'], ['АБВ','space','Дайын']];
+    const KB = st.kbMode === 'num' ? KB_NUM : KB_ABC;
+    const keyBase = 'height: 42px; border: none; border-radius: 8px; font-family: inherit; font-size: 18px; color: ' + C.fg + '; box-shadow: 0 1px 0 rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; padding: 0;';
+    const typeKey = (ch) => {
+      const S = this.state;
+      const f = S.kbField === 'desc' ? 'editDesc' : (S.kbField === 'nh' ? 'nhName' : 'editTitle');
+      if (ch === '⌫') return this.setState({ [f]: S[f].slice(0, -1) });
+      if (ch === '⇧') return this.setState({ kbShift: !S.kbShift });
+      if (ch === 'Дайын') return this.setState({ kbOpen: false, kbMode: 'abc' });
+      if (ch === '123') return this.setState({ kbMode: 'num' });
+      if (ch === 'АБВ') return this.setState({ kbMode: 'abc' });
+      const c = ch === 'space' ? ' ' : (S.kbShift ? ch.toUpperCase() : ch);
+      this.setState({ [f]: S[f] + c, kbShift: false });
+    };
+    const SPECIAL = ['⇧','⌫','123','АБВ','Дайын'];
+    const kbRows = KB.map(row => ({ keys: row.map(ch => {
+      const special = SPECIAL.includes(ch);
+      const w = ch === 'space' ? 'flex: 1 1 auto;' : (ch === 'Дайын' ? 'width: 88px;' : (special ? 'width: 42px;' : (st.kbMode === 'num' ? 'width: 32px;' : 'width: 29px;')));
+      const bg = ch === 'Дайын' ? 'background: ' + accent + '; color: var(--onacc, #111111); font-size: 15px; font-weight: 600;' : (special ? 'background: ' + C.keyAlt + '; font-size: 15px;' : 'background: ' + C.key + ';');
+      return { t: ch === 'space' ? 'бос орын' : (st.kbShift && ch.length === 1 && !special ? ch.toUpperCase() : ch), label: ch === 'space' ? 'бос орын' : ch, style: keyBase + w + bg + (ch === 'space' ? ' font-size: 15px;' : '') + (ch === '⇧' && st.kbShift ? ' outline: 1.5px solid ' + accent + ';' : ''), press: () => typeKey(ch) };
+    }) }));
+    return {
+      ...this.srVals(accent),
+      accent, days, bars, ...strip,
+      dateLine, titleText, weekMode: !st.monthOpen, monthOpen: !!st.monthOpen, monthAria: st.monthOpen ? 'true' : 'false',
+      grabLabel: st.monthOpen ? 'Айлық күнтізбені жабу' : 'Айлық күнтізбені ашу',
+      toggleMonth: () => { if (this._stripFired) return; this.setState({ monthOpen: !this.state.monthOpen, monthOff: (selD.getFullYear() - 2026) * 12 + selD.getMonth() - 10 }); },
+      weekWrap: 'display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));' + (st.weekN ? ' animation: ' + slideName(st.weekDir, st.weekN) + ' 0.35s cubic-bezier(.2,.9,.3,1) both;' : ''),
+      monthWrap: 'animation: aptaDrop 0.35s cubic-bezier(.2,.9,.3,1) both;',
+      gridStyle: 'display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); row-gap: 2px;' + (st.monthN ? ' animation: ' + slideName(st.monthDir, st.monthN) + ' 0.35s cubic-bezier(.2,.9,.3,1) both;' : ''),
+      monthName: MN[mFirst.getMonth()] + ' ' + mFirst.getFullYear(),
+      wdHeads: WS.map(n => ({ n })), monthCells,
+      prevMonth: () => goMonth(-1), nextMonth: () => goMonth(1),
+      homeHabits, allHabits, moreCount: Math.max(dayHl.length - 4, 0), habitsDone, habitsTotal: dayHl.length, nhDays, nhDaysText, habitsOpen: !!st.habitsOpen,
+      openNewHabit: () => this.setState({ habitsOpen: false, nhOpen: true, nhEdit: null, nhName: '', nhTarget: 1, nhD: [1,1,1,1,1,1,1], kbOpen: true, kbField: 'nh', kbMode: 'abc' }),
+      closeNewHabit: () => this.setState({ nhOpen: false, nhEdit: null, kbOpen: false }),
+      focusNh: () => this.setState({ kbOpen: true, kbField: 'nh' }),
+      nhName: st.nhName, nhShown: st.nhName || (st.kbOpen && st.kbField === 'nh' ? '' : 'Мысалы: медитация'),
+      nhTextStyle: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;' + (st.nhName ? '' : ' opacity: 0.45;'),
+      nhCell: C.wglass + (st.kbOpen && st.kbField === 'nh' ? '; box-shadow: inset 0 0 0 1.5px ' + accent : ''),
+      nhCaret: !!st.kbOpen && st.kbField === 'nh', nhOpen: !!st.nhOpen,
+      nhTarget: st.nhTarget, nhTargetText: st.nhTarget === 1 ? 'Күніне бір рет' : 'Күніне ' + st.nhTarget + ' рет',
+      nhMinus: () => this.setState({ nhTarget: Math.max(1, this.state.nhTarget - 1) }),
+      nhPlus: () => this.setState({ nhTarget: Math.min(12, this.state.nhTarget + 1) }),
+      nhBottom: 'bottom: ' + (st.kbOpen && st.kbField === 'nh' ? 300 : 8) + 'px',
+      nhTitle: st.nhEdit ? 'Әдет' : 'Жаңа әдет', nhSaveText: st.nhEdit ? 'Сақтау' : 'Қосу', nhEditing: !!st.nhEdit,
+      nhDelete: () => { const S = this.state; this.setState({ hl: S.hl.filter(h => h.id !== S.nhEdit), nhOpen: false, nhEdit: null, kbOpen: false }); },
+      nhSave: () => { const S = this.state; const name = (S.nhName || '').trim(); if (!name) { this.setState({ kbOpen: true, kbField: 'nh' }); return; }
+        const days = S.nhD.every(Boolean) ? undefined : S.nhD.map((v, i) => v ? i : -1).filter(i => i >= 0);
+        const hl = S.nhEdit ? S.hl.map(h => h.id === S.nhEdit ? { ...h, name, target: S.nhTarget, days } : h) : S.hl.concat({ id: 'h' + Date.now(), name, target: S.nhTarget, days });
+        this.setState({ hl, nhOpen: false, nhEdit: null, kbOpen: false, habitsOpen: !S.nhEdit }); },
+      menuTask: (e) => { if (e && e.preventDefault) e.preventDefault(); const id = 'n' + Date.now(); this.moveState({ menuOpen: false, extra: this.state.extra.concat({ id, title: '', d: this.state.sel }), editId: id, editTitle: '', editRem: null, editDesc: '', editTime: '', kbOpen: true, kbField: 'title', kbMode: 'abc', timeOpen: false }); },
+      menuHabit: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ menuOpen: false, nhOpen: true, nhEdit: null, nhName: '', nhTarget: 1, nhD: [1,1,1,1,1,1,1], kbOpen: true, kbField: 'nh', kbMode: 'abc' }); },
+      showAddRow: totalCount > 0,
+      addTask: () => { const id = 'n' + Date.now(); this.moveState({ extra: this.state.extra.concat({ id, title: '', d: this.state.sel }), editId: id, editTitle: '', editRem: null, editDesc: '', editTime: '', kbOpen: true, kbField: 'title', kbMode: 'abc', timeOpen: false }); },
+      nowTime: NOW,
+      emptyTitle: sel === 0 ? 'Бүгінге жоспар жоқ' : (sel === 1 ? 'Ертеңге жоспар жоқ' : 'Бұл күнге жоспар жоқ'),
+      openHabits: () => this.setState({ habitsOpen: true }), closeHabits: () => this.setState({ habitsOpen: false }),
+      title: dotText(titleText, 4, 3, C.fg, null, 'in'),
+      count: dotText(doneCount + '/' + totalCount, 6, 4, C.oFg, String(doneCount).length, allDone ? 'wave' : null),
+      bigCount: dotText(doneCount + '/' + totalCount, 8, 6, C.oFg, String(doneCount).length, allDone ? 'wave' : null),
+      countLabel: doneCount + ' / ' + totalCount + ' орындалды',
+      tasksTitle: allDone ? 'Бәрі орындалды' : 'Тапсырмалар',
+      tasksCardLabel: 'Тапсырмалар: ' + doneCount + ' / ' + totalCount + '. Күн қорытындысын ашу',
+            summaryOpen: !!st.summaryOpen,
+      openSummary: () => this.setState({ summaryOpen: true, sumView: null }), closeSummary: () => this.setState({ summaryOpen: false, sumView: null }),
+      sumMain: !st.sumView, sumDetail: !!st.sumView, sumBack: () => this.setState({ sumView: null }),
+      sumOpen_done: () => this.setState({ sumView: 'done' }), sumOpen_late: () => this.setState({ sumView: 'late' }), sumOpen_post: () => this.setState({ sumView: 'post' }), sumOpen_habits: () => this.setState({ sumView: 'habits' }),
+      sumTitle: ({ done: 'Орындалды', late: 'Кешікті', post: 'Кейінге қалдырылды', habits: 'Әдеттер' })[st.sumView] || '',
+      sumItems, sumEmpty: sumItems.length === 0, sumCount: sumItems.length + ' ' + (st.sumView === 'habits' ? 'әдет' : 'тапсырма'),
+      summaryLine: totalCount === 0 ? 'Бүгін жоспар болған жоқ' : (allDone ? 'Бәрі орындалды. Керемет күн!' : 'Тағы ' + (totalCount - doneCount) + ' тапсырма қалды'),
+      sDone: doneCount, sLate: lateCount, sPost: Object.keys(st.post).length, sHabits: habitsDone + ' / ' + dayHl.length,
+      isEmpty: totalCount === 0,
+      addFirst: () => { const id = 'n' + Date.now(); this.moveState({ extra: this.state.extra.concat({ id, title: '', d: this.state.sel }), editId: id, editTitle: '', editRem: null, editDesc: '', editTime: '', kbOpen: true, kbField: 'title', kbMode: 'abc', timeOpen: false }); },
+      editOpen: !!st.editId, editTitle: st.editTitle, editTime: st.editTime,
+      closeEdit: () => { const id = this.state.editId; const x = SRC.find(y => y.id === id); if (x && !x.title && !this.state.editTitle) this.setState({ del: { ...this.state.del, [id]: true }, editId: null, kbOpen: false, timeOpen: false }); else this.setState({ editId: null, kbOpen: false, timeOpen: false }); },
+      focusTitle: () => this.setState({ kbOpen: true, kbField: 'title', timeOpen: false }),
+      focusDesc: () => this.setState({ kbOpen: true, kbField: 'desc', timeOpen: false }),
+      editDesc: st.editDesc,
+      descShown: st.editDesc || (st.kbOpen && st.kbField === 'desc' ? '' : 'Қысқаша не істеу керек'),
+      descTextStyle: st.editDesc ? '' : 'opacity: 0.45;',
+      descCell: C.wglass + (st.kbOpen && st.kbField === 'desc' ? '; box-shadow: inset 0 0 0 1.5px ' + accent : ''),
+      titleCaret: !!st.kbOpen && st.kbField !== 'desc', descCaret: !!st.kbOpen && st.kbField === 'desc',
+      toggleTime: () => { const tm = this.state.editTime || '12:00'; this._wheelInit = false; this.setState({ timeOpen: !this.state.timeOpen, kbOpen: false, editTime: tm }); },
+      clearTime: () => this.setState({ editTime: '', timeOpen: false }),
+      titleShown: st.editTitle || (st.kbOpen && st.kbField !== 'desc' ? '' : 'Мысалы: эссе жазу'),
+      titleTextStyle: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;' + (st.editTitle ? '' : ' opacity: 0.45;'),
+      titleCell: C.wglass + (st.kbOpen && st.kbField !== 'desc' ? '; box-shadow: inset 0 0 0 1.5px ' + accent : ''),
+      timeCell: C.wglass,
+      timeShown: st.editTime || 'Уақытсыз', timeAria: st.timeOpen ? 'true' : 'false', timeOpen: !!st.timeOpen,
+      timeChev: 'display: flex; transition: transform 0.3s ease; transform: rotate(' + (st.timeOpen ? 180 : 0) + 'deg);',
+      sheetBottom: 'bottom: ' + (st.kbOpen ? 300 : 8) + 'px',
+      kbOpen: !!st.kbOpen,
+      plusVisible: !(st.editId || st.habitsOpen || st.summaryOpen || st.nhOpen),
+      hours: Array.from({ length: 24 }, (_, i) => ({ v: String(i).padStart(2, '0'), style: wheelItem(i === curH) })),
+      mins: Array.from({ length: 12 }, (_, i) => ({ v: String(i * 5).padStart(2, '0'), style: wheelItem(i * 5 === curM) })),
+      hourRef: (el) => { if (el && el._apta !== st.editId + st.timeOpen) { el._apta = st.editId + st.timeOpen; el.scrollTop = curH * 36; } },
+      minRef: (el) => { if (el && el._apta !== st.editId + st.timeOpen) { el._apta = st.editId + st.timeOpen; el.scrollTop = Math.round(curM / 5) * 36; } },
+      onHourScroll: (e) => { const el = e.currentTarget; clearTimeout(this._wh); this._wh = setTimeout(() => { const h = Math.max(0, Math.min(23, Math.round(el.scrollTop / 36))); const m = (this.state.editTime || '12:00').split(':')[1]; this.setState({ editTime: String(h).padStart(2, '0') + ':' + m }); }, 90); },
+      onMinScroll: (e) => { const el = e.currentTarget; clearTimeout(this._wm); this._wm = setTimeout(() => { const i = Math.max(0, Math.min(11, Math.round(el.scrollTop / 36))); const h = (this.state.editTime || '12:00').split(':')[0]; this.setState({ editTime: h + ':' + String(i * 5).padStart(2, '0') }); }, 90); },
+      kbRows: kbRows,
+      remOpts: [[null, 'Жоқ'], ['at', 'Уақытында'], ['m10', '10 мин бұрын'], ['h1', '1 сағат бұрын'], ['p5', '5 мин кейін']].map(([k, label]) => { const on = (st.editRem || null) === k;
+        return { label, sel: on ? 'true' : 'false', pick: () => this.setState({ editRem: k }), style: 'position: relative; flex-shrink: 0; height: 36px; padding: 0 14px; border-radius: 18px; font-size: 13px; font-weight: ' + (on ? 600 : 400) + '; white-space: nowrap; ' + (on ? 'border: none; background: ' + accent + '; color: var(--onacc, #111111);' : 'background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none; color: #FFFFFF;') }; }),
+      editSave: () => { const id = this.state.editId; const title = (this.state.editTitle || '').trim() || 'Жаңа тапсырма'; const rk = this.state.editRem || null;
+        const x = BASE.find(y => y.id === id); const off = x ? dayOf(x) : this.state.sel; let at = null;
+        if (rk === 'p5') at = Date.now() + 300000; else if (rk) { const d = new Date(); d.setDate(d.getDate() + off); const hm = (this.state.editTime || '09:00').split(':').map(Number); d.setHours(hm[0], hm[1], 0, 0); at = d.getTime() - ({ at: 0, m10: 600000, h1: 3600000 }[rk] || 0); }
+        this.remSet('task:' + id, title, at, 'Тапсырма');
+        this.moveState({ edits: { ...this.state.edits, [id]: { title, desc: (this.state.editDesc || '').trim() || undefined, time: this.state.editTime || undefined } }, trem: { ...(this.state.trem || {}), [id]: rk }, editId: null, kbOpen: false, timeOpen: false }); },
+      editPostpone: () => postpone(this.state.editId),
+      editDelete: () => remove(this.state.editId),
+      timed, anytime, doneList,
+      hasAnytime: anytime.length > 0, hasDone: doneAll.length > 0, doneTotal: doneAll.length,
+      doneMore: doneAll.length > 3, doneExpandedAria: st.doneExpanded ? 'true' : 'false',
+      doneToggleText: st.doneExpanded ? 'Жасыру' : 'Барлығы',
+      chevStyle: 'display: flex; transition: transform 0.3s ease; transform: rotate(' + (st.doneExpanded ? 180 : 0) + 'deg);',
+      toggleDone: () => this.moveState({ doneExpanded: !this.state.doneExpanded }),
+      toastOn: !!T, toastText: T ? T.text : '',
+      toastStyle: 'position: absolute; left: 50%; bottom: 104px; display: flex; align-items: center; gap: 12px; padding: 6px 6px 6px 18px; border-radius: 30px; color: ' + C.fg + '; white-space: nowrap; animation: ' + (st.toastN % 2 ? 'aptaToast' : 'aptaToastB') + ' 2.8s ease both; ' + C.glassStrong,
+      toastUndo: !!(st.toast && st.toast.kind !== 'info'),
+      saveImg: () => this.showToast({ kind: 'info', text: 'Күн қорытындысы суретке сақталды' }, {}),
+      undo: () => {
+        const t = this.state.toast; if (!t) return;
+        clearTimeout(this._tt);
+        if (t.kind === 'done') setDone(t.id, false);
+        else if (t.kind === 'post') { const p = { ...this.state.post }; delete p[t.id]; const mv = { ...this.state.moved }; if (t.prev == null) delete mv[t.id]; else mv[t.id] = t.prev; this.moveState({ post: p, moved: mv, toast: null }); }
+        else if (t.kind === 'del') { const p = { ...this.state.del }; delete p[t.id]; this.moveState({ del: p, toast: null }); }
+        else if (t.kind === 'habit') { const S = this.state; this.setState({ cnt: { ...S.cnt, [t.day]: { ...(S.cnt[t.day] || {}), [t.id]: t.prev } }, toast: null }); }
+      },
+      menuOpen: open, menuExpanded: open ? 'true' : 'false',
+      closeMenu: () => this.setState({ menuOpen: false }),
+      togglePlus: () => this.setState({ menuOpen: !open }),
+      setRoot: (el) => { this._root = el; },
+      plusIcon: 'display: flex; transition: transform 0.35s cubic-bezier(.2,.9,.3,1.3); transform: rotate(' + (open ? 135 : 0) + 'deg);'
+    };
+  }
+}
+</script>
+</body>
+</html>

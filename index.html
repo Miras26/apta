@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Апта</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<meta name="theme-color" content="#F3F2EF">
+<style>html,body{margin:0;height:100%;background:#F3F2EF}@media (prefers-color-scheme: dark){html,body{background:#0B0B0D}}</style>
+<script>
+  (function () {
+    var S = {}; try { S = JSON.parse(localStorage.getItem('apta.v1') || '{}') || {}; } catch (e) {}
+    var t = (S.profile || {}).theme || 'auto';
+    var dark = t === 'dark' || (t !== 'light' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    var signedOut = S.auth && S.auth.signed === false;
+    var page = !S.onboarded ? (dark ? 'OnboardDark' : 'OnboardLight') : signedOut ? (dark ? 'AuthDark' : 'AuthLight') : (dark ? 'Dark' : 'Main');
+    location.replace(page + '.dc.html');
+  })();
+</script>
+</head>
+<body></body>
+</html>

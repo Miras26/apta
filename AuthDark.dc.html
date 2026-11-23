@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<title>Апта — кіру / тіркелу, қараңғы</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0B0B0D">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+@keyframes aptaBanner{from{opacity:0;transform:translateY(-30px) scale(.96)}to{opacity:1;transform:none}}
+body{margin:0}
+a{color:#F5F4F1}a:hover{color:#F5F4F1}
+button{font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s ease}
+button:active{transform:scale(0.96)}
+.apta-scroll::-webkit-scrollbar{display:none}
+@keyframes aptaFade{from{opacity:0}to{opacity:1}}
+@keyframes aptaSheet{from{transform:translateY(105%)}to{transform:none}}
+@keyframes aptaPop2{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+@keyframes aptaBlink{50%{opacity:0}}
+@keyframes aptaShake2{20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+@keyframes aptaSpin{to{transform:rotate(360deg)}}
+@keyframes aptaFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes aptaShake{20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+@keyframes aptaMenu{from{opacity:0;transform:scale(.6) translateY(24px)}to{opacity:1;transform:none}}
+@keyframes aptaMItem{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes aptaItem{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</helmet>
+<div style="{{rootVars}} width: 390px; height: 844px; position: relative; overflow: hidden; background: #0B0B0D; font-family: 'Golos Text', system-ui, sans-serif; color: #F5F4F1; user-select: none; -webkit-user-select: none">
+  <div aria-hidden="true" style="position: absolute; left: -90px; top: 60px; width: 300px; height: 300px; border-radius: 50%; background: #FF7BAC; opacity: 0.2; filter: blur(60px)"></div>
+  <div aria-hidden="true" style="position: absolute; left: 170px; top: 150px; width: 320px; height: 320px; border-radius: 50%; background: #FF8A3D; opacity: 0.2; filter: blur(60px)"></div>
+  <div aria-hidden="true" style="position: absolute; left: -110px; top: 360px; width: 320px; height: 320px; border-radius: 50%; background: #9B7BFF; opacity: 0.2; filter: blur(60px)"></div>
+  <div aria-hidden="true" style="position: absolute; left: 180px; top: 520px; width: 300px; height: 300px; border-radius: 50%; background: #C8F542; opacity: 0.2; filter: blur(60px)"></div>
+  <div aria-hidden="true" style="position: absolute; left: -90px; top: 640px; width: 340px; height: 340px; border-radius: 50%; background: #3CC6B8; opacity: 0.2; filter: blur(60px)"></div>
+
+  <sc-if value="{{isIntro}}" hint-placeholder-val="{{ false }}">
+  <div style="position: absolute; inset: 0; display: flex; flex-direction: column; box-sizing: border-box; padding: 54px 20px 34px; animation: aptaFade 0.35s ease both">
+    <div style="display: flex; align-items: center; justify-content: space-between; height: 44px">
+      <span style="display: flex; align-items: center; gap: 10px"><span style="width: 36px; height: 36px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #111111; background: {{accent}}">А</span><span style="font-size: 15px; font-weight: 600">Апта</span></span>
+      <sc-if value="{{notLast}}" hint-placeholder-val="{{ true }}"><button onClick="{{skip}}" style="position: relative; height: 40px; padding: 0 16px; border-radius: 20px; font-size: 13px; font-weight: 500; color: #F5F4F1; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none">Өткізу</button></sc-if>
+    </div>
+    <div onPointerDown="{{swDown}}" onPointerUp="{{swUp}}" style="position: relative; flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; touch-action: pan-y">
+      <sc-if value="{{s0}}" hint-placeholder-val="{{ true }}">
+      <div style="position: relative; width: 300px; display: flex; flex-direction: column; gap: 10px; animation: aptaItem 0.45s cubic-bezier(.2,.9,.3,1) both">
+        <div style="position: relative; padding: 16px 16px 8px; border-radius: 30px; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+          <span style="position: relative; display: flex; justify-content: space-between; font-size: 13px; color: rgba(245,244,241,0.72)"><span>Бүгін · 3 тапсырма</span><span>1/3</span></span>
+          <sc-for list="{{demoTasks}}" as="x" hint-placeholder-count="3">
+          <span style="position: relative; display: flex; align-items: center; gap: 12px; min-height: 48px; border-top: {{x.line}}">
+            <span style="{{x.box}}"><sc-if value="{{x.done}}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></sc-if></span>
+            <span style="{{x.text}}">{{x.title}}</span><span style="font-size: 13px; color: rgba(245,244,241,0.72)">{{x.time}}</span>
+          </span>
+          </sc-for>
+        </div>
+        <div style="position: relative; align-self: flex-end; display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: 20px; font-size: 13px; animation: aptaFloat 3.2s ease-in-out infinite; background: rgba(255,255,255,0.15); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)"><span style="position: relative; width: 8px; height: 8px; border-radius: 4px; background: {{accent}}"></span><span style="position: relative">20:00 · еске салу</span></div>
+      </div>
+      </sc-if>
+      <sc-if value="{{s1}}" hint-placeholder-val="{{ false }}">
+      <div style="position: relative; width: 300px; padding: 16px; box-sizing: border-box; border-radius: 30px; display: flex; flex-direction: column; gap: 14px; animation: aptaItem 0.45s cubic-bezier(.2,.9,.3,1) both; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+        <span style="position: relative; display: flex; justify-content: space-between; font-size: 13px; color: rgba(245,244,241,0.72)"><span>Осы апта</span><span>Д С С Б Ж С Ж</span></span>
+        <sc-for list="{{demoHabits}}" as="h" hint-placeholder-count="3">
+        <span style="position: relative; display: flex; align-items: center; gap: 10px">
+          <span style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 500">{{h.name}}</span><span style="font-size: 11px; color: rgba(245,244,241,0.72)">{{h.streak}}</span></span>
+          <span style="display: flex; gap: 5px"><sc-for list="{{h.days}}" as="d" hint-placeholder-count="7"><span style="{{d}}"></span></sc-for></span>
+        </span>
+        </sc-for>
+      </div>
+      </sc-if>
+      <sc-if value="{{s2}}" hint-placeholder-val="{{ false }}">
+      <div style="position: relative; width: 300px; display: flex; flex-direction: column; gap: 10px; animation: aptaItem 0.45s cubic-bezier(.2,.9,.3,1) both">
+        <div style="position: relative; padding: 16px; border-radius: 30px; display: flex; flex-direction: column; gap: 10px; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+          <span style="position: relative; font-size: 13px; color: rgba(245,244,241,0.72)">Қазір бар</span>
+          <span aria-hidden="true" style="{{demoBal.box}}"><sc-for list="{{demoBal.dots}}" as="p" hint-placeholder-count="40"><span style="{{p.style}}"></span></sc-for></span>
+          <span style="position: relative; display: flex; gap: 6px; height: 40px; align-items: flex-end"><sc-for list="{{demoBars}}" as="b" hint-placeholder-count="7"><span style="{{b}}"></span></sc-for></span>
+        </div>
+        <div style="position: relative; align-self: flex-start; width: 210px; padding: 14px 16px; box-sizing: border-box; border-radius: 30px; display: flex; flex-direction: column; gap: 6px; animation: aptaFloat 3.4s ease-in-out infinite; background: rgba(255,255,255,0.15); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+          <span style="position: relative; font-size: 15px; font-weight: 600">Ән — жоба</span>
+          <span style="position: relative; font-size: 13px; color: rgba(245,244,241,0.72)">Түнгі қала, терезеде бір шам…</span>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+    <h1 style="margin: 0 0 12px; position: relative"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap">{{slideTitle}}</span><span aria-hidden="true" style="{{slideDots.box}}"><sc-for list="{{slideDots.dots}}" as="p" hint-placeholder-count="60"><span style="{{p.style}}"></span></sc-for></span></h1>
+    <p style="margin: 0; min-height: 66px; font-size: 15px; line-height: 1.45; color: rgba(245,244,241,0.72)">{{slideSub}}</p>
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 18px">
+      <div role="tablist" aria-label="Беттер" style="display: flex; gap: 6px">
+        <sc-for list="{{pager}}" as="p" hint-placeholder-count="3"><button role="tab" aria-label="{{p.label}}" aria-selected="{{p.sel}}" onClick="{{p.go}}" style="{{p.style}}"></button></sc-for>
+      </div>
+      <button onClick="{{next}}" style="height: 52px; padding: 0 28px; border: none; border-radius: 26px; background: {{accent}}; color: var(--onacc, #111111); font-size: 15px; font-weight: 600">{{nextLabel}}</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{isAuth}}" hint-placeholder-val="{{ true }}">
+  <div style="position: absolute; inset: 0; display: flex; flex-direction: column; box-sizing: border-box; padding: 54px 20px 34px; animation: aptaFade 0.35s ease both">
+    <div style="display: flex; align-items: center; gap: 12px; height: 44px">
+      <button aria-label="Артқа" onClick="{{backIntro}}" style="position: relative; width: 44px; height: 44px; padding: 0; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6l-6 6 6 6"/></svg></button>
+    </div>
+    <h1 style="margin: 22px 0 10px; position: relative"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap">{{authTitle}}</span><span aria-hidden="true" style="{{authDots.box}}"><sc-for list="{{authDots.dots}}" as="p" hint-placeholder-count="40"><span style="{{p.style}}"></span></sc-for></span></h1>
+    <p style="margin: 0 0 18px; font-size: 13px; line-height: 1.45; color: rgba(245,244,241,0.72)">{{authSub}}</p>
+    <div role="tablist" aria-label="Кіру түрі" style="position: relative; display: grid; grid-template-columns: 1fr 1fr; padding: 4px; border-radius: 30px; margin-bottom: 14px; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+      <span aria-hidden="true" style="{{segPill}}"></span>
+      <button role="tab" aria-selected="{{inSel}}" onClick="{{toIn}}" style="position: relative; height: 44px; border: none; border-radius: 22px; background: transparent; color: #F5F4F1; font-size: 15px; font-weight: {{inW}}">Кіру</button>
+      <button role="tab" aria-selected="{{upSel}}" onClick="{{toUp}}" style="position: relative; height: 44px; border: none; border-radius: 22px; background: transparent; color: #F5F4F1; font-size: 15px; font-weight: {{upW}}">Тіркелу</button>
+    </div>
+    <div style="{{formWrap}}">
+      <sc-for list="{{fields}}" as="f" hint-placeholder-count="3">
+      <div style="{{f.box}}">
+        <button aria-label="{{f.label}}" onClick="{{f.focus}}" style="position: relative; flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 10px 0 10px 16px; border: none; background: transparent; color: #F5F4F1; text-align: left">
+          <span style="font-size: 11px; color: rgba(245,244,241,0.72)">{{f.label}}</span>
+          <span style="display: flex; align-items: center; max-width: 100%; min-height: 22px; font-size: 15px; white-space: nowrap; overflow: hidden"><span style="{{f.valStyle}}">{{f.shown}}</span><sc-if value="{{f.caret}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="width: 2px; height: 20px; margin-left: 1px; border-radius: 1px; background: {{accent}}; animation: aptaBlink 1s steps(1) infinite"></span></sc-if></span>
+        </button>
+        <sc-if value="{{f.isPass}}" hint-placeholder-val="{{ false }}"><button aria-label="{{eyeLabel}}" aria-pressed="{{eyeOn}}" onClick="{{toggleEye}}" style="position: relative; width: 44px; height: 44px; margin-right: 6px; flex-shrink: 0; padding: 0; border: none; border-radius: 22px; background: transparent; display: flex; align-items: center; justify-content: center"><sc-if value="{{eyeOn}}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(245,244,241,0.72)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/><path d="M4 4l16 16"/></svg></sc-if><sc-if value="{{eyeOff}}" hint-placeholder-val="{{ true }}"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(245,244,241,0.72)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg></sc-if></button></sc-if>
+      </div>
+      </sc-for>
+      <sc-if value="{{hasErr}}" hint-placeholder-val="{{ false }}"><span role="alert" style="padding: 0 6px; font-size: 13px; line-height: 1.4; color: #E5484D; animation: aptaFade 0.2s ease both">{{err}}</span></sc-if>
+      <sc-if value="{{hasNote}}" hint-placeholder-val="{{ false }}"><span role="status" style="padding: 0 6px; font-size: 13px; line-height: 1.4; color: rgba(245,244,241,0.72); animation: aptaFade 0.2s ease both">{{note}}</span></sc-if>
+      <sc-if value="{{isIn}}" hint-placeholder-val="{{ true }}"><button onClick="{{forgot}}" style="align-self: flex-end; height: 36px; padding: 0 6px; border: none; background: transparent; color: #F5F4F1; font-size: 13px; font-weight: 500">Құпиясөзді ұмыттыңыз ба?</button></sc-if>
+      <button onClick="{{submit}}" aria-busy="{{busyAria}}" style="display: flex; align-items: center; justify-content: center; gap: 10px; height: 52px; margin-top: 4px; border: none; border-radius: 26px; background: {{accent}}; color: var(--onacc, #111111); font-size: 15px; font-weight: 600"><sc-if value="{{busy}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="width: 18px; height: 18px; box-sizing: border-box; border-radius: 9px; border: 2px solid var(--onacc, #111111); border-right-color: transparent; animation: aptaSpin 0.8s linear infinite"></span></sc-if>{{submitLabel}}</button>
+      <sc-if value="{{showAlt}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; align-items: center; gap: 12px; margin: 10px 0 2px; font-size: 13px; color: rgba(245,244,241,0.72)"><span style="flex: 1 1 auto; height: 0.5px; background: rgba(255,255,255,0.1)"></span>немесе<span style="flex: 1 1 auto; height: 0.5px; background: rgba(255,255,255,0.1)"></span></div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+          <button onClick="{{altApple}}" style="position: relative; height: 52px; border-radius: 26px; font-size: 15px; font-weight: 500; color: #F5F4F1; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)"><span style="position: relative">Apple ID</span></button>
+          <button onClick="{{altGoogle}}" style="position: relative; height: 52px; border-radius: 26px; font-size: 15px; font-weight: 500; color: #F5F4F1; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)"><span style="position: relative">Google</span></button>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+  <sc-if value="{{kbOpen}}" hint-placeholder-val="{{ false }}">
+    <div role="group" aria-label="Пернетақта" style="position: absolute; z-index: 40; left: 0; right: 0; bottom: 0; box-sizing: border-box; padding: 8px 4px 30px; display: flex; flex-direction: column; gap: 9px; animation: aptaSheet 0.3s cubic-bezier(.2,.9,.3,1) both; background: rgba(30,30,34,0.86); backdrop-filter: blur(30px) saturate(160%); -webkit-backdrop-filter: blur(30px) saturate(160%); border-top: 0.5px solid rgba(255,255,255,0.14)">
+      <sc-for list="{{kbRows}}" as="r" hint-placeholder-count="4">
+        <div style="display: flex; justify-content: center; gap: 4px">
+          <sc-for list="{{r.keys}}" as="k" hint-placeholder-count="10"><button aria-label="{{k.label}}" onClick="{{k.press}}" style="{{k.style}}">{{k.t}}</button></sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+  </sc-if>
+
+  <sc-if value="{{isDone}}" hint-placeholder-val="{{ false }}">
+  <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 0 36px; text-align: center; animation: aptaFade 0.35s ease both">
+    <span style="position: relative; width: 84px; height: 84px; border-radius: 30px; display: flex; align-items: center; justify-content: center; background: {{accent}}; animation: aptaPop2 0.45s cubic-bezier(.2,.9,.3,1.2) both"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--onacc, #111111)"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+    <span style="font-size: 22px; font-weight: 600">{{doneTitle}}</span>
+    <span style="font-size: 13px; line-height: 1.5; color: rgba(245,244,241,0.72)">Аптаңызды жоспарлауға дайынбыз. Тапсырмалар мен әдеттерді «+» түймесімен қосыңыз.</span>
+    <a href="Dark.dc.html" style="display: flex; align-items: center; justify-content: center; height: 52px; margin-top: 10px; padding: 0 36px; border-radius: 26px; background: {{accent}}; color: var(--onacc, #111111); font-size: 15px; font-weight: 600; text-decoration: none">Бастау</a>
+  </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#C8F542","options":["#C8F542","#FF8A3D","#9B7BFF","#3CC6B8"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+
+  sGet() { try { return JSON.parse(localStorage.getItem('apta.v1') || '{}') || {}; } catch (e) { return this._mem || {}; } }
+  sPut(patch) { const next = { ...this.sGet(), ...patch }; this._mem = next; try { localStorage.setItem('apta.v1', JSON.stringify(next)); } catch (e) {} return next; }
+  boardName() { return 'AuthDark.dc.html'; }
+  accentNow() { const p = this.sGet().profile || {}; return p.accent || this.props.accent || '#C8F542'; }
+  onAccent(c) { const h = (c || '#C8F542').replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(x => x + x).join('') : h, 16); const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? 'var(--onacc, #111111)' : '#FFFFFF'; }
+  sBoot() {
+    if (this._booted) return; this._booted = true;
+    const S0 = this.sGet();
+    if (this.hydrate) { try { Object.assign(this.state, this.hydrate(S0)); } catch (e) {} }
+    const it = S0.intent; if (it && it.board === this.boardName() && this.onIntent) { try { Object.assign(this.state, this.onIntent(it.action) || {}); } catch (e) {} this.sPut({ intent: null }); }
+    try { window.addEventListener('storage', (e) => { if (e.key !== 'apta.v1') return; const S = this.sGet(); const p = this.hydrate ? this.hydrate(S) : {};
+      const it2 = S.intent; let q = {}; if (it2 && it2.board === this.boardName() && this.onIntent) { q = this.onIntent(it2.action) || {}; this.sPut({ intent: null }); }
+      this._skipPersist = true; this.setState({ ...p, ...q, _sv: Date.now() }); }); } catch (e) {}
+    try { clearInterval(this._remT); this._remT = setInterval(() => this.checkRem(), 4000); } catch (e) {}
+  }
+  intentTo(board, action) { return () => { this.sPut({ intent: { board, action, at: Date.now() } }); }; }
+  persistNow() {
+    if (!this.dehydrate) return; if (this._skipPersist) { this._skipPersist = false; this._lastP = null; }
+    let patch; try { patch = this.dehydrate(this.state, this.sGet()); } catch (e) { return; }
+    if (!patch) return; const j = JSON.stringify(patch); if (j === this._lastP) return; this._lastP = j;
+    const cur = this.sGet(); const changed = Object.keys(patch).some(k => JSON.stringify(cur[k]) !== JSON.stringify(patch[k])); if (changed) this.sPut(patch);
+  }
+  sTrash(item) { const S = this.sGet(); const t = (S.trash || []).filter(x => x.id !== item.id); this.sPut({ trash: [{ ...item, at: Date.now() }].concat(t).slice(0, 40) }); }
+  remSet(id, title, at, kind) { const S = this.sGet(); const list = (S.rem || []).filter(r => r.id !== id); if (at) list.push({ id, title, at, kind, fired: false });
+    this.sPut({ rem: list }); if (at) { try { if (typeof Notification !== 'undefined' && Notification.permission === 'default') Notification.requestPermission(); } catch (e) {} } }
+  checkRem() { const S = this.sGet(); const now = Date.now(); const due = (S.rem || []).find(r => !r.fired && r.at <= now); if (!due) return;
+    this.sPut({ rem: (S.rem || []).map(r => r.id === due.id ? { ...r, fired: true } : r) });
+    try { if (typeof Notification !== 'undefined' && Notification.permission === 'granted') { const o = { body: due.title, icon: 'icon-192.png', badge: 'icon-192.png', tag: due.id, vibrate: [120, 60, 120] }; if (navigator.serviceWorker && navigator.serviceWorker.controller) navigator.serviceWorker.ready.then(r => r.showNotification('Апта · еске салу', o)).catch(() => {}); else new Notification('Апта · еске салу', o); } } catch (e) {}
+    clearTimeout(this._bnT); this.setState({ banner: { title: due.title, kind: due.kind } }); this._bnT = setTimeout(() => this.setState({ banner: null }), 7000); }
+  constructor(props) {
+    super(props);
+    this.state = { step: 'auth', slide: 0, mode: 'up', name: '', email: '', pass: '', focus: null, eye: false, err: '', note: '', busy: false, kbShift: false, kbMode: 'abc', shake: 0, banner: null };
+  }
+  componentWillUnmount() { clearTimeout(this._bt); }
+  renderVals() {
+    this.sBoot();
+    const C = {"fg": "#F5F4F1", "sub": "rgba(245,244,241,0.72)", "ring": "rgba(245,244,241,0.38)", "edge": "0 0 0 0.5px rgba(0,0,0,0.3)", "glass": "background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)", "glassStrong": "background: rgba(255,255,255,0.15); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)", "wglass": "background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none", "oFg": "#FFFFFF", "oSub": "rgba(255,255,255,0.74)", "line": "rgba(255,255,255,0.1)", "late": "#FF6B6B", "key": "rgba(255,255,255,0.22)", "keyAlt": "rgba(255,255,255,0.1)", "track": "rgba(255,255,255,0.14)"};
+    const G = {"0": [".###.", "#...#", "#..##", "#.#.#", "##..#", "#...#", ".###."], "1": ["..#..", ".##..", "..#..", "..#..", "..#..", "..#..", ".###."], "2": [".###.", "#...#", "....#", "...#.", "..#..", ".#...", "#####"], "3": ["#####", "...#.", "..#..", "...#.", "....#", "#...#", ".###."], "4": ["...#.", "..##.", ".#.#.", "#..#.", "#####", "...#.", "...#."], "5": ["#####", "#....", "####.", "....#", "....#", "#...#", ".###."], "6": ["..##.", ".#...", "#....", "####.", "#...#", "#...#", ".###."], "7": ["#####", "....#", "...#.", "..#..", ".#...", ".#...", ".#..."], "8": [".###.", "#...#", "#...#", ".###.", "#...#", "#...#", ".###."], "9": [".###.", "#...#", "#...#", ".####", "....#", "...#.", ".##.."], "/": ["....#", "...#.", "...#.", "..#..", ".#...", ".#...", "#...."], "Б": ["####.", "#....", "#....", "####.", "#...#", "#...#", "####."], "ү": [".....", ".....", "#...#", ".#.#.", "..#..", "..#..", "..#.."], "г": [".....", ".....", "#####", "#....", "#....", "#....", "#...."], "і": ["..#..", ".....", ".##..", "..#..", "..#..", "..#..", ".###."], "н": [".....", ".....", "#...#", "#...#", "#####", "#...#", "#...#"], "Е": ["#####", "#....", "#....", "####.", "#....", "#....", "#####"], "А": [".###.", "#...#", "#...#", "#####", "#...#", "#...#", "#...#"], "К": ["#...#", "#..#.", "#.#..", "##...", "#.#..", "#..#.", "#...#"], "р": [".....", ".....", "####.", "#...#", "####.", "#....", "#...."], "т": [".....", ".....", "#####", "..#..", "..#..", "..#..", "..#.."], "е": [".....", ".....", ".###.", "#...#", "#####", "#....", ".###."], "ң": [".....", ".....", "#..#.", "#..#.", "####.", "#..#.", "#..##"], "ғ": [".....", ".....", "#####", "#....", "###..", "#....", "#...."], "ы": [".....", ".....", "#...#", "#...#", "###.#", "#.#.#", "###.#"], "к": [".....", ".....", "#..#.", "#.#..", "##...", "#.#..", "#..#."], "з": [".....", ".....", ".###.", "....#", "..##.", "....#", ".###."], "б": ["..##.", ".#...", "#....", "####.", "#...#", "#...#", ".###."], ".": [".....", ".....", ".....", ".....", ".....", ".##..", ".##.."], " ": [".....", ".....", ".....", ".....", ".....", ".....", "....."], "Ә": [".###.", "....#", "....#", "#####", "#...#", "#...#", ".###."], "д": [".....", ".....", ".###.", ".#.#.", ".#.#.", "#####", "#...#"], "-": [".....", ".....", ".....", "#####", ".....", ".....", "....."], "М": ["#...#", "##.##", "#.#.#", "#...#", "#...#", "#...#", "#...#"], "и": [".....", ".....", "#...#", "#..##", "#.#.#", "##..#", "#...#"], "а": [".....", ".....", ".###.", "....#", ".####", "#...#", ".####"], "с": [".....", ".....", ".###.", "#....", "#....", "#....", ".###."], "Қ": ["#..#.", "#.#..", "##...", "#.#..", "#..#.", "#..#.", "#..##"], "С": [".###.", "#...#", "#....", "#....", "#....", "#...#", ".###."], "Т": ["#####", "..#..", "..#..", "..#..", "..#..", "..#..", "..#.."], "л": [".....", ".....", "..###", ".#..#", ".#..#", ".#..#", "#...#"], "у": [".....", ".....", "#...#", "#...#", ".####", "....#", ".###."], "ж": [".....", ".....", "#.#.#", "#.#.#", ".###.", "#.#.#", "#.#.#"], "п": [".....", ".....", "#####", "#...#", "#...#", "#...#", "#...#"]};
+    const st = this.state;
+    const accent = this.accentNow();
+    const dotText = (str, pitch, d, color) => { const dots = []; const chars = [...str];
+      chars.forEach((ch, ci) => { const gg = G[ch]; if (!gg) return; gg.forEach((row, r) => [...row].forEach((v, c) => { if (v !== '#') return;
+        dots.push({ style: 'position: absolute; left: ' + ((ci * 6 + c) * pitch) + 'px; top: ' + (r * pitch) + 'px; width: ' + d + 'px; height: ' + d + 'px; border-radius: 50%; background: ' + color + ';' }); })); });
+      return { dots, box: 'position: relative; display: block; width: ' + ((chars.length * 6 - 1) * pitch) + 'px; height: ' + (7 * pitch) + 'px;' }; };
+    const SLIDES = [
+      ['Апта', 'Тапсырмаларың, әдеттерің, қаржың мен жазбаларың — бір жерде, бір апталық ырғақпен.'],
+      ['Әдеттер', 'Күн сайын белгіле. Серия өскен сайын әдет те бекиді.'],
+      ['Қаржы', 'Шығын мен кіріс, ойлар мен күнделік — бәрі қолыңның астында.']];
+    const go = (i) => this.setState({ slide: Math.max(0, Math.min(SLIDES.length - 1, i)) });
+    const toAuth = (mode) => this.setState({ step: 'auth', mode: mode || 'up', focus: null, err: '', note: '' });
+    const valid = (e) => /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(e);
+    const ph = (s) => { let h = 7; [...s].forEach(c => { h = (h * 31 + c.charCodeAt(0)) >>> 0; }); return h.toString(36); };
+    const finish = (name, email) => { const S = this.sGet(); const prof = { ...(S.profile || {}) }; if (name) prof.name = name;
+      this.sPut({ profile: prof, onboarded: true, auth: { ...(S.auth || {}), email: email || (S.auth || {}).email || '', name: prof.name || 'Мирас', ...(st.pass ? { ph: ph(st.pass) } : {}), signed: true } });
+      this.setState({ busy: true, focus: null, err: '' }); clearTimeout(this._bt); this._bt = setTimeout(() => this.setState({ busy: false, step: 'done', doneName: prof.name || 'Мирас' }), 900); };
+    const fail = (m) => this.setState({ err: m, note: '', shake: st.shake + 1 });
+    const submit = () => { if (st.busy) return; const S = this.sGet(); const A = S.auth || null; const email = st.email.trim().toLowerCase();
+      if (st.mode === 'up') { if (!st.name.trim()) return fail('Атыңызды жазыңыз.'); if (!valid(email)) return fail('Поштаны дұрыс жазыңыз, мысалы: miras@mail.kz'); if (st.pass.length < 6) return fail('Құпиясөз кемінде 6 таңба болсын.');
+        if (A && A.email === email && A.ph) return fail('Бұл пошта тіркелген. «Кіру» бөлімін ашыңыз.'); return finish(st.name.trim(), email); }
+      if (!valid(email)) return fail('Поштаны дұрыс жазыңыз, мысалы: miras@mail.kz'); if (!st.pass) return fail('Құпиясөзді жазыңыз.');
+      if (A && A.email && A.email !== email) return fail('Мұндай аккаунт табылмады. Тіркеліп көріңіз.');
+      if (A && A.ph && A.ph !== ph(st.pass)) return fail('Құпиясөз қате. Қайта көріңіз.');
+      return finish((A && A.name) || '', email); };
+    // keyboard: Kazakh letters for the name, Latin for e-mail and password
+    const lat = st.focus === 'email' || st.focus === 'pass';
+    const KB_ABC = [['ә','і','ң','ғ','ү','ұ','қ','ө','һ'], ['й','ц','у','к','е','н','г','ш','щ','з','х'], ['ф','ы','в','а','п','р','о','л','д','ж','э'], ['⇧','я','ч','с','м','и','т','ь','б','ю','⌫'], ['123','space','Дайын']];
+    const KB_LAT = [['q','w','e','r','t','y','u','i','o','p'], ['a','s','d','f','g','h','j','k','l'], ['⇧','z','x','c','v','b','n','m','⌫'], ['123','@','space','.','Келесі']];
+    const KB_NUM = [['1','2','3','4','5','6','7','8','9','0'], ['-','_','/',':','(',')','&','@','"','!'], ['#','%','+','=','*','.',',','?','⌫'], [lat ? 'ABC' : 'АБВ','space', lat ? 'Келесі' : 'Дайын']];
+    const KB = st.kbMode === 'num' ? KB_NUM : (lat ? KB_LAT : KB_ABC);
+    const ORDER = st.mode === 'up' ? ['name', 'email', 'pass'] : ['email', 'pass'];
+    const SPECIAL = ['⇧', '⌫', '123', 'АБВ', 'ABC', 'Дайын', 'Келесі'];
+    const cur = st.focus ? st[st.focus] : '';
+    const upper = st.kbShift || (st.focus === 'name' && (cur === '' || cur.endsWith(' ')));
+    const typeKey = (ch) => { const S = this.state; const f = S.focus; if (!f) return; const v = S[f];
+      if (ch === '⌫') return this.setState({ [f]: v.slice(0, -1), err: '' });
+      if (ch === '⇧') return this.setState({ kbShift: !S.kbShift });
+      if (ch === '123') return this.setState({ kbMode: 'num' });
+      if (ch === 'АБВ' || ch === 'ABC') return this.setState({ kbMode: 'abc' });
+      if (ch === 'Дайын' || ch === 'Келесі') { const i = ORDER.indexOf(f); return i >= 0 && i < ORDER.length - 1 ? this.setState({ focus: ORDER[i + 1], kbMode: 'abc', kbShift: false }) : (this.setState({ focus: null }), submit()); }
+      if (ch === 'space' && f !== 'name') return;
+      const c = ch === 'space' ? ' ' : (upper && ch.length === 1 ? ch.toUpperCase() : ch);
+      if (v.length >= 40) return; this.setState({ [f]: v + c, kbShift: false, err: '' }); };
+    const kw = KB.reduce((m, r) => Math.max(m, r.length), 0) >= 11 ? 29 : 33;
+    const keyBase = 'height: 42px; border: none; border-radius: 8px; font-family: inherit; font-size: 18px; color: ' + C.fg + '; box-shadow: 0 1px 0 rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; padding: 0;';
+    const kbRows = KB.map(row => ({ keys: row.map(ch => { const sp = SPECIAL.includes(ch);
+      const w = ch === 'space' ? 'flex: 1 1 auto;' : ((ch === 'Дайын' || ch === 'Келесі') ? 'width: 88px;' : (sp ? 'width: 42px;' : 'width: ' + kw + 'px;'));
+      const bg = (ch === 'Дайын' || ch === 'Келесі') ? 'background: ' + accent + '; color: var(--onacc, #111111); font-size: 15px; font-weight: 600;' : (sp ? 'background: ' + C.keyAlt + '; font-size: 15px;' : 'background: ' + C.key + ';');
+      return { t: ch === 'space' ? 'бос орын' : (upper && ch.length === 1 && !sp ? ch.toUpperCase() : ch), label: ch === 'space' ? 'бос орын' : ch, press: () => typeKey(ch),
+        style: keyBase + w + bg + (ch === 'space' ? ' font-size: 15px;' : '') + (ch === '⇧' && st.kbShift ? ' outline: 1.5px solid ' + accent + ';' : '') }; }) }));
+    const kbOpen = st.step === 'auth' && !!st.focus;
+    const FL = { name: ['Атыңыз', 'Мирас'], email: ['Пошта', 'miras@mail.kz'], pass: ['Құпиясөз', st.mode === 'up' ? 'Кемінде 6 таңба' : '••••••'] };
+    const fields = ORDER.map(k => { const on = st.focus === k; const v = st[k]; const shown = v ? (k === 'pass' && !st.eye ? '•'.repeat(v.length) : v) : (on ? '' : FL[k][1]);
+      return { label: FL[k][0], shown, caret: on, isPass: k === 'pass', valStyle: v ? '' : 'opacity: 0.4;',
+        focus: () => this.setState({ focus: k, kbMode: 'abc', kbShift: false, note: '' }),
+        box: 'position: relative; display: flex; align-items: center; min-height: 64px; border-radius: 30px; ' + C.wglass + ';' + (on ? ' box-shadow: inset 0 0 0 1.5px ' + accent + ';' : (st.err && !v ? ' box-shadow: inset 0 0 0 1.5px rgba(229,72,77,0.6);' : '')) }; });
+    const demo = [['Сабаққа дайындық', '09:00', true], ['Домбыра — 20 минут', '18:30', false], ['Эссе жоспары', '21:00', false]];
+    const dayDot = (on, today) => 'width: 14px; height: 14px; box-sizing: border-box; border-radius: 50%; ' + (on ? 'background: ' + accent + ';' : 'border: 1.5px solid ' + C.ring + ';') + (today ? ' box-shadow: 0 0 0 2px ' + C.track + ';' : '');
+    const HB = [['Ерте тұру', '6 күн қатарынан', [1,1,1,1,1,1,0]], ['Домбыра', '3 күн қатарынан', [0,1,0,1,1,1,0]], ['Кітап оқу', '1 күн', [1,0,0,0,0,1,0]]];
+    return {
+      rootVars: '--onacc: ' + this.onAccent(accent) + ';',
+      ...(() => { const P = this.sGet().profile || {}; const av = P.avatar; const ini = ((P.name || 'Мирас')[0] || 'М').toUpperCase();
+        return { avLetter: av ? '' : ini, avBtn: av ? "background: url('" + av + "') center / cover no-repeat; border: none; color: transparent;" : '' }; })(),
+      bnOn: !!this.state.banner, bnTitle: this.state.banner ? this.state.banner.title : '', bnKind: this.state.banner && this.state.banner.kind === 'task' ? 'Тапсырма' : 'Жазба',
+      bnClose: () => { clearTimeout(this._bnT); this.setState({ banner: null }); },
+      accent,
+      isIntro: st.step === 'intro', isAuth: st.step === 'auth', isDone: st.step === 'done',
+      s0: st.slide === 0, s1: st.slide === 1, s2: st.slide === 2, notLast: st.slide < SLIDES.length - 1,
+      slideTitle: SLIDES[st.slide][0], slideSub: SLIDES[st.slide][1], slideDots: dotText(SLIDES[st.slide][0], 5, 4, C.fg),
+      pager: SLIDES.map((s, i) => ({ label: (i + 1) + '-бет', sel: i === st.slide ? 'true' : 'false', go: () => go(i),
+        style: 'height: 8px; padding: 0; border: none; border-radius: 4px; transition: width 0.3s ease, background 0.3s ease; width: ' + (i === st.slide ? 24 : 8) + 'px; background: ' + (i === st.slide ? accent : C.ring) + ';' })),
+      next: () => st.slide < SLIDES.length - 1 ? go(st.slide + 1) : toAuth('up'), nextLabel: st.slide < SLIDES.length - 1 ? 'Келесі' : 'Бастау',
+      skip: () => toAuth('up'),
+      swDown: (e) => { this._sx = e.clientX; }, swUp: (e) => { const dx = e.clientX - (this._sx == null ? e.clientX : this._sx); this._sx = null; if (Math.abs(dx) > 40) go(st.slide + (dx < 0 ? 1 : -1)); },
+      demoTasks: demo.map(([title, time, done], i) => ({ title, time, done, line: i ? '0.5px solid ' + C.line : 'none',
+        box: 'width: 22px; height: 22px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%; display: flex; align-items: center; justify-content: center; ' + (done ? 'background: ' + accent + ';' : 'border: 1.5px solid ' + C.ring + ';'),
+        text: 'flex: 1 1 auto; min-width: 0; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;' + (done ? ' text-decoration: line-through; opacity: 0.5;' : '') })),
+      demoHabits: HB.map(([name, streak, d]) => ({ name, streak, days: d.map((x, i) => dayDot(!!x, i === 5)) })),
+      demoBal: dotText('191 400', 4, 3, C.fg),
+      demoBars: [34, 52, 22, 70, 44, 90, 28].map((h, i) => 'flex: 1 1 0; height: ' + h + '%; border-radius: 6px; background: ' + (i === 5 ? accent : C.track) + ';'),
+      backIntro: () => this.setState({ step: 'intro', slide: SLIDES.length - 1, focus: null }),
+      authTitle: st.mode === 'up' ? 'Тіркелу' : 'Кіру', authDots: dotText(st.mode === 'up' ? 'Тіркелу' : 'Кіру', 4, 3, C.fg),
+      authSub: st.mode === 'up' ? 'Аккаунт ашыңыз — деректеріңіз барлық құрылғыда бірдей болады.' : 'Қайта қош келдіңіз! Поштаңыз бен құпиясөзіңізді жазыңыз.',
+      isIn: st.mode === 'in', inSel: st.mode === 'in' ? 'true' : 'false', upSel: st.mode === 'up' ? 'true' : 'false', inW: st.mode === 'in' ? 600 : 400, upW: st.mode === 'up' ? 600 : 400,
+      toIn: () => this.setState({ mode: 'in', err: '', note: '', focus: null }), toUp: () => this.setState({ mode: 'up', err: '', note: '', focus: null }),
+      segPill: 'position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 30px; transition: transform 0.35s cubic-bezier(.2,.9,.3,1); transform: translateX(' + (st.mode === 'up' ? '100%' : '0') + '); ' + C.glassStrong + ';',
+      formWrap: 'display: flex; flex-direction: column; gap: 8px;' + (st.shake ? ' animation: aptaShake' + (st.shake % 2 ? '' : '2') + ' 0.4s ease;' : ''),
+      fields, eyeOn: !!st.eye, eyeOff: !st.eye, eyeLabel: st.eye ? 'Құпиясөзді жасыру' : 'Құпиясөзді көрсету', toggleEye: () => this.setState({ eye: !st.eye }),
+      hasErr: !!st.err, err: st.err, hasNote: !!st.note && !st.err, note: st.note,
+      forgot: () => { const e = st.email.trim().toLowerCase(); if (!valid(e)) return fail('Алдымен поштаңызды жазыңыз.'); this.setState({ err: '', note: 'Қалпына келтіру сілтемесі ' + e + ' поштасына жіберілді.', focus: null }); },
+      submit, submitLabel: st.busy ? (st.mode === 'up' ? 'Аккаунт ашылуда…' : 'Кіруде…') : (st.mode === 'up' ? 'Тіркелу' : 'Кіру'), busy: !!st.busy, busyAria: st.busy ? 'true' : 'false',
+      showAlt: !kbOpen, altApple: () => finish('', ''), altGoogle: () => finish('', ''),
+      kbOpen, kbRows,
+      doneTitle: 'Қош келдіңіз, ' + (st.doneName || 'Мирас') + '!',
+    };
+  }
+}
+</script>
+</body>
+</html>
