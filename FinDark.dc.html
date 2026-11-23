@@ -315,6 +315,7 @@ class Component extends DCLogic {
   sBoot() {
     if (this._booted) return; this._booted = true;
     try { this.rebase(); } catch (e) {}
+    try { if (typeof window !== 'undefined' && window.__aptaApp && navigator.storage && navigator.storage.persist) navigator.storage.persisted().then(p => p || navigator.storage.persist()).catch(() => {}); } catch (e) {}
     if (typeof window !== 'undefined' && window.__aptaApp) { try { this.appPrep(); } catch (e) {} if (this.appEmpty) { try { Object.assign(this.state, this.appEmpty(this.sGet())); } catch (e) {} } }
     const S0 = this.sGet();
     if (this.hydrate) { try { Object.assign(this.state, this.hydrate(S0)); } catch (e) {} }
