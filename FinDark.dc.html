@@ -309,6 +309,9 @@ class Component extends DCLogic {
     if (sd.trash && !C.trash) { if (Array.isArray(S.trash)) { const F = new Set(sd.trash); P.trash = S.trash.filter(t => !F.has(t.title)); } C.trash = 1; }
     if (sd.profile && !C.profile) { const Pr = S.profile || {}; if (Pr.name === sd.profile && !(S.auth && S.auth.name === Pr.name)) P.profile = { ...Pr, name: (S.auth && S.auth.name) || '' }; C.profile = 1; }
     P.clean = C; this.sPut(P); }
+  navOrder() { const D = ['home', 'cal', 'notes', 'fin']; const o = ((this.sGet().profile || {}).nav || []).filter((k, i, a) => D.includes(k) && a.indexOf(k) === i); return o.length === 4 ? o : D; }
+  navApply() { try { const L = { home: 'Бүгін', cal: 'Күнтізбе', notes: 'Жазбалар', fin: 'Қаржы' }; const css = this.navOrder().map((k, i) => 'nav[aria-label="Негізгі мәзір"] a[aria-label="' + L[k] + '"]{order:' + (i + 1) + '}').join('');
+    let el = document.getElementById('apta-nav-order'); if (!el) { el = document.createElement('style'); el.id = 'apta-nav-order'; document.head.appendChild(el); } if (el.textContent !== css) el.textContent = css; } catch (e) {} }
   notice(title, text) { this.setState({ notice: { title, text } }); }
   accentNow() { const p = this.sGet().profile || {}; return p.accent || this.props.accent || '#C8F542'; }
   onAccent(c) { const h = (c || '#C8F542').replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(x => x + x).join('') : h, 16); const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? 'var(--onacc, #111111)' : '#FFFFFF'; }
@@ -317,10 +320,11 @@ class Component extends DCLogic {
     try { this.rebase(); if (!this.sGet().since) this.sPut({ since: Date.now() }); } catch (e) {}
     try { if (typeof window !== 'undefined' && window.__aptaApp && navigator.storage && navigator.storage.persist) navigator.storage.persisted().then(p => p || navigator.storage.persist()).catch(() => {}); } catch (e) {}
     if (typeof window !== 'undefined' && window.__aptaApp) { try { this.appPrep(); } catch (e) {} if (this.appEmpty) { try { Object.assign(this.state, this.appEmpty(this.sGet())); } catch (e) {} } }
+    this.navApply();
     const S0 = this.sGet();
     if (this.hydrate) { try { Object.assign(this.state, this.hydrate(S0)); } catch (e) {} }
     const it = S0.intent; if (it && it.board === this.boardName() && this.onIntent) { try { Object.assign(this.state, this.onIntent(it.action) || {}); } catch (e) {} this.sPut({ intent: null }); }
-    try { window.addEventListener('storage', (e) => { if (e.key !== 'apta.v1') return; const S = this.sGet(); const p = this.hydrate ? this.hydrate(S) : {};
+    try { window.addEventListener('storage', (e) => { if (e.key !== 'apta.v1') return; this.navApply(); const S = this.sGet(); const p = this.hydrate ? this.hydrate(S) : {};
       const it2 = S.intent; let q = {}; if (it2 && it2.board === this.boardName() && this.onIntent) { q = this.onIntent(it2.action) || {}; this.sPut({ intent: null }); }
       this._skipPersist = true; this.setState({ ...p, ...q, _sv: Date.now() }); }); } catch (e) {}
     this._hm = this.nowHM(); this._dn = this.dayNum();

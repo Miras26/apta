@@ -120,6 +120,9 @@ button:active{transform:scale(0.96)}
           <button onClick="{{pick_lang}}" style="display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 0; border: none; border-top: 0.5px solid rgba(0,0,0,0.08); background: transparent; color: #141414; text-align: left">
             <span style="flex: 1 1 auto; font-size: 15px">Тіл</span><span style="font-size: 13px; color: rgba(20,20,20,0.7)">{{val_lang}}</span><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(20,20,20,0.7)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg>
           </button>
+          <button onClick="{{navOpenSheet}}" style="display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 0; border: none; border-top: 0.5px solid rgba(0,0,0,0.08); background: transparent; color: #141414; text-align: left">
+            <span style="flex: 1 1 auto; font-size: 15px">Мәзір реттілігі</span><span style="font-size: 13px; color: rgba(20,20,20,0.7)">{{navVal}}</span><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(20,20,20,0.7)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg>
+          </button>
           <button onClick="{{openTrash}}" style="display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 0; border: none; border-top: 0.5px solid rgba(0,0,0,0.08); background: transparent; color: #141414; text-align: left">
             <span style="flex: 1 1 auto; font-size: 15px">Жақында өшірілгендер</span><span style="font-size: 13px; color: rgba(20,20,20,0.7)">{{trashCount}}</span><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(20,20,20,0.7)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg>
           </button>
@@ -208,6 +211,23 @@ button:active{transform:scale(0.96)}
       <sc-for list="{{choiceRows}}" as="o" hint-placeholder-count="4">
         <button role="menuitemradio" aria-checked="{{o.sel}}" onClick="{{o.pick}}" style="display: flex; align-items: center; gap: 12px; height: 54px; padding: 0 16px; border: none; border-radius: 22px; background: transparent; color: #141414; font-size: 15px; text-align: left"><span style="flex: 1 1 auto">{{o.label}}</span><sc-if value="{{o.on}}" hint-placeholder-val="{{ false }}"><span style="width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: {{accent}}"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--onacc, #111111)"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></sc-if></button>
       </sc-for>
+    </section>
+  </sc-if>
+  <sc-if value="{{navOpen}}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{navClose}}" style="position: absolute; inset: 0; z-index: 30; background: rgba(243,242,239,0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); animation: aptaFade 0.25s ease both"></div>
+    <section role="dialog" aria-label="Мәзір реттілігі" style="position: absolute; z-index: 31; left: 8px; right: 8px; bottom: 8px; box-sizing: border-box; padding: 20px 12px 12px; border-radius: 36px; display: flex; flex-direction: column; gap: 4px; animation: aptaSheet 0.42s cubic-bezier(.2,.9,.3,1.05) both; background: rgba(255,255,255,0.78); border: 0.5px solid rgba(0,0,0,0.08); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.95), 0 4px 16px rgba(30,30,40,0.05); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); color: #141414"><span aria-hidden="true" style="position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(160deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 20%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 72%, rgba(255,255,255,0.6) 100%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); pointer-events: none"></span>
+      <div aria-hidden="true" style="align-self: center; width: 36px; height: 4px; border-radius: 2px; background: #141414; opacity: 0.3; margin-top: -8px"></div>
+      <div style="display: flex; align-items: center; gap: 8px; padding: 0 4px 6px 12px"><span style="flex: 1 1 auto; font-size: 18px; font-weight: 600">Мәзір реттілігі</span><button aria-label="Жабу" onClick="{{navClose}}" style="position: relative; width: 40px; height: 40px; border-radius: 20px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.6); border: 0.5px solid rgba(0,0,0,0.06); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px)"><span aria-hidden="true" style="position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(160deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 20%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 72%, rgba(255,255,255,0.6) 100%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); pointer-events: none"></span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <span style="padding: 0 12px 8px; font-size: 13px; line-height: 1.45; color: rgba(20,20,20,0.7)">Төменгі мәзірдегі бөлімдердің орнын жебелермен ауыстырыңыз.</span>
+      <sc-for list="{{navRows}}" as="o" hint-placeholder-count="4">
+        <div style="position: relative; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 6px 0 16px; border-radius: 22px; transition: transform 0.25s ease; background: rgba(255,255,255,0.6); border: 0.5px solid rgba(0,0,0,0.06); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px)"><span aria-hidden="true" style="position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(160deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 20%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 72%, rgba(255,255,255,0.6) 100%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); pointer-events: none"></span>
+          <span style="position: relative; width: 24px; font-size: 13px; font-weight: 600; color: rgba(20,20,20,0.7)">{{o.n}}</span>
+          <span style="position: relative; flex: 1 1 auto; font-size: 15px; font-weight: 500">{{o.label}}</span>
+          <button aria-label="{{o.upLabel}}" aria-disabled="{{o.upOff}}" onClick="{{o.up}}" style="{{o.upStyle}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button>
+          <button aria-label="{{o.downLabel}}" aria-disabled="{{o.downOff}}" onClick="{{o.down}}" style="{{o.downStyle}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+        </div>
+      </sc-for>
+      <button onClick="{{navReset}}" style="align-self: center; height: 40px; margin-top: 4px; padding: 0 16px; border: none; background: transparent; color: rgba(20,20,20,0.7); font-size: 13px; font-weight: 500">Бастапқы ретке қайтару</button>
     </section>
   </sc-if>
   <sc-if value="{{nameOpen}}" hint-placeholder-val="{{ false }}">
@@ -379,6 +399,9 @@ class Component extends DCLogic {
     if (sd.trash && !C.trash) { if (Array.isArray(S.trash)) { const F = new Set(sd.trash); P.trash = S.trash.filter(t => !F.has(t.title)); } C.trash = 1; }
     if (sd.profile && !C.profile) { const Pr = S.profile || {}; if (Pr.name === sd.profile && !(S.auth && S.auth.name === Pr.name)) P.profile = { ...Pr, name: (S.auth && S.auth.name) || '' }; C.profile = 1; }
     P.clean = C; this.sPut(P); }
+  navOrder() { const D = ['home', 'cal', 'notes', 'fin']; const o = ((this.sGet().profile || {}).nav || []).filter((k, i, a) => D.includes(k) && a.indexOf(k) === i); return o.length === 4 ? o : D; }
+  navApply() { try { const L = { home: 'Бүгін', cal: 'Күнтізбе', notes: 'Жазбалар', fin: 'Қаржы' }; const css = this.navOrder().map((k, i) => 'nav[aria-label="Негізгі мәзір"] a[aria-label="' + L[k] + '"]{order:' + (i + 1) + '}').join('');
+    let el = document.getElementById('apta-nav-order'); if (!el) { el = document.createElement('style'); el.id = 'apta-nav-order'; document.head.appendChild(el); } if (el.textContent !== css) el.textContent = css; } catch (e) {} }
   notice(title, text) { this.setState({ notice: { title, text } }); }
   accentNow() { const p = this.sGet().profile || {}; return p.accent || this.props.accent || '#C8F542'; }
   onAccent(c) { const h = (c || '#C8F542').replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(x => x + x).join('') : h, 16); const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? 'var(--onacc, #111111)' : '#FFFFFF'; }
@@ -387,10 +410,11 @@ class Component extends DCLogic {
     try { this.rebase(); if (!this.sGet().since) this.sPut({ since: Date.now() }); } catch (e) {}
     try { if (typeof window !== 'undefined' && window.__aptaApp && navigator.storage && navigator.storage.persist) navigator.storage.persisted().then(p => p || navigator.storage.persist()).catch(() => {}); } catch (e) {}
     if (typeof window !== 'undefined' && window.__aptaApp) { try { this.appPrep(); } catch (e) {} if (this.appEmpty) { try { Object.assign(this.state, this.appEmpty(this.sGet())); } catch (e) {} } }
+    this.navApply();
     const S0 = this.sGet();
     if (this.hydrate) { try { Object.assign(this.state, this.hydrate(S0)); } catch (e) {} }
     const it = S0.intent; if (it && it.board === this.boardName() && this.onIntent) { try { Object.assign(this.state, this.onIntent(it.action) || {}); } catch (e) {} this.sPut({ intent: null }); }
-    try { window.addEventListener('storage', (e) => { if (e.key !== 'apta.v1') return; const S = this.sGet(); const p = this.hydrate ? this.hydrate(S) : {};
+    try { window.addEventListener('storage', (e) => { if (e.key !== 'apta.v1') return; this.navApply(); const S = this.sGet(); const p = this.hydrate ? this.hydrate(S) : {};
       const it2 = S.intent; let q = {}; if (it2 && it2.board === this.boardName() && this.onIntent) { q = this.onIntent(it2.action) || {}; this.sPut({ intent: null }); }
       this._skipPersist = true; this.setState({ ...p, ...q, _sv: Date.now() }); }); } catch (e) {}
     this._hm = this.nowHM(); this._dn = this.dayNum();
@@ -467,6 +491,7 @@ class Component extends DCLogic {
   constructor(props) { super(props); this.state = { view: 'main', avOn: false, avTab: 'st', avDraft: null, codeOn: false, codeStep: 1, code1: '', codeIn: '', codeErr: false, tFace: true, lockCode: '1234', name: 'Мирас', week: 'mon', sum: '21:00', lang: 'kk', choice: null, nameOn: false, draft: '', nkShift: false, nkMode: 'abc', out: false, trash: [['Ескі апта жоспары', 'Жазба', 28], ['Дүкенге бару', 'Тапсырма', 25], ['Такси · −1 500 ₸', 'Шығын', 21], ['15 қараша', 'Күнделік', 12], ['Курс жобасы', 'Майндмэп', 3]].map(([title, kind, days], i) => ({ id: 'sample' + i, title, kind, type: 'sample', at: Date.now() - (30 - days) * 86400000 })), acc: null, theme: 'auto', tNotif: true, tVoice: false, tSound: true, tHaptic: true, tDiary: true, tLock: true }; }
   appSeeds() { return { trash: (this.state.trash || []).map(t => Array.isArray(t) ? t[0] : t.title), profile: 'Мирас' }; }
   appEmpty(S) { return { trash: [], name: (S.auth && S.auth.name) || 'Пайдаланушы' }; }
+  navSet(a) { const S = this.sGet(); this.sPut({ profile: { ...(S.profile || {}), nav: a } }); this.navApply(); this.setState({ navOrd: a }); }
   hydrate(S) { const P = S.profile || {}; const p = { out: !!(S.auth && S.auth.signed === false) }; ['name', 'avatar', 'theme', 'week', 'sum', 'lang', 'tNotif', 'tVoice', 'tSound', 'tHaptic', 'tDiary', 'tLock', 'tFace', 'lockCode'].forEach(k => { if (P[k] !== undefined) p[k] = P[k]; }); if (P.accent) p.acc = P.accent; if (Array.isArray(S.trash)) p.trash = S.trash; return p; }
   dehydrate(st, S) { const P = { ...(S.profile || {}) }; ['name', 'avatar', 'theme', 'week', 'sum', 'lang', 'tNotif', 'tVoice', 'tSound', 'tHaptic', 'tDiary', 'tLock', 'tFace', 'lockCode'].forEach(k => { P[k] = st[k] === undefined ? null : st[k]; }); P.accent = st.acc || P.accent || null; return { profile: P, trash: st.trash }; }
   renderVals() {
@@ -636,6 +661,13 @@ class Component extends DCLogic {
         style: 'height: 40px; border-radius: 14px; font-size: 13px; font-weight: ' + (st.theme === k ? 600 : 400) + '; color: ' + C.fg + ';' + (st.theme === k ? ' ' + C.glassStrong : ' border: none; background: transparent;') })),
       swatches: SW.map(([c, label]) => ({ label, on: c === accent, sel: c === accent ? 'true' : 'false', pick: () => this.setState({ acc: c }),
         style: 'width: 44px; height: 44px; border-radius: 22px; border: none; display: flex; align-items: center; justify-content: center; background: ' + c + ';' + (c === accent ? ' box-shadow: 0 0 0 3px ' + C.ringBg + ', 0 0 0 5px ' + c + ';' : '') })),
+      navOpen: !!st.navOn, navOpenSheet: () => this.setState({ navOn: true }), navClose: () => this.setState({ navOn: false }),
+      navVal: (() => { const o = st.navOrd || this.navOrder(); const D = ['home', 'cal', 'notes', 'fin']; return o.join() === D.join() ? 'Бастапқы' : 'Өзгертілген'; })(),
+      navReset: () => this.navSet(['home', 'cal', 'notes', 'fin']),
+      navRows: (() => { const NL = { home: 'Бүгін', cal: 'Күнтізбе', notes: 'Жазбалар', fin: 'Қаржы' }; const o = st.navOrd || this.navOrder();
+        const bs = (off) => 'position: relative; width: 44px; height: 44px; border: none; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: transparent; color: ' + C.fg + '; transition: opacity 0.2s ease; opacity: ' + (off ? 0.25 : 1) + ';';
+        const mv = (i, d) => () => { const j = i + d; if (j < 0 || j > 3) return; const a = o.slice(); [a[i], a[j]] = [a[j], a[i]]; this.navSet(a); };
+        return o.map((k, i) => ({ n: String(i + 1), label: NL[k], up: mv(i, -1), down: mv(i, 1), upOff: i === 0 ? 'true' : 'false', downOff: i === 3 ? 'true' : 'false', upStyle: bs(i === 0), downStyle: bs(i === 3), upLabel: NL[k] + ' — жоғары', downLabel: NL[k] + ' — төмен' })); })(),
       tNotif: sw('tNotif'), tVoice: sw('tVoice'), tSound: sw('tSound'), tHaptic: sw('tHaptic'), tDiary: sw('tDiary'), tLock: sw('tLock'), tFace: sw('tFace'),
       menuOpen: !!st.menuOpen, menuExpanded: st.menuOpen ? 'true' : 'false',
       closeMenu: () => this.setState({ menuOpen: false }), togglePlus: () => this.setState({ menuOpen: !this.state.menuOpen }),

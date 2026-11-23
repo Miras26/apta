@@ -292,39 +292,29 @@ button:active{transform:scale(0.96)}
         <span style="display: block; min-height: 22px; max-width: 100%; font-size: 13px; line-height: 1.4; overflow-wrap: anywhere"><span style="{{descTextStyle}}">{{descShown}}</span><sc-if value="{{descCaret}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="display: inline-block; vertical-align: -3px; width: 2px; height: 18px; margin-left: 1px; border-radius: 1px; background: {{accent}}; animation: aptaBlink 1s steps(1) infinite"></span></sc-if></span>
       </button>
       <div style="position: relative; display: flex; flex-direction: column; border-radius: 30px; {{timeCell}}">
-        <button aria-label="Күні: {{dateShown}}" aria-expanded="{{dateAria}}" onClick="{{toggleDate}}" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: none; background: transparent; color: #FFFFFF; text-align: left">
+        <button aria-label="Күні мен уақыты: {{dtShown}}" aria-expanded="{{timeAria}}" onClick="{{toggleDT}}" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: none; background: transparent; color: #FFFFFF; text-align: left">
           <span style="display: flex; flex-direction: column; gap: 4px">
-            <span style="font-size: 11px; color: rgba(255,255,255,0.74)">Күні · міндетті емес</span>
-            <span style="font-size: 15px; font-weight: 500">{{dateShown}}</span>
-          </span>
-          <span style="{{dateChev}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"/></svg></span>
-        </button>
-        <sc-if value="{{dateOpen}}" hint-placeholder-val="{{ false }}">
-          <div role="radiogroup" aria-label="Күнді таңдау" style="display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 0 12px 12px; animation: aptaFade 0.25s ease both">
-            <sc-for list="{{dateChips}}" as="c" hint-placeholder-count="21"><button role="radio" aria-checked="{{c.sel}}" aria-label="{{c.label}}" onClick="{{c.pick}}" style="{{c.style}}"><span style="font-size: 11px; opacity: 0.7">{{c.wd}}</span><span style="font-size: 15px; font-weight: 600">{{c.n}}</span></button></sc-for>
-          </div>
-        </sc-if>
-      </div>
-      <div style="position: relative; display: flex; flex-direction: column; border-radius: 30px; {{timeCell}}">
-        <button aria-label="Уақыты: {{timeShown}}" aria-expanded="{{timeAria}}" onClick="{{toggleTime}}" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: none; background: transparent; color: #FFFFFF; text-align: left">
-          <span style="display: flex; flex-direction: column; gap: 4px">
-            <span style="font-size: 11px; color: rgba(255,255,255,0.74)">Уақыты · міндетті емес</span>
-            <span style="font-size: 15px; font-weight: 500">{{timeShown}}</span>
+            <span style="font-size: 11px; color: rgba(255,255,255,0.74)">Күні мен уақыты</span>
+            <span style="font-size: 15px; font-weight: 500">{{dtShown}}</span>
           </span>
           <span style="{{timeChev}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"/></svg></span>
         </button>
         <sc-if value="{{timeOpen}}" hint-placeholder-val="{{ false }}">
-          <div style="position: relative; display: flex; justify-content: center; align-items: center; gap: 4px; height: 180px; margin: 0 12px 8px; animation: aptaFade 0.25s ease both">
-            <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 72px; height: 36px; border-radius: 12px; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"></div>
-            <div ref="{{hourRef}}" onScroll="{{onHourScroll}}" style="position: relative; height: 180px; width: 72px; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; padding: 72px 0; box-sizing: border-box; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent)">
-              <sc-for list="{{hours}}" as="h" hint-placeholder-count="24"><div style="{{h.style}}">{{h.v}}</div></sc-for>
-            </div>
-            <span style="position: relative; font-size: 22px; font-weight: 500">:</span>
-            <div ref="{{minRef}}" onScroll="{{onMinScroll}}" style="position: relative; height: 180px; width: 72px; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; padding: 72px 0; box-sizing: border-box; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent)">
-              <sc-for list="{{mins}}" as="h" hint-placeholder-count="12"><div style="{{h.style}}">{{h.v}}</div></sc-for>
-            </div>
+          <div role="radiogroup" aria-label="Күнді таңдау" style="display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 0 12px 12px; animation: aptaFade 0.25s ease both">
+            <sc-for list="{{dateChips}}" as="c" hint-placeholder-count="21"><button role="radio" aria-checked="{{c.sel}}" aria-label="{{c.label}}" onClick="{{c.pick}}" style="{{c.style}}"><span style="font-size: 11px; opacity: 0.7">{{c.wd}}</span><span style="font-size: 15px; font-weight: 600">{{c.n}}</span></button></sc-for>
           </div>
-          <button onClick="{{clearTime}}" style="align-self: center; height: 36px; margin: 0 0 12px; padding: 0 16px; border: none; border-radius: 18px; background: transparent; color: rgba(255,255,255,0.74); font-size: 13px; font-weight: 500">Уақытсыз</button>
+          <sc-if value="{{hasTime}}" hint-placeholder-val="{{ true }}">
+            <div style="position: relative; display: flex; justify-content: center; align-items: center; gap: 4px; height: 180px; margin: 0 12px 8px; animation: aptaFade 0.25s ease both">
+              <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 72px; height: 36px; border-radius: 12px; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"></div>
+              <div ref="{{hourRef}}" onScroll="{{onHourScroll}}" style="position: relative; height: 180px; width: 72px; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; padding: 72px 0; box-sizing: border-box; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent)"><sc-for list="{{hours}}" as="h" hint-placeholder-count="24"><div style="{{h.style}}">{{h.v}}</div></sc-for></div>
+              <span style="position: relative; font-size: 22px; font-weight: 500">:</span>
+              <div ref="{{minRef}}" onScroll="{{onMinScroll}}" style="position: relative; height: 180px; width: 72px; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; padding: 72px 0; box-sizing: border-box; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 35%, #000 65%, transparent)"><sc-for list="{{mins}}" as="h" hint-placeholder-count="12"><div style="{{h.style}}">{{h.v}}</div></sc-for></div>
+            </div>
+            <button onClick="{{clearTime}}" style="align-self: center; height: 36px; margin: 0 0 12px; padding: 0 16px; border: none; border-radius: 18px; background: transparent; color: rgba(255,255,255,0.74); font-size: 13px; font-weight: 500">Уақытты алып тастау</button>
+          </sc-if>
+          <sc-if value="{{noTime}}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{addTime}}" style="position: relative; align-self: stretch; height: 44px; margin: 0 12px 12px; border-radius: 22px; border: none; display: flex; align-items: center; justify-content: center; gap: 6px; color: #FFFFFF; font-size: 13px; font-weight: 500; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none">+ Уақыт қосу</button>
+          </sc-if>
         </sc-if>
       </div>
       <div style="display: flex; flex-direction: column; gap: 8px; padding: 2px 0 4px">
@@ -333,10 +323,10 @@ button:active{transform:scale(0.96)}
           <sc-for list="{{remOpts}}" as="r" hint-placeholder-count="5"><button role="radio" aria-checked="{{r.sel}}" onClick="{{r.pick}}" style="{{r.style}}">{{r.label}}</button></sc-for>
         </div>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <sc-if value="{{editOld}}" hint-placeholder-val="{{ true }}"><div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
         <button onClick="{{editPostpone}}" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 84px; border-radius: 30px; border: none; font-size: 11px; font-weight: 500; background: rgba(20,20,23,0.78); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 1px rgba(150,150,160,0.55), inset 0 22px 40px -10px rgba(150,150,160,0.9), inset 0 0 30px rgba(150,150,160,0.6), inset 0 -14px 30px -12px rgba(150,150,160,0.45), 0 12px 30px rgba(0,0,0,0.3); color: #FFFFFF; color: #FFFFFF"><span style="position: relative; width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>Кейінге</button>
         <button onClick="{{editDelete}}" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 84px; border-radius: 30px; border: none; font-size: 11px; font-weight: 500; background: rgba(30,6,8,0.78); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 1px rgba(229,72,77,0.55), inset 0 22px 40px -10px rgba(229,72,77,0.9), inset 0 0 30px rgba(229,72,77,0.6), inset 0 -14px 30px -12px rgba(229,72,77,0.45), 0 12px 30px rgba(0,0,0,0.3); color: #FFFFFF; color: #FFFFFF"><span style="position: relative; width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 12.5h9l1-12.5"/></svg></span>Өшіру</button>
-      </div>
+      </div></sc-if>
       <button onClick="{{editSave}}" aria-disabled="{{saveOff}}" style="height: 52px; margin-top: 4px; border: none; border-radius: 26px; background: #F5F4F1; color: #111111; font-size: 15px; font-weight: 600; transition: opacity 0.2s ease; opacity: {{saveOp}}">Сақтау</button>
     </section>
 
@@ -536,6 +526,9 @@ class Component extends DCLogic {
     if (sd.trash && !C.trash) { if (Array.isArray(S.trash)) { const F = new Set(sd.trash); P.trash = S.trash.filter(t => !F.has(t.title)); } C.trash = 1; }
     if (sd.profile && !C.profile) { const Pr = S.profile || {}; if (Pr.name === sd.profile && !(S.auth && S.auth.name === Pr.name)) P.profile = { ...Pr, name: (S.auth && S.auth.name) || '' }; C.profile = 1; }
     P.clean = C; this.sPut(P); }
+  navOrder() { const D = ['home', 'cal', 'notes', 'fin']; const o = ((this.sGet().profile || {}).nav || []).filter((k, i, a) => D.includes(k) && a.indexOf(k) === i); return o.length === 4 ? o : D; }
+  navApply() { try { const L = { home: 'Бүгін', cal: 'Күнтізбе', notes: 'Жазбалар', fin: 'Қаржы' }; const css = this.navOrder().map((k, i) => 'nav[aria-label="Негізгі мәзір"] a[aria-label="' + L[k] + '"]{order:' + (i + 1) + '}').join('');
+    let el = document.getElementById('apta-nav-order'); if (!el) { el = document.createElement('style'); el.id = 'apta-nav-order'; document.head.appendChild(el); } if (el.textContent !== css) el.textContent = css; } catch (e) {} }
   notice(title, text) { this.setState({ notice: { title, text } }); }
   accentNow() { const p = this.sGet().profile || {}; return p.accent || this.props.accent || '#C8F542'; }
   onAccent(c) { const h = (c || '#C8F542').replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(x => x + x).join('') : h, 16); const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? 'var(--onacc, #111111)' : '#FFFFFF'; }
@@ -544,10 +537,11 @@ class Component extends DCLogic {
     try { this.rebase(); if (!this.sGet().since) this.sPut({ since: Date.now() }); } catch (e) {}
     try { if (typeof window !== 'undefined' && window.__aptaApp && navigator.storage && navigator.storage.persist) navigator.storage.persisted().then(p => p || navigator.storage.persist()).catch(() => {}); } catch (e) {}
     if (typeof window !== 'undefined' && window.__aptaApp) { try { this.appPrep(); } catch (e) {} if (this.appEmpty) { try { Object.assign(this.state, this.appEmpty(this.sGet())); } catch (e) {} } }
+    this.navApply();
     const S0 = this.sGet();
     if (this.hydrate) { try { Object.assign(this.state, this.hydrate(S0)); } catch (e) {} }
     const it = S0.intent; if (it && it.board === this.boardName() && this.onIntent) { try { Object.assign(this.state, this.onIntent(it.action) || {}); } catch (e) {} this.sPut({ intent: null }); }
-    try { window.addEventListener('storage', (e) => { if (e.key !== 'apta.v1') return; const S = this.sGet(); const p = this.hydrate ? this.hydrate(S) : {};
+    try { window.addEventListener('storage', (e) => { if (e.key !== 'apta.v1') return; this.navApply(); const S = this.sGet(); const p = this.hydrate ? this.hydrate(S) : {};
       const it2 = S.intent; let q = {}; if (it2 && it2.board === this.boardName() && this.onIntent) { q = this.onIntent(it2.action) || {}; this.sPut({ intent: null }); }
       this._skipPersist = true; this.setState({ ...p, ...q, _sv: Date.now() }); }); } catch (e) {}
     this._hm = this.nowHM(); this._dn = this.dayNum();
@@ -1093,6 +1087,11 @@ class Component extends DCLogic {
       descCell: C.wglass + (st.kbOpen && st.kbField === 'desc' ? '; box-shadow: inset 0 0 0 1.5px ' + accent : ''),
       titleCaret: !!st.kbOpen && st.kbField !== 'desc', descCaret: !!st.kbOpen && st.kbField === 'desc',
       toggleTime: () => { const tm = this.state.editTime || '12:00'; this._wheelInit = false; this.setState({ timeOpen: !this.state.timeOpen, dateOpen: false, kbOpen: false, editTime: tm }); },
+      toggleDT: () => { this._wheelInit = false; this.setState({ timeOpen: !this.state.timeOpen, dateOpen: false, kbOpen: false }); },
+      addTime: () => { this._wheelInit = false; this.setState({ editTime: '12:00' }); },
+      hasTime: !!st.editTime, noTime: !st.editTime,
+      editOld: (() => { const x = BASE.find(y => y.id === st.editId); return !!(x && x.title); })(),
+      dtShown: (() => { const o = st.editDay || 0; const d = dOf(o); const ds = o === 0 ? 'Бүгін' : o === 1 ? 'Ертең' : o === -1 ? 'Кеше' : WSH[d.getDay()] + ', ' + d.getDate() + ' ' + MN2[d.getMonth()]; return ds + ' · ' + (st.editTime || 'уақытсыз'); })(),
       toggleDate: () => this.setState({ dateOpen: !this.state.dateOpen, timeOpen: false, kbOpen: false }),
       dateShown: (() => { const o = st.editDay || 0; if (o === 0) return 'Бүгін'; if (o === 1) return 'Ертең'; if (o === -1) return 'Кеше'; const d = dOf(o); return WSH[d.getDay()] + ', ' + d.getDate() + ' ' + MN2[d.getMonth()]; })(),
       dateAria: st.dateOpen ? 'true' : 'false', dateOpen: !!st.dateOpen,
@@ -1100,7 +1099,7 @@ class Component extends DCLogic {
       dateChips: Array.from({ length: 22 }, (_, i) => i - 1).map(o => { const d = dOf(o); const on = (st.editDay || 0) === o;
         return { wd: o === 0 ? 'Бүгін' : o === 1 ? 'Ертең' : WSH[d.getDay()], n: String(d.getDate()), sel: on ? 'true' : 'false', label: d.getDate() + ' ' + MN2[d.getMonth()], pick: () => this.setState({ editDay: o, dateOpen: false }),
           style: 'position: relative; flex-shrink: 0; min-width: 52px; height: 56px; padding: 0 8px; border-radius: 22px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; ' + (on ? 'border: none; background: ' + accent + '; color: var(--onacc, #111111);' : C.wglass + '; color: ' + C.oFg + ';') }; }),
-      clearTime: () => this.setState({ editTime: '', timeOpen: false }),
+      clearTime: () => this.setState({ editTime: '' }),
       titleShown: st.editTitle || (st.kbOpen && st.kbField !== 'desc' ? '' : 'Мысалы: эссе жазу'),
       titleTextStyle: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;' + (st.editTitle ? '' : ' opacity: 0.45;'),
       titleCell: C.wglass + (st.kbOpen && st.kbField !== 'desc' ? '; box-shadow: inset 0 0 0 1.5px ' + accent : ''),
