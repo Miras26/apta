@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Апта — таныстыру, қараңғы</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, interactive-widget=resizes-content">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -162,17 +162,37 @@ class Component extends DCLogic {
   sGet() { try { return JSON.parse(localStorage.getItem('apta.v1') || '{}') || {}; } catch (e) { return this._mem || {}; } }
   sPut(patch) { const next = { ...this.sGet(), ...patch }; this._mem = next; try { localStorage.setItem('apta.v1', JSON.stringify(next)); } catch (e) {} return next; }
   boardName() { return 'OnboardDark.dc.html'; }
+  today0() { const d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  dOff(o) { const t = this.today0(); return new Date(t.getFullYear(), t.getMonth(), t.getDate() + (o || 0)); }
+  dayNum(d) { d = d || new Date(); return Math.round(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000); }
+  nowHM() { const d = new Date(); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+  todayLine(o) { const d = this.dOff(o || 0); const WD = ['Жексенбі', 'Дүйсенбі', 'Сейсенбі', 'Сәрсенбі', 'Бейсенбі', 'Жұма', 'Сенбі']; const MN = ['қаңтар', 'ақпан', 'наурыз', 'сәуір', 'мамыр', 'маусым', 'шілде', 'тамыз', 'қыркүйек', 'қазан', 'қараша', 'желтоқсан'];
+    return WD[d.getDay()] + ' · ' + d.getDate() + ' ' + MN[d.getMonth()]; }
+  // stored day offsets are relative to the day they were saved; move them so 0 is always the real today
+  rebase() { const S = this.sGet(); const tn = this.dayNum(); if (S.base == null) { this.sPut({ base: tn }); return; } const k = tn - S.base; if (!k) return;
+    const sh = (o) => typeof o === 'number' ? o - k : o; const P = { base: tn };
+    if (S.tasks) { const T = { ...S.tasks }; if (Array.isArray(T.extra)) T.extra = T.extra.map(x => ({ ...x, d: sh(x.d) }));
+      if (T.moved) { const m = {}; Object.keys(T.moved).forEach(id => { m[id] = sh(T.moved[id]); }); T.moved = m; } P.tasks = T; }
+    if (S.habits && S.habits.log) { const L = {}; Object.keys(S.habits.log).forEach(h => { const o = {}; Object.keys(S.habits.log[h] || {}).forEach(d => { o[String(Number(d) - k)] = S.habits.log[h][d]; }); L[h] = o; }); P.habits = { ...S.habits, log: L }; }
+    if (S.fin && Array.isArray(S.fin.tx)) P.fin = { ...S.fin, tx: S.fin.tx.map(x => ({ ...x, d: sh(x.d) })) };
+    if (S.notes) { const N = { ...S.notes }; if (Array.isArray(N.notes)) N.notes = N.notes.map(x => ({ ...x, d: sh(x.d) })); if (Array.isArray(N.maps)) N.maps = N.maps.map(x => ({ ...x, d: sh(x.d) })); P.notes = N; }
+    this.sPut(P); }
+  notice(title, text) { this.setState({ notice: { title, text } }); }
   accentNow() { const p = this.sGet().profile || {}; return p.accent || this.props.accent || '#C8F542'; }
   onAccent(c) { const h = (c || '#C8F542').replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(x => x + x).join('') : h, 16); const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? 'var(--onacc, #111111)' : '#FFFFFF'; }
   sBoot() {
     if (this._booted) return; this._booted = true;
+    try { this.rebase(); } catch (e) {}
     const S0 = this.sGet();
     if (this.hydrate) { try { Object.assign(this.state, this.hydrate(S0)); } catch (e) {} }
     const it = S0.intent; if (it && it.board === this.boardName() && this.onIntent) { try { Object.assign(this.state, this.onIntent(it.action) || {}); } catch (e) {} this.sPut({ intent: null }); }
     try { window.addEventListener('storage', (e) => { if (e.key !== 'apta.v1') return; const S = this.sGet(); const p = this.hydrate ? this.hydrate(S) : {};
       const it2 = S.intent; let q = {}; if (it2 && it2.board === this.boardName() && this.onIntent) { q = this.onIntent(it2.action) || {}; this.sPut({ intent: null }); }
       this._skipPersist = true; this.setState({ ...p, ...q, _sv: Date.now() }); }); } catch (e) {}
-    try { clearInterval(this._remT); this._remT = setInterval(() => this.checkRem(), 4000); } catch (e) {}
+    this._hm = this.nowHM(); this._dn = this.dayNum();
+    try { clearInterval(this._remT); this._remT = setInterval(() => { this.checkRem(); const hm = this.nowHM();
+      if (this.dayNum() !== this._dn) { try { location.reload(); } catch (e) {} return; }
+      if (hm !== this._hm) { this._hm = hm; this.setState({ _clock: hm }); } }, 4000); } catch (e) {}
   }
   intentTo(board, action) { return () => { this.sPut({ intent: { board, action, at: Date.now() } }); }; }
   persistNow() {
@@ -232,6 +252,8 @@ class Component extends DCLogic {
     const SPECIAL = ['⇧', '⌫', '123', 'АБВ', 'ABC', 'Дайын', 'Келесі'];
     const cur = st.focus ? st[st.focus] : '';
     const upper = st.kbShift || (st.focus === 'name' && (cur === '' || cur.endsWith(' ')));
+    this._nf = st.focus ? { key: st.focus + st.mode, type: st.focus === 'pass' ? (st.eye ? 'text' : 'password') : (st.focus === 'email' ? 'email' : 'text'),
+      get: () => this.state[this.state.focus] || '', set: (v) => this.setState({ [this.state.focus]: v.slice(0, 60), err: '' }) } : null;
     const typeKey = (ch) => { const S = this.state; const f = S.focus; if (!f) return; const v = S[f];
       if (ch === '⌫') return this.setState({ [f]: v.slice(0, -1), err: '' });
       if (ch === '⇧') return this.setState({ kbShift: !S.kbShift });
@@ -263,6 +285,8 @@ class Component extends DCLogic {
         return { avLetter: av ? '' : ini, avBtn: av ? "background: url('" + av + "') center / cover no-repeat; border: none; color: transparent;" : '' }; })(),
       bnOn: !!this.state.banner, bnTitle: this.state.banner ? this.state.banner.title : '', bnKind: this.state.banner && this.state.banner.kind === 'task' ? 'Тапсырма' : 'Жазба',
       bnClose: () => { clearTimeout(this._bnT); this.setState({ banner: null }); },
+      ntOn: !!this.state.notice, ntTitle: this.state.notice ? this.state.notice.title : '', ntText: this.state.notice ? this.state.notice.text : '', ntClose: () => this.setState({ notice: null }),
+      todayText: this.todayLine(0),
       accent,
       isIntro: st.step === 'intro', isAuth: st.step === 'auth', isDone: st.step === 'done',
       s0: st.slide === 0, s1: st.slide === 1, s2: st.slide === 2, notLast: st.slide < SLIDES.length - 1,

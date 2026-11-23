@@ -7,7 +7,7 @@
   hide.textContent = 'x-dc{display:none!important}html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%}#apta-stage{position:fixed;left:0;top:0;transform-origin:0 0}';
   document.head.appendChild(hide);
   if (!document.querySelector('meta[name=viewport]')) {
-    var mv = document.createElement('meta'); mv.name = 'viewport'; mv.content = 'width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no'; document.head.appendChild(mv);
+    var mv = document.createElement('meta'); mv.name = 'viewport'; mv.content = 'width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, interactive-widget=resizes-content'; document.head.appendChild(mv);
   }
 
   // light <-> dark twin of every screen; the profile's theme choice (or the phone's) picks one
@@ -146,6 +146,104 @@
   DCLogic.prototype.forceUpdate = function () { if (this.__sched) this.__sched(); };
   window.DCLogic = DCLogic;
 
+  /* ---- native text editing: the screens draw their own caret; in the installed app a real
+     <input>/<textarea> is laid exactly over the field that has that caret, so the phone's own
+     keyboard (every language, hold-to-delete, select, copy, cut, paste) edits the page's state. */
+  window.__aptaApp = true;
+  var css = document.createElement('style');
+  css.textContent = '[role="group"][aria-label="Пернетақта"]{display:none!important}' +
+    '#apta-stage [style*="aptaBlink"]{visibility:hidden!important;width:0!important;margin:0!important}' +
+    '.apta-hide,.apta-hide *{color:transparent!important;-webkit-text-fill-color:transparent!important}' +
+    '.apta-nf{position:absolute;z-index:50;box-sizing:border-box;margin:0;padding:0;border:none;outline:none;background:transparent;resize:none;overflow:hidden;' +
+    '-webkit-user-select:text;user-select:text;-webkit-tap-highlight-color:transparent;border-radius:0;appearance:none}' +
+    '.apta-nf.rich{color:transparent!important;-webkit-text-fill-color:transparent}' +
+    '.apta-nf::selection{background:rgba(120,160,255,0.35)}';
+  document.head.appendChild(css);
+  var NF = { el: null, row: null, key: null, comp: null, stage: null, sel: null };
+  window.__aptaSel = function () { var x = NF.el && NF.sel ? { s: NF.sel.s, e: NF.sel.e, key: NF.key } : NF.last; if (!x || !(x.s < x.e)) return null; return { s: x.s, e: x.e, key: String(x.key || '').split('|')[0] }; };
+  function nfOf(comp) { return comp && comp.state && comp.state.srOpen ? comp._nfSr : comp && comp._nf; }
+  function clickKey(names) {
+    for (var i = 0; i < names.length; i++) { var b = NF.stage.querySelector('[aria-label="Пернетақта"] button[aria-label="' + names[i] + '"]'); if (b) { b.click(); return true; } }
+    return false;
+  }
+  function saveSel() { var e = NF.el; if (e && document.activeElement === e) NF.sel = { s: e.selectionStart, e: e.selectionEnd }; }
+  function scrollParent(n) { for (var p = n.parentElement; p && p !== NF.stage; p = p.parentElement) { var o = getComputedStyle(p).overflowY; if ((o === 'auto' || o === 'scroll') && p.scrollHeight > p.clientHeight) return p; } return null; }
+  function place(scale) {
+    var e = NF.el, r = NF.row; if (!e || !r || !r.isConnected) return;
+    var rr = r.getBoundingClientRect(), sr = NF.stage.getBoundingClientRect(); var s = scale || (sr.width / 390) || 1;
+    var pr = r.parentElement ? r.parentElement.getBoundingClientRect() : rr, pcs = r.parentElement ? getComputedStyle(r.parentElement) : null;
+    var right = Math.max(rr.right, pr.right - (pcs ? parseFloat(pcs.paddingRight) || 0 : 0) * s);
+    var w = (right - rr.left) / s, h = rr.height / s, k = r.offsetWidth ? (rr.width / s) / r.offsetWidth : 1; if (Math.abs(k - 1) < 0.03) k = 1;
+    var cs = getComputedStyle(r);
+    e.style.left = (rr.left - sr.left) / s + 'px'; e.style.top = (rr.top - sr.top) / s + 'px'; e.style.width = Math.max(w, 24) + 'px'; e.style.height = Math.max(h, parseFloat(cs.fontSize) * 1.3 * k) + 'px';
+    e.style.fontFamily = cs.fontFamily; e.style.fontWeight = cs.fontWeight; e.style.fontStyle = cs.fontStyle; e.style.letterSpacing = cs.letterSpacing;
+    e.style.fontSize = parseFloat(cs.fontSize) * k + 'px'; e.style.lineHeight = cs.lineHeight === 'normal' ? 'normal' : parseFloat(cs.lineHeight) * k + 'px';
+    e.style.textAlign = cs.textAlign === 'center' ? 'center' : 'left';
+    if (!e.classList.contains('rich')) e.style.color = NF.color || cs.color;
+    var ac = '#C8F542'; try { ac = NF.comp.accentNow(); } catch (x) {} e.style.caretColor = /^#(fff|ffffff)$/i.test(ac) ? cs.color : ac;
+  }
+  function reveal() {
+    var r = NF.row; if (!r || !r.isConnected) return; var sp = scrollParent(r); if (!sp) return;
+    var a = r.getBoundingClientRect(), b = sp.getBoundingClientRect();
+    if (a.bottom > b.bottom - 24) sp.scrollTop += a.bottom - b.bottom + 48; else if (a.top < b.top + 8) sp.scrollTop -= b.top - a.top + 24;
+  }
+  function detach() {
+    if (NF.el && NF.sel) NF.last = { s: NF.sel.s, e: NF.sel.e, key: NF.key };
+    if (NF.row) NF.row.classList.remove('apta-hide');
+    if (NF.el) { var e = NF.el; NF.el = null; if (e.parentNode) e.parentNode.removeChild(e); }
+    NF.row = null; NF.key = null; NF.sel = null;
+  }
+  function attach(row, nf, comp) {
+    var rich = row.hasAttribute('data-rich'), inner = row.querySelector('span') || row, wrap = rich || !(/nowrap/.test(getComputedStyle(row).whiteSpace) || /nowrap/.test(getComputedStyle(inner).whiteSpace));
+    NF.color = getComputedStyle(inner).color;
+    var type = nf.type || 'text';
+    var e = type === 'text' && (rich || wrap) ? document.createElement('textarea') : document.createElement('input');
+    if (e.tagName === 'INPUT') { e.type = type; e.autocomplete = type === 'password' ? 'current-password' : type === 'email' ? 'email' : 'off'; if (type === 'email') e.inputMode = 'email'; }
+    else { e.rows = 1; e.style.whiteSpace = 'pre-wrap'; e.style.overflowWrap = 'anywhere'; }
+    e.className = 'apta-nf' + (rich ? ' rich' : ''); e.spellcheck = true; e.setAttribute('autocapitalize', type === 'text' ? 'sentences' : 'none');
+    e.value = nf.get() || '';
+    e.addEventListener('input', function () { var f = nfOf(comp); if (f) f.set(e.value); saveSel(); });
+    ['select', 'keyup', 'pointerup', 'focus'].forEach(function (t) { e.addEventListener(t, saveSel); });
+    e.addEventListener('keydown', function (ev) {
+      var f = nfOf(comp); if (!f) return;
+      if (ev.key === 'Enter' && !ev.isComposing) {
+        if (f.enter) { ev.preventDefault(); var c = f.enter(e.selectionStart, e.value); if (typeof c === 'number') NF.pendingCaret = c; return; }
+        if (e.tagName === 'INPUT') { ev.preventDefault(); if (!clickKey(['↵', 'Келесі', 'Дайын'])) e.blur(); }
+        return;
+      }
+      if (ev.key === 'Backspace' && f.back0 && e.selectionStart === 0 && e.selectionEnd === 0) { ev.preventDefault(); var c2 = f.back0(); if (typeof c2 === 'number') NF.pendingCaret = c2; }
+    });
+    NF.stage.appendChild(e); NF.el = e; NF.row = row;
+    if (!rich) row.classList.add('apta-hide');
+    place();
+    try { e.focus({ preventScroll: true }); var n = e.value.length; if (typeof NF.pendingCaret === 'number') { n = Math.min(NF.pendingCaret, n); NF.pendingCaret = null; } e.setSelectionRange(n, n); } catch (x) {}
+    setTimeout(reveal, 60);
+  }
+  function syncField(comp, stage) {
+    NF.stage = stage; NF.comp = comp;
+    var nf = nfOf(comp), caret = null;
+    var cs = stage.querySelectorAll('[style*="aptaBlink"]');
+    for (var i = 0; i < cs.length; i++) { if (cs[i].getClientRects().length || cs[i].parentElement.getClientRects().length) { caret = cs[i]; break; } }
+    if (!caret || !nf) { detach(); return; }
+    var row = caret.parentElement, key = (nf.key || '') + '|' + (nf.type || '');
+    if (NF.row !== row || NF.key !== key || !NF.el) {
+      var hadFocus = NF.el && document.activeElement === NF.el; detach(); NF.last = null; NF.key = key; attach(row, nf, comp);
+      if (!hadFocus && NF.el) { /* first open keeps focus from the tap that caused it */ }
+      return;
+    }
+    if (!row.hasAttribute('data-rich')) row.classList.add('apta-hide');
+    var v = nf.get() || '';
+    if (NF.el.value !== v && !NF.composing) { var p = NF.el.selectionStart; NF.el.value = v; try { NF.el.setSelectionRange(Math.min(p, v.length), Math.min(p, v.length)); } catch (x) {} }
+    if (typeof NF.pendingCaret === 'number') { try { var q = Math.min(NF.pendingCaret, NF.el.value.length); NF.el.setSelectionRange(q, q); } catch (x) {} NF.pendingCaret = null; }
+    place(); reveal();
+  }
+  document.addEventListener('compositionstart', function () { NF.composing = true; }, true);
+  document.addEventListener('compositionend', function () { NF.composing = false; }, true);
+  document.addEventListener('selectionchange', saveSel);
+  // tapping a button while typing keeps the text focused and its selection (so tools act on it)
+  document.addEventListener('mousedown', function (ev) { if (NF.el && document.activeElement === NF.el && ev.target.closest && ev.target.closest('button') && ev.target !== NF.el) ev.preventDefault(); }, true);
+  document.addEventListener('scroll', function () { if (NF.el) place(); }, true);
+
   function fit(stage) {
     var W = window.innerWidth, H = window.innerHeight, s, h, x = 0;
     if (W / H < 0.66) { s = W / 390; h = H / s; } else { s = Math.min(1, H / 844); h = 844; x = (W - 390 * s) / 2; }
@@ -166,7 +264,7 @@
     for (var c = x.firstChild; c; c = c.nextSibling) { var t = compile(c, c.nodeType === 1 && first); if (c.nodeType === 1) first = false; if (t) tpl.push(t); }
     x.parentNode.removeChild(x);
     var stage = document.createElement('div'); stage.id = 'apta-stage'; document.body.appendChild(stage);
-    fit(stage); window.addEventListener('resize', function () { fit(stage); });
+    fit(stage); window.addEventListener('resize', function () { fit(stage); if (NF.el) { place(); setTimeout(reveal, 50); } });
     var comp = new Comp(props), tree = [], queued = false;
     function draw() {
       queued = false; var vals;
@@ -174,6 +272,7 @@
       var next = render(tpl, { v: vals, up: null }, '', []);
       refQ = []; patch(stage, tree, next); tree = next;
       var q = refQ; refQ = []; for (var i = 0; i < q.length; i++) { try { q[i][0](q[i][1]); } catch (e) { console.error(e); } }
+      try { syncField(comp, stage); } catch (e) { console.error(e); }
       if (!document.body.__bg) { var r = stage.firstElementChild; if (r) { document.body.style.background = getComputedStyle(r).backgroundColor; document.body.__bg = 1; } }
     }
     comp.__sched = function () { if (!queued) { queued = true; Promise.resolve().then(draw); } };

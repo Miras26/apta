@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Апта — қаржы, қараңғы</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, interactive-widget=resizes-content">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -221,6 +221,15 @@ button:active{transform:scale(0.96)}
       <button aria-label="Жабу" onClick="{{bnClose}}" style="width: 32px; height: 32px; flex-shrink: 0; padding: 0; border: none; border-radius: 16px; background: transparent; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
   </sc-if>
+  <sc-if value="{{ntOn}}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ntClose}}" style="position: absolute; inset: 0; z-index: 58; background: rgba(0,0,0,0.22); animation: aptaFade 0.25s ease both"></div>
+    <section role="alertdialog" aria-label="{{ntTitle}}" style="position: absolute; z-index: 59; left: 8px; right: 8px; bottom: 8px; box-sizing: border-box; padding: 22px 16px 12px; border-radius: 36px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; animation: aptaSheet 0.42s cubic-bezier(.2,.9,.3,1.05) both; background: rgba(255,255,255,0.15); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); color: #F5F4F1">
+      <span style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; background: {{accent}}"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--onacc, #111111)"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/><path d="M12 13.5v2.5l1.5 1"/></svg></span>
+      <span style="font-size: 18px; font-weight: 600">{{ntTitle}}</span>
+      <span style="padding: 0 10px; font-size: 13px; line-height: 1.45; color: rgba(245,244,241,0.72)">{{ntText}}</span>
+      <button onClick="{{ntClose}}" style="align-self: stretch; height: 52px; margin-top: 8px; border: none; border-radius: 26px; background: {{accent}}; color: var(--onacc, #111111); font-size: 15px; font-weight: 600">Түсіндім</button>
+    </section>
+  </sc-if>
   <sc-if value="{{srOpen}}" hint-placeholder-val="{{ false }}">
     <div role="dialog" aria-label="Іздеу" style="position: absolute; inset: 0; z-index: 50; display: flex; flex-direction: column; background: rgba(11,11,13,0.86); backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%); animation: aptaFade 0.22s ease both">
       <div style="display: flex; align-items: center; gap: 8px; padding: 54px 16px 12px">
@@ -274,17 +283,37 @@ class Component extends DCLogic {
   sGet() { try { return JSON.parse(localStorage.getItem('apta.v1') || '{}') || {}; } catch (e) { return this._mem || {}; } }
   sPut(patch) { const next = { ...this.sGet(), ...patch }; this._mem = next; try { localStorage.setItem('apta.v1', JSON.stringify(next)); } catch (e) {} return next; }
   boardName() { return 'FinDark.dc.html'; }
+  today0() { const d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  dOff(o) { const t = this.today0(); return new Date(t.getFullYear(), t.getMonth(), t.getDate() + (o || 0)); }
+  dayNum(d) { d = d || new Date(); return Math.round(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000); }
+  nowHM() { const d = new Date(); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+  todayLine(o) { const d = this.dOff(o || 0); const WD = ['Жексенбі', 'Дүйсенбі', 'Сейсенбі', 'Сәрсенбі', 'Бейсенбі', 'Жұма', 'Сенбі']; const MN = ['қаңтар', 'ақпан', 'наурыз', 'сәуір', 'мамыр', 'маусым', 'шілде', 'тамыз', 'қыркүйек', 'қазан', 'қараша', 'желтоқсан'];
+    return WD[d.getDay()] + ' · ' + d.getDate() + ' ' + MN[d.getMonth()]; }
+  // stored day offsets are relative to the day they were saved; move them so 0 is always the real today
+  rebase() { const S = this.sGet(); const tn = this.dayNum(); if (S.base == null) { this.sPut({ base: tn }); return; } const k = tn - S.base; if (!k) return;
+    const sh = (o) => typeof o === 'number' ? o - k : o; const P = { base: tn };
+    if (S.tasks) { const T = { ...S.tasks }; if (Array.isArray(T.extra)) T.extra = T.extra.map(x => ({ ...x, d: sh(x.d) }));
+      if (T.moved) { const m = {}; Object.keys(T.moved).forEach(id => { m[id] = sh(T.moved[id]); }); T.moved = m; } P.tasks = T; }
+    if (S.habits && S.habits.log) { const L = {}; Object.keys(S.habits.log).forEach(h => { const o = {}; Object.keys(S.habits.log[h] || {}).forEach(d => { o[String(Number(d) - k)] = S.habits.log[h][d]; }); L[h] = o; }); P.habits = { ...S.habits, log: L }; }
+    if (S.fin && Array.isArray(S.fin.tx)) P.fin = { ...S.fin, tx: S.fin.tx.map(x => ({ ...x, d: sh(x.d) })) };
+    if (S.notes) { const N = { ...S.notes }; if (Array.isArray(N.notes)) N.notes = N.notes.map(x => ({ ...x, d: sh(x.d) })); if (Array.isArray(N.maps)) N.maps = N.maps.map(x => ({ ...x, d: sh(x.d) })); P.notes = N; }
+    this.sPut(P); }
+  notice(title, text) { this.setState({ notice: { title, text } }); }
   accentNow() { const p = this.sGet().profile || {}; return p.accent || this.props.accent || '#C8F542'; }
   onAccent(c) { const h = (c || '#C8F542').replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(x => x + x).join('') : h, 16); const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? 'var(--onacc, #111111)' : '#FFFFFF'; }
   sBoot() {
     if (this._booted) return; this._booted = true;
+    try { this.rebase(); } catch (e) {}
     const S0 = this.sGet();
     if (this.hydrate) { try { Object.assign(this.state, this.hydrate(S0)); } catch (e) {} }
     const it = S0.intent; if (it && it.board === this.boardName() && this.onIntent) { try { Object.assign(this.state, this.onIntent(it.action) || {}); } catch (e) {} this.sPut({ intent: null }); }
     try { window.addEventListener('storage', (e) => { if (e.key !== 'apta.v1') return; const S = this.sGet(); const p = this.hydrate ? this.hydrate(S) : {};
       const it2 = S.intent; let q = {}; if (it2 && it2.board === this.boardName() && this.onIntent) { q = this.onIntent(it2.action) || {}; this.sPut({ intent: null }); }
       this._skipPersist = true; this.setState({ ...p, ...q, _sv: Date.now() }); }); } catch (e) {}
-    try { clearInterval(this._remT); this._remT = setInterval(() => this.checkRem(), 4000); } catch (e) {}
+    this._hm = this.nowHM(); this._dn = this.dayNum();
+    try { clearInterval(this._remT); this._remT = setInterval(() => { this.checkRem(); const hm = this.nowHM();
+      if (this.dayNum() !== this._dn) { try { location.reload(); } catch (e) {} return; }
+      if (hm !== this._hm) { this._hm = hm; this.setState({ _clock: hm }); } }, 4000); } catch (e) {}
   }
   intentTo(board, action) { return () => { this.sPut({ intent: { board, action, at: Date.now() } }); }; }
   persistNow() {
@@ -317,6 +346,7 @@ class Component extends DCLogic {
     const showAll = !!scope || !!q;
     const groups = showAll ? GROUPS.map(([g, label]) => { const its = hits.filter(h => h[0] === g); return { label, count: String(its.length), items: its.map((h, i) => ({ title: h[1], sub: h[2], href: h[3],
       style: 'display: flex; align-items: center; gap: 12px; min-height: 60px; box-sizing: border-box; padding: 10px 16px 10px 18px; text-decoration: none; color: ' + FG + ';' + (i ? ' border-top: 0.5px solid ' + LINE + ';' : '') })) }; }).filter(g => g.items.length) : [];
+    this._nfSr = st.srOpen ? { key: 'sr', get: () => this.state.srQ || '', set: (v) => this.setState({ srQ: v }) } : null;
     const typeKey = (ch) => { const S = this.state; const v = S.srQ || '';
       if (ch === '⌫') return this.setState({ srQ: v.slice(0, -1) });
       if (ch === '⇧') return this.setState({ srShift: !S.srShift });
@@ -340,6 +370,8 @@ class Component extends DCLogic {
         return { avLetter: av ? '' : ini, avBtn: av ? "background: url('" + av + "') center / cover no-repeat; border: none; color: transparent;" : '' }; })(),
       bnOn: !!this.state.banner, bnTitle: this.state.banner ? this.state.banner.title : '', bnKind: this.state.banner && this.state.banner.kind === 'task' ? 'Тапсырма' : 'Жазба',
       bnClose: () => { clearTimeout(this._bnT); this.setState({ banner: null }); },
+      ntOn: !!this.state.notice, ntTitle: this.state.notice ? this.state.notice.title : '', ntText: this.state.notice ? this.state.notice.text : '', ntClose: () => this.setState({ notice: null }),
+      todayText: this.todayLine(0),
       goNewTask: this.intentTo("Dark.dc.html", 'newTask'), goNewHabit: this.intentTo("Dark.dc.html", 'newHabit'),
       goNewExpense: this.intentTo("FinDark.dc.html", 'newExpense'), goNewNote: this.intentTo("NotesDark.dc.html", 'newNote'),
       srOpen: !!st.srOn, srOpenFn: () => this.setState({ srOn: true, srQ: '', srScope: null, srKbOn: true, srMode: 'abc', srShift: false }),
@@ -347,12 +379,12 @@ class Component extends DCLogic {
       srQ: st.srQ || '', srQShown: st.srQ || (kbOn ? '' : 'Іздеу'), srQStyle: st.srQ ? '' : 'opacity: 0.45;', srCaret: kbOn, srHasQ: !!st.srQ,
       srScopes: [[null, 'Барлығы']].concat(GROUPS).map(([g, label]) => { const sel = (st.srScope || null) === g; return { label, sel: sel ? 'true' : 'false', pick: () => this.setState({ srScope: g }),
         style: 'height: 34px; padding: 0 12px; border-radius: 17px; font-size: 13px; font-weight: 500; ' + (sel ? 'border: none; background: ' + accent + '; color: var(--onacc, #111111);' : 'border: 1px solid ' + RING + '; background: transparent; color: ' + FG + ';') }; }),
-      srGroups: groups, srEmpty: showAll && !groups.length, srHint: !showAll, srKb: kbOn, srRows: rows, srPadB: kbOn ? 300 : 40
+      srGroups: groups, srEmpty: showAll && !groups.length, srHint: !showAll, srKb: kbOn, srRows: rows, srPadB: kbOn ? (window.__aptaApp ? 40 : 300) : 40
     };
   }
   constructor(props) {
     super(props);
-    this.state = { view: 'main', addOpen: false, kind: 'out', amt: '', cat: 'food', title: '', tm: '13:20', focus: 'amt', kbShift: false, kbMode: 'abc', d: 0, editId: null, tx: [
+    this.state = { view: 'main', addOpen: false, kind: 'out', amt: '', cat: 'food', title: '', tm: this.nowHM(), focus: 'amt', kbShift: false, kbMode: 'abc', d: 0, editId: null, tx: [
       { id: 1, d: 0, t: '13:05', title: 'Түскі ас', cat: 'food', v: -2500 },
       { id: 2, d: 0, t: '08:40', title: 'Автобус', cat: 'road', v: -200 },
       { id: 3, d: 0, t: '08:15', title: 'Кофе', cat: 'food', v: -900 },
@@ -364,7 +396,7 @@ class Component extends DCLogic {
   componentWillUnmount() { if (typeof cancelAnimationFrame === 'function') cancelAnimationFrame(this._raf); }
   hydrate(S) { return S.fin && S.fin.tx ? { tx: S.fin.tx } : {}; }
   dehydrate(st) { return { fin: { tx: st.tx } }; }
-  onIntent(a) { if (a === 'newExpense') return { addOpen: true, editId: null, amt: '', kind: 'out', cat: 'other', catManual: false, title: '', tm: '13:20', d: 0, focus: 'amt', view: 'main' }; return {}; }
+  onIntent(a) { if (a === 'newExpense') return { addOpen: true, editId: null, amt: '', kind: 'out', cat: 'other', catManual: false, title: '', tm: this.nowHM(), d: 0, focus: 'amt', view: 'main' }; return {}; }
   countFrom(fb, ft) {
     if (typeof requestAnimationFrame !== 'function') return;
     this._noFade = true; this._af = { fb, ft, t0: performance.now() + 220 };
@@ -412,9 +444,9 @@ class Component extends DCLogic {
     const maxCat = Math.max(...CATS.map(c => catSum[c[0]]));
     const cats = CATS.map(([k, name, v0, col]) => { const v = catSum[k]; return { name, v, sum: fmt(v), pct: Math.round(v / spent * 100) + '%', dot: 'width: 8px; height: 8px; flex-shrink: 0; border-radius: 50%; background: ' + col + ';',
       track: C.track, bar: 'position: absolute; left: 0; top: 0; bottom: 0; width: ' + Math.round(v / maxCat * 100) + '%; border-radius: 2px; background: ' + col + '; transition: width 0.4s ease;' }; }).sort((a, b) => b.v - a.v);
-    const dayLabel = (d) => { if (d === 0) return 'Бүгін'; if (d === -1) return 'Кеше'; const dt = new Date(2026, 10, 23 + d); return String(dt.getDate()).padStart(2, '0') + '.' + String(dt.getMonth() + 1).padStart(2, '0'); };
+    const dayLabel = (d) => { if (d === 0) return 'Бүгін'; if (d === -1) return 'Кеше'; const dt = this.dOff(d); return String(dt.getDate()).padStart(2, '0') + '.' + String(dt.getMonth() + 1).padStart(2, '0'); };
     const WD = ['Жексенбі', 'Дүйсенбі', 'Сейсенбі', 'Сәрсенбі', 'Бейсенбі', 'Жұма', 'Сенбі'];
-    const dayHead = (d) => { const dt = new Date(2026, 10, 23 + d); const dm = String(dt.getDate()).padStart(2, '0') + '.' + String(dt.getMonth() + 1).padStart(2, '0');
+    const dayHead = (d) => { const dt = this.dOff(d); const dm = String(dt.getDate()).padStart(2, '0') + '.' + String(dt.getMonth() + 1).padStart(2, '0');
       return (d === 0 ? 'Бүгін' : d === -1 ? 'Кеше' : WD[dt.getDay()]) + ' · ' + dm; };
     const openEntry = (x) => () => this.setState({ addOpen: true, editId: x.id, kind: x.v > 0 ? 'in' : 'out', amt: String(Math.abs(x.v)), cat: x.v > 0 ? 'other' : x.cat, catManual: true, title: x.title, tm: x.t, d: x.d, focus: 'none', kbMode: 'abc', kbShift: false });
     const hist = st.tx.slice().sort((a, b) => (b.d - a.d) || b.t.localeCompare(a.t) || (b.id - a.id)).map(x => ({ title: x.title, open: openEntry(x),
@@ -430,19 +462,19 @@ class Component extends DCLogic {
     // ---- analytics data
     const W7 = ['Жс', 'Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сн'];
     const yest = st.tx.filter(x => x.d === -1 && x.v < 0).reduce((a, x) => a - x.v, 0);
-    const week = [5600, 3100, 9300, 4200, 7800, yest, today];
-    const restMonth = Math.max(0, spent - today - yest); const wts = Array.from({ length: 21 }, (_, i) => 0.6 + ((i * 37) % 11) / 10 + (i % 7 === 5 ? 0.8 : 0)); const wsum = wts.reduce((a, b) => a + b, 0);
-    const month = wts.map(w => Math.round(restMonth * w / wsum)).concat([yest, today]);
+    const spentOn = (d) => st.tx.filter(x => x.d === d && x.v < 0).reduce((a, x) => a - x.v, 0);
+    const week = Array.from({ length: 7 }, (_, i) => spentOn(i - 6));
+    const dom = this.today0().getDate(); const month = Array.from({ length: dom }, (_, i) => spentOn(i - (dom - 1)));
     const per = st.anPer || 'week';
     const vals = per === 'week' ? week : month;
-    const caps = per === 'week' ? week.map((_, i) => W7[new Date(2026, 10, 17 + i).getDay()]) : month.map((_, i) => ((i + 1) % 5 === 0 || i === 0 || i === 22) ? String(i + 1) : '');
+    const caps = per === 'week' ? week.map((_, i) => W7[this.dOff(i - 6).getDay()]) : month.map((_, i) => ((i + 1) % 5 === 0 || i === 0 || i === dom - 1) ? String(i + 1) : '');
     const vmax = Math.max(...vals, 1);
     const anSel = st.anSel == null ? vals.length - 1 : Math.min(st.anSel, vals.length - 1);
     const pTotal = vals.reduce((a, b) => a + b, 0); const prev = per === 'week' ? 46800 : 128500; const dlt = Math.round((pTotal - prev) / prev * 100);
     const incomeP = st.tx.filter(x => x.v > 0).reduce((a, x) => a + x.v, 0) + (per === 'week' ? 0 : 0);
     const gapPx = per === 'week' ? 10 : 3;
     let acc = 0; const stops = cats.map(c => { const a0 = acc; acc += c.v / spent * 100; return CATCOL[CATS.find(x => x[1] === c.name)[0]] + ' ' + a0.toFixed(2) + '% ' + acc.toFixed(2) + '%'; }).join(', ');
-    const NOW = '13:20';
+    const NOW = this.nowHM();
     const A = this._af; const ep = A ? 1 - Math.pow(1 - (st.animP || 0), 3) : 1;
     const shownBal = A ? Math.round(A.fb + (balance - A.fb) * ep) : balance;
     const shownToday = A ? Math.round(A.ft + (today - A.ft) * ep) : today;
@@ -475,6 +507,7 @@ class Component extends DCLogic {
       return { t: ch === 'space' ? 'бос орын' : (upper && ch.length === 1 && !special ? ch.toUpperCase() : ch), label: ch === 'space' ? 'бос орын' : ch, style: keyBase + w + bg + (ch === 'space' ? ' font-size: 15px;' : '') + (ch === '⇧' && st.kbShift ? ' outline: 1.5px solid ' + accent + ';' : ''), press: () => typeKey(ch) }; }) }));
     const ring = (on) => C.wglass + (on ? '; box-shadow: inset 0 0 0 1.5px ' + accent : '');
     const kbOpen = st.focus === 'title';
+    this._nf = kbOpen ? { key: 'fin', get: () => this.state.title || '', set: (v) => this.setState({ title: v }) } : null;
     return {
       ...this.srVals(accent),
       accent, title: st.view === 'cats' ? dotText('Талдау', 4, 3, C.fg) : dotText('Қаржы', 4, 3, C.fg), titleText: st.view === 'cats' ? 'Талдау' : 'Қаржы', headLine: st.view === 'cats' ? 'Аналитика · Қараша 2026' : 'Қараша 2026',
@@ -482,7 +515,7 @@ class Component extends DCLogic {
       bal: dotText(fmt(shownBal), 6, 4, C.oFg, null, this._noFade), balLabel: 'Қазір бар ' + fmt(balance) + ' теңге',
       histEmpty: st.tx.length === 0, todayText: fmt(shownToday), weekText: fmt(week.reduce((a, b) => a + b, 0)),
       anTabs: [['week', 'Апта'], ['month', 'Ай']].map(([k, label]) => ({ label, sel: per === k ? 'true' : 'false', pick: () => this.setState({ anPer: k, anSel: null }), style: seg(per === k) })),
-      anSpentLabel: per === 'week' ? 'Соңғы 7 күнде жұмсалды' : 'Қарашада жұмсалды', anSpent: fmt(pTotal),
+      anSpentLabel: per === 'week' ? 'Соңғы 7 күнде жұмсалды' : ['Қаңтарда', 'Ақпанда', 'Наурызда', 'Сәуірде', 'Мамырда', 'Маусымда', 'Шілдеде', 'Тамызда', 'Қыркүйекте', 'Қазанда', 'Қарашада', 'Желтоқсанда'][this.today0().getMonth()] + ' жұмсалды', anSpent: fmt(pTotal),
       anDelta: (dlt <= 0 ? '↓ ' : '↑ ') + Math.abs(dlt) + '% ' + (per === 'week' ? 'өткен аптамен салыстырғанда' : 'қазанның осы кезеңімен салыстырғанда'),
       anDeltaStyle: 'font-size: 13px; font-weight: 500; color: ' + (dlt <= 0 ? C.plusCol : C.minusCol) + ';',
       anGap: gapPx, anSelText: (per === 'week' ? caps[anSel] : (anSel + 1) + ' қараша') + ' · −' + fmt(vals[anSel]) + ' ₸',
@@ -509,7 +542,7 @@ class Component extends DCLogic {
       tpls, focusAmt: () => this.setState({ focus: 'amt' }), focusTitle: () => this.setState({ focus: 'title', kbMode: 'abc' }),
       focusTime: () => this.setState({ focus: this.state.focus === 'time' ? 'none' : 'time' }),
       padOpen: st.focus === 'amt', wheelOpen: st.focus === 'time', kbOpen, kbRows, showCats: st.kind !== 'in',
-      sheetBottom: 'bottom: ' + (kbOpen ? 300 : 8) + 'px',
+      sheetBottom: 'bottom: ' + (kbOpen ? (window.__aptaApp ? 8 : 300) : 8) + 'px',
       titleShown: st.title || (kbOpen ? '' : (st.kind === 'in' ? 'Мысалы: стипендия' : 'Мысалы: кофе')), titleStyle: st.title ? '' : 'opacity: 0.4;',
       titleCaret: kbOpen, titleCell: ring(kbOpen), timeCell: ring(st.focus === 'time'), tmShown: dayLabel(st.d) + ', ' + st.tm, sheetLabel: st.editId ? 'Жазбаны өзгерту' : 'Жаңа жазба', isEdit: !!st.editId,
       daysW: Array.from({ length: 14 }, (_, i) => ({ v: dayLabel(-i), style: wheelItem(-i === st.d) })),

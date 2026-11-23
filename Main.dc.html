@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Апта — басты экран, ашық</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, interactive-widget=resizes-content">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -336,7 +336,7 @@ button:active{transform:scale(0.96)}
       <div style="display: flex; justify-content: space-between; align-items: center; padding-left: 8px">
         <div style="display: flex; flex-direction: column; gap: 4px">
           <h2 style="margin: 0; font-size: 18px; font-weight: 600">Күн қорытындысы</h2>
-          <span style="font-size: 11px; color: rgba(20,20,20,0.7)">Дүйсенбі · 23 қараша</span>
+          <span style="font-size: 11px; color: rgba(20,20,20,0.7)">{{todayText}}</span>
         </div>
         <button aria-label="Жабу" onClick="{{closeSummary}}" style="position: relative; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.6); border: 0.5px solid rgba(0,0,0,0.06); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 1px 2px rgba(0,0,0,0.04)"><span aria-hidden="true" style="position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(160deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 20%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 72%, rgba(255,255,255,0.6) 100%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); pointer-events: none"></span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       </div>
@@ -366,7 +366,7 @@ button:active{transform:scale(0.96)}
           <button aria-label="Артқа" onClick="{{sumBack}}" style="position: relative; flex-shrink: 0; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.6); border: 0.5px solid rgba(0,0,0,0.06); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 1px 2px rgba(0,0,0,0.04)"><span aria-hidden="true" style="position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(160deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 20%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 72%, rgba(255,255,255,0.6) 100%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); pointer-events: none"></span><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6l-6 6 6 6"/></svg></button>
           <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px">
             <h2 style="margin: 0; font-size: 18px; font-weight: 600">{{sumTitle}}</h2>
-            <span style="font-size: 11px; color: rgba(20,20,20,0.7)">Дүйсенбі · 23 қараша · {{sumCount}}</span>
+            <span style="font-size: 11px; color: rgba(20,20,20,0.7)">{{todayText}} · {{sumCount}}</span>
           </div>
           <button aria-label="Жабу" onClick="{{closeSummary}}" style="position: relative; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.6); border: 0.5px solid rgba(0,0,0,0.06); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 1px 2px rgba(0,0,0,0.04)"><span aria-hidden="true" style="position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(160deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 20%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 72%, rgba(255,255,255,0.6) 100%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); pointer-events: none"></span><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
         </div>
@@ -434,6 +434,15 @@ button:active{transform:scale(0.96)}
       <button aria-label="Жабу" onClick="{{bnClose}}" style="width: 32px; height: 32px; flex-shrink: 0; padding: 0; border: none; border-radius: 16px; background: transparent; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
   </sc-if>
+  <sc-if value="{{ntOn}}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ntClose}}" style="position: absolute; inset: 0; z-index: 58; background: rgba(0,0,0,0.22); animation: aptaFade 0.25s ease both"></div>
+    <section role="alertdialog" aria-label="{{ntTitle}}" style="position: absolute; z-index: 59; left: 8px; right: 8px; bottom: 8px; box-sizing: border-box; padding: 22px 16px 12px; border-radius: 36px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; animation: aptaSheet 0.42s cubic-bezier(.2,.9,.3,1.05) both; background: rgba(255,255,255,0.78); border: 0.5px solid rgba(0,0,0,0.08); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.95), 0 4px 16px rgba(30,30,40,0.05); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); color: #141414">
+      <span style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; background: {{accent}}"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--onacc, #111111)"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/><path d="M12 13.5v2.5l1.5 1"/></svg></span>
+      <span style="font-size: 18px; font-weight: 600">{{ntTitle}}</span>
+      <span style="padding: 0 10px; font-size: 13px; line-height: 1.45; color: rgba(20,20,20,0.7)">{{ntText}}</span>
+      <button onClick="{{ntClose}}" style="align-self: stretch; height: 52px; margin-top: 8px; border: none; border-radius: 26px; background: {{accent}}; color: var(--onacc, #111111); font-size: 15px; font-weight: 600">Түсіндім</button>
+    </section>
+  </sc-if>
   <sc-if value="{{srOpen}}" hint-placeholder-val="{{ false }}">
     <div role="dialog" aria-label="Іздеу" style="position: absolute; inset: 0; z-index: 50; display: flex; flex-direction: column; background: rgba(243,242,239,0.82); backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%); animation: aptaFade 0.22s ease both">
       <div style="display: flex; align-items: center; gap: 8px; padding: 54px 16px 12px">
@@ -487,17 +496,37 @@ class Component extends DCLogic {
   sGet() { try { return JSON.parse(localStorage.getItem('apta.v1') || '{}') || {}; } catch (e) { return this._mem || {}; } }
   sPut(patch) { const next = { ...this.sGet(), ...patch }; this._mem = next; try { localStorage.setItem('apta.v1', JSON.stringify(next)); } catch (e) {} return next; }
   boardName() { return 'Main.dc.html'; }
+  today0() { const d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  dOff(o) { const t = this.today0(); return new Date(t.getFullYear(), t.getMonth(), t.getDate() + (o || 0)); }
+  dayNum(d) { d = d || new Date(); return Math.round(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000); }
+  nowHM() { const d = new Date(); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+  todayLine(o) { const d = this.dOff(o || 0); const WD = ['Жексенбі', 'Дүйсенбі', 'Сейсенбі', 'Сәрсенбі', 'Бейсенбі', 'Жұма', 'Сенбі']; const MN = ['қаңтар', 'ақпан', 'наурыз', 'сәуір', 'мамыр', 'маусым', 'шілде', 'тамыз', 'қыркүйек', 'қазан', 'қараша', 'желтоқсан'];
+    return WD[d.getDay()] + ' · ' + d.getDate() + ' ' + MN[d.getMonth()]; }
+  // stored day offsets are relative to the day they were saved; move them so 0 is always the real today
+  rebase() { const S = this.sGet(); const tn = this.dayNum(); if (S.base == null) { this.sPut({ base: tn }); return; } const k = tn - S.base; if (!k) return;
+    const sh = (o) => typeof o === 'number' ? o - k : o; const P = { base: tn };
+    if (S.tasks) { const T = { ...S.tasks }; if (Array.isArray(T.extra)) T.extra = T.extra.map(x => ({ ...x, d: sh(x.d) }));
+      if (T.moved) { const m = {}; Object.keys(T.moved).forEach(id => { m[id] = sh(T.moved[id]); }); T.moved = m; } P.tasks = T; }
+    if (S.habits && S.habits.log) { const L = {}; Object.keys(S.habits.log).forEach(h => { const o = {}; Object.keys(S.habits.log[h] || {}).forEach(d => { o[String(Number(d) - k)] = S.habits.log[h][d]; }); L[h] = o; }); P.habits = { ...S.habits, log: L }; }
+    if (S.fin && Array.isArray(S.fin.tx)) P.fin = { ...S.fin, tx: S.fin.tx.map(x => ({ ...x, d: sh(x.d) })) };
+    if (S.notes) { const N = { ...S.notes }; if (Array.isArray(N.notes)) N.notes = N.notes.map(x => ({ ...x, d: sh(x.d) })); if (Array.isArray(N.maps)) N.maps = N.maps.map(x => ({ ...x, d: sh(x.d) })); P.notes = N; }
+    this.sPut(P); }
+  notice(title, text) { this.setState({ notice: { title, text } }); }
   accentNow() { const p = this.sGet().profile || {}; return p.accent || this.props.accent || '#C8F542'; }
   onAccent(c) { const h = (c || '#C8F542').replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(x => x + x).join('') : h, 16); const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? 'var(--onacc, #111111)' : '#FFFFFF'; }
   sBoot() {
     if (this._booted) return; this._booted = true;
+    try { this.rebase(); } catch (e) {}
     const S0 = this.sGet();
     if (this.hydrate) { try { Object.assign(this.state, this.hydrate(S0)); } catch (e) {} }
     const it = S0.intent; if (it && it.board === this.boardName() && this.onIntent) { try { Object.assign(this.state, this.onIntent(it.action) || {}); } catch (e) {} this.sPut({ intent: null }); }
     try { window.addEventListener('storage', (e) => { if (e.key !== 'apta.v1') return; const S = this.sGet(); const p = this.hydrate ? this.hydrate(S) : {};
       const it2 = S.intent; let q = {}; if (it2 && it2.board === this.boardName() && this.onIntent) { q = this.onIntent(it2.action) || {}; this.sPut({ intent: null }); }
       this._skipPersist = true; this.setState({ ...p, ...q, _sv: Date.now() }); }); } catch (e) {}
-    try { clearInterval(this._remT); this._remT = setInterval(() => this.checkRem(), 4000); } catch (e) {}
+    this._hm = this.nowHM(); this._dn = this.dayNum();
+    try { clearInterval(this._remT); this._remT = setInterval(() => { this.checkRem(); const hm = this.nowHM();
+      if (this.dayNum() !== this._dn) { try { location.reload(); } catch (e) {} return; }
+      if (hm !== this._hm) { this._hm = hm; this.setState({ _clock: hm }); } }, 4000); } catch (e) {}
   }
   intentTo(board, action) { return () => { this.sPut({ intent: { board, action, at: Date.now() } }); }; }
   persistNow() {
@@ -530,6 +559,7 @@ class Component extends DCLogic {
     const showAll = !!scope || !!q;
     const groups = showAll ? GROUPS.map(([g, label]) => { const its = hits.filter(h => h[0] === g); return { label, count: String(its.length), items: its.map((h, i) => ({ title: h[1], sub: h[2], href: h[3],
       style: 'display: flex; align-items: center; gap: 12px; min-height: 60px; box-sizing: border-box; padding: 10px 16px 10px 18px; text-decoration: none; color: ' + FG + ';' + (i ? ' border-top: 0.5px solid ' + LINE + ';' : '') })) }; }).filter(g => g.items.length) : [];
+    this._nfSr = st.srOpen ? { key: 'sr', get: () => this.state.srQ || '', set: (v) => this.setState({ srQ: v }) } : null;
     const typeKey = (ch) => { const S = this.state; const v = S.srQ || '';
       if (ch === '⌫') return this.setState({ srQ: v.slice(0, -1) });
       if (ch === '⇧') return this.setState({ srShift: !S.srShift });
@@ -553,6 +583,8 @@ class Component extends DCLogic {
         return { avLetter: av ? '' : ini, avBtn: av ? "background: url('" + av + "') center / cover no-repeat; border: none; color: transparent;" : '' }; })(),
       bnOn: !!this.state.banner, bnTitle: this.state.banner ? this.state.banner.title : '', bnKind: this.state.banner && this.state.banner.kind === 'task' ? 'Тапсырма' : 'Жазба',
       bnClose: () => { clearTimeout(this._bnT); this.setState({ banner: null }); },
+      ntOn: !!this.state.notice, ntTitle: this.state.notice ? this.state.notice.title : '', ntText: this.state.notice ? this.state.notice.text : '', ntClose: () => this.setState({ notice: null }),
+      todayText: this.todayLine(0),
       goNewTask: this.intentTo("Main.dc.html", 'newTask'), goNewHabit: this.intentTo("Main.dc.html", 'newHabit'),
       goNewExpense: this.intentTo("FinLight.dc.html", 'newExpense'), goNewNote: this.intentTo("NotesLight.dc.html", 'newNote'),
       srOpen: !!st.srOn, srOpenFn: () => this.setState({ srOn: true, srQ: '', srScope: null, srKbOn: true, srMode: 'abc', srShift: false }),
@@ -560,7 +592,7 @@ class Component extends DCLogic {
       srQ: st.srQ || '', srQShown: st.srQ || (kbOn ? '' : 'Іздеу'), srQStyle: st.srQ ? '' : 'opacity: 0.45;', srCaret: kbOn, srHasQ: !!st.srQ,
       srScopes: [[null, 'Барлығы']].concat(GROUPS).map(([g, label]) => { const sel = (st.srScope || null) === g; return { label, sel: sel ? 'true' : 'false', pick: () => this.setState({ srScope: g }),
         style: 'height: 34px; padding: 0 12px; border-radius: 17px; font-size: 13px; font-weight: 500; ' + (sel ? 'border: none; background: ' + accent + '; color: var(--onacc, #111111);' : 'border: 1px solid ' + RING + '; background: transparent; color: ' + FG + ';') }; }),
-      srGroups: groups, srEmpty: showAll && !groups.length, srHint: !showAll, srKb: kbOn, srRows: rows, srPadB: kbOn ? 300 : 40
+      srGroups: groups, srEmpty: showAll && !groups.length, srHint: !showAll, srKb: kbOn, srRows: rows, srPadB: kbOn ? (window.__aptaApp ? 40 : 300) : 40
     };
   }
   constructor(props) {
@@ -703,8 +735,8 @@ class Component extends DCLogic {
 
     /* ---------- dates ---------- */
     const DAY = 86400000;
-    const T0 = new Date(2026, 10, 23);
-    const dOf = (off) => new Date(2026, 10, 23 + off);
+    const T0 = this.today0();
+    const dOf = (off) => this.dOff(off);
     const offOf = (d) => Math.round((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - T0) / DAY);
     const MN = ['Қаңтар','Ақпан','Наурыз','Сәуір','Мамыр','Маусым','Шілде','Тамыз','Қыркүйек','Қазан','Қараша','Желтоқсан'];
     const WD = ['Жексенбі','Дүйсенбі','Сейсенбі','Сәрсенбі','Бейсенбі','Жұма','Сенбі'];
@@ -746,7 +778,7 @@ class Component extends DCLogic {
         dot: marker(off), pick: pickDay(off)
       };
     });
-    const mFirst = new Date(2026, 10 + st.monthOff, 1);
+    const mFirst = new Date(T0.getFullYear(), T0.getMonth() + st.monthOff, 1);
     const mLead = (mFirst.getDay() + 6) % 7;
     const mDays = new Date(mFirst.getFullYear(), mFirst.getMonth() + 1, 0).getDate();
     const monthCells = [];
@@ -769,7 +801,7 @@ class Component extends DCLogic {
         const dx = e.clientX - g.x, dy = e.clientY - g.y;
         const S = this.state;
         if (Math.abs(dy) > 34 && Math.abs(dy) > Math.abs(dx)) {
-          if (dy > 0 && !S.monthOpen) { g.fired = true; this._stripFired = true; this.setState({ monthOpen: true, monthOff: (dOf(S.sel).getFullYear() - 2026) * 12 + dOf(S.sel).getMonth() - 10 }); }
+          if (dy > 0 && !S.monthOpen) { g.fired = true; this._stripFired = true; this.setState({ monthOpen: true, monthOff: (dOf(S.sel).getFullYear() - T0.getFullYear()) * 12 + dOf(S.sel).getMonth() - T0.getMonth() }); }
           else if (dy < 0 && S.monthOpen) { g.fired = true; this._stripFired = true; this.setState({ monthOpen: false }); }
         } else if (Math.abs(dx) > 46 && Math.abs(dx) > Math.abs(dy) * 1.2) {
           g.fired = true; this._stripFired = true;
@@ -800,7 +832,7 @@ class Component extends DCLogic {
         noCtx: (e) => { if (e && e.preventDefault) e.preventDefault(); },
         tap: () => {
           if (this._hlpFired) { this._hlpFired = false; return; }
-          if (future) return;
+          if (future) return this.notice('Бұл күн әлі келген жоқ', 'Әдетті тек бүгінге немесе өткен күндерге белгілеуге болады. Сол күні қайта келіңіз.');
           const S = this.state, cur = (S.cnt[S.sel] || {})[h.id] || 0;
           let next;
           if (T === 1) next = cur ? 0 : 1;
@@ -827,7 +859,7 @@ class Component extends DCLogic {
     const nhDaysText = nSel === 7 ? 'Күнде' : (nSel === 5 && st.nhD.slice(0, 5).every(Boolean) ? 'Жұмыс күндері' : nSel + ' күн');
 
     /* ---------- tasks ---------- */
-    const NOW = '13:20';
+    const NOW = this.nowHM();
     const SRC = BASE.filter(x => dayOf(x) === sel);
     const gone = (x) => !!st.done[x.id] && !!st.settled[x.id];
 
@@ -945,6 +977,8 @@ class Component extends DCLogic {
     const KB_NUM = [['1','2','3','4','5','6','7','8','9','0'], ['-','/',':',';','(',')','₸','&','@','"'], ['#','%','+','=','*','.',',','?','!','⌫'], ['АБВ','space','Дайын']];
     const KB = st.kbMode === 'num' ? KB_NUM : KB_ABC;
     const keyBase = 'height: 42px; border: none; border-radius: 8px; font-family: inherit; font-size: 18px; color: ' + C.fg + '; box-shadow: 0 1px 0 rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; padding: 0;';
+    const kf = (S) => S.kbField === 'desc' ? 'editDesc' : (S.kbField === 'nh' ? 'nhName' : 'editTitle');
+    this._nf = st.kbOpen ? { key: st.kbField + ':' + (st.editId || st.nhEdit || ''), get: () => this.state[kf(this.state)] || '', set: (v) => this.setState({ [kf(this.state)]: v }) } : null;
     const typeKey = (ch) => {
       const S = this.state;
       const f = S.kbField === 'desc' ? 'editDesc' : (S.kbField === 'nh' ? 'nhName' : 'editTitle');
@@ -968,7 +1002,7 @@ class Component extends DCLogic {
       accent, days, bars, ...strip,
       dateLine, titleText, weekMode: !st.monthOpen, monthOpen: !!st.monthOpen, monthAria: st.monthOpen ? 'true' : 'false',
       grabLabel: st.monthOpen ? 'Айлық күнтізбені жабу' : 'Айлық күнтізбені ашу',
-      toggleMonth: () => { if (this._stripFired) return; this.setState({ monthOpen: !this.state.monthOpen, monthOff: (selD.getFullYear() - 2026) * 12 + selD.getMonth() - 10 }); },
+      toggleMonth: () => { if (this._stripFired) return; this.setState({ monthOpen: !this.state.monthOpen, monthOff: (selD.getFullYear() - T0.getFullYear()) * 12 + selD.getMonth() - T0.getMonth() }); },
       weekWrap: 'display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));' + (st.weekN ? ' animation: ' + slideName(st.weekDir, st.weekN) + ' 0.35s cubic-bezier(.2,.9,.3,1) both;' : ''),
       monthWrap: 'animation: aptaDrop 0.35s cubic-bezier(.2,.9,.3,1) both;',
       gridStyle: 'display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); row-gap: 2px;' + (st.monthN ? ' animation: ' + slideName(st.monthDir, st.monthN) + ' 0.35s cubic-bezier(.2,.9,.3,1) both;' : ''),
@@ -986,7 +1020,7 @@ class Component extends DCLogic {
       nhTarget: st.nhTarget, nhTargetText: st.nhTarget === 1 ? 'Күніне бір рет' : 'Күніне ' + st.nhTarget + ' рет',
       nhMinus: () => this.setState({ nhTarget: Math.max(1, this.state.nhTarget - 1) }),
       nhPlus: () => this.setState({ nhTarget: Math.min(12, this.state.nhTarget + 1) }),
-      nhBottom: 'bottom: ' + (st.kbOpen && st.kbField === 'nh' ? 300 : 8) + 'px',
+      nhBottom: 'bottom: ' + (st.kbOpen && st.kbField === 'nh' ? (window.__aptaApp ? 8 : 300) : 8) + 'px',
       nhTitle: st.nhEdit ? 'Әдет' : 'Жаңа әдет', nhSaveText: st.nhEdit ? 'Сақтау' : 'Қосу', nhEditing: !!st.nhEdit,
       nhDelete: () => { const S = this.state; this.setState({ hl: S.hl.filter(h => h.id !== S.nhEdit), nhOpen: false, nhEdit: null, kbOpen: false }); },
       nhSave: () => { const S = this.state; const name = (S.nhName || '').trim(); if (!name) { this.setState({ kbOpen: true, kbField: 'nh' }); return; }
@@ -1033,7 +1067,7 @@ class Component extends DCLogic {
       timeCell: C.wglass,
       timeShown: st.editTime || 'Уақытсыз', timeAria: st.timeOpen ? 'true' : 'false', timeOpen: !!st.timeOpen,
       timeChev: 'display: flex; transition: transform 0.3s ease; transform: rotate(' + (st.timeOpen ? 180 : 0) + 'deg);',
-      sheetBottom: 'bottom: ' + (st.kbOpen ? 300 : 8) + 'px',
+      sheetBottom: 'bottom: ' + (st.kbOpen ? (window.__aptaApp ? 8 : 300) : 8) + 'px',
       kbOpen: !!st.kbOpen,
       plusVisible: !(st.editId || st.habitsOpen || st.summaryOpen || st.nhOpen),
       hours: Array.from({ length: 24 }, (_, i) => ({ v: String(i).padStart(2, '0'), style: wheelItem(i === curH) })),
