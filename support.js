@@ -12,7 +12,7 @@
 
   // light <-> dark twin of every screen; the profile's theme choice (or the phone's) picks one
   var PAIRS = [['Main', 'Dark'], ['CalLight', 'CalDark'], ['CalHabits', 'CalHabitsDark'], ['FinLight', 'FinDark'], ['ProfLight', 'ProfDark'], ['NotesLight', 'NotesDark'],
-    ['NotesDiary', 'NotesDiaryDark'], ['NotesMapLight', 'NotesMap'], ['OnboardLight', 'OnboardDark'], ['AuthLight', 'AuthDark']];
+    ['NotesDiary', 'NotesDiaryDark'], ['OnboardLight', 'OnboardDark'], ['AuthLight', 'AuthDark']];
   function wantDark() {
     var t = 'auto'; try { t = ((JSON.parse(localStorage.getItem('apta.v1') || '{}') || {}).profile || {}).theme || 'auto'; } catch (e) {}
     if (t === 'light') return false; if (t === 'dark') return true;

@@ -1,10 +1,10 @@
 /* Апта — offline cache. Pages load from the network first, so a published fix
    arrives on the next launch; with no connection the saved copy opens instead. */
-const VERSION = 'apta-20261124040349';
+const VERSION = 'apta-20261124041708';
 const CORE = ['./', './index.html', './support.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable.png',
   './Main.dc.html', './Dark.dc.html', './CalLight.dc.html', './CalDark.dc.html', './CalHabits.dc.html', './CalHabitsDark.dc.html',
   './FinLight.dc.html', './FinDark.dc.html', './ProfLight.dc.html', './ProfDark.dc.html', './NotesLight.dc.html', './NotesDark.dc.html',
-  './NotesDiary.dc.html', './NotesDiaryDark.dc.html', './NotesMap.dc.html', './NotesMapLight.dc.html',
+  './NotesDiary.dc.html', './NotesDiaryDark.dc.html',
   './OnboardLight.dc.html', './OnboardDark.dc.html', './AuthLight.dc.html', './AuthDark.dc.html'];
 
 self.addEventListener('install', (e) => {
