@@ -188,14 +188,32 @@
     e.style.textAlign = cs.textAlign === 'center' ? 'center' : 'left';
     if (!e.classList.contains('rich')) e.style.color = NF.color || cs.color;
     var ac = '#C8F542'; try { ac = NF.comp.accentNow(); } catch (x) {} e.style.caretColor = /^#(fff|ffffff)$/i.test(ac) ? cs.color : ac;
+    if (centered) {
+      var box = r, bcs = cs; for (var i = 0; i < 3 && box; i++) { bcs = getComputedStyle(box); if ((bcs.backgroundColor && !/rgba\(0, 0, 0, 0\)|transparent/.test(bcs.backgroundColor)) || bcs.backgroundImage !== 'none') break; box = box.parentElement; }
+      if (!box) { box = r; bcs = cs; }
+      var br = box.getBoundingClientRect(); var fs = parseFloat(cs.fontSize) * k;
+      var ctx = (NF.cv || (NF.cv = document.createElement('canvas'))).getContext('2d'); ctx.font = cs.fontWeight + ' ' + fs + 'px ' + cs.fontFamily;
+      var tw = ctx.measureText(e.value || ' ').width; var bw = br.width / s, bh = br.height / s; var W = Math.max(bw, tw + 28 * k), H = Math.max(bh, fs * 1.6);
+      var cx = (br.left + br.width / 2 - sr.left) / s, cy = (br.top + br.height / 2 - sr.top) / s;
+      e.style.left = (cx - W / 2) + 'px'; e.style.top = (cy - H / 2) + 'px'; e.style.width = W + 'px'; e.style.height = H + 'px'; e.style.lineHeight = H + 'px';
+      e.style.textAlign = 'center'; e.style.padding = '0 ' + (12 * k) + 'px'; e.style.borderRadius = bcs.borderRadius;
+      e.style.background = bcs.backgroundImage !== 'none' ? bcs.backgroundImage + ', ' + bcs.backgroundColor : bcs.backgroundColor; e.style.boxShadow = bcs.boxShadow; e.style.border = bcs.border;
+      e.style.color = NF.color || cs.color;
+    }
+    // never show the text layer outside the part of the screen its field is visible in
+    var clipEl = scrollParent(r) || r.closest('section[role="dialog"]'); var vtop = sr.top, vbot = Math.min(sr.bottom, window.innerHeight - (window.__aptaKbH || 0) * s);
+    if (clipEl) { var cr = clipEl.getBoundingClientRect(); vtop = Math.max(vtop, cr.top); vbot = Math.min(vbot, cr.bottom); }
+    var er = { top: parseFloat(e.style.top) * s + sr.top, h: parseFloat(e.style.height) * s };
+    var ct = Math.max(0, (vtop - er.top) / s), cb = Math.max(0, (er.top + er.h - vbot) / s);
+    e.style.clipPath = (ct || cb) ? 'inset(' + Math.min(ct, 4000) + 'px 0 ' + Math.min(cb, 4000) + 'px 0)' : '';
   }
   // keep the text layer glued to its field while sheets slide (keyboard opening/closing)
   function follow(ms) { var until = Date.now() + (ms || 600); if (NF.fol) { NF.folUntil = Math.max(NF.folUntil, until); return; } NF.fol = true; NF.folUntil = until;
     (function step() { place(); if (Date.now() < NF.folUntil && NF.el) requestAnimationFrame(step); else NF.fol = false; })(); }
   function reveal() {
     var r = NF.row; if (!r || !r.isConnected) return; var sp = scrollParent(r); if (!sp) return;
-    var a = r.getBoundingClientRect(), b = sp.getBoundingClientRect(); var vb = Math.min(b.bottom, window.innerHeight - (window.__aptaKbH || 0) * (KB.scale || 1) - 70);
-    if (a.bottom > vb - 24) sp.scrollTop += a.bottom - vb + 48; else if (a.top < b.top + 8) sp.scrollTop -= b.top - a.top + 24;
+    var a = r.getBoundingClientRect(), b = sp.getBoundingClientRect(); var vb = Math.min(b.bottom, window.innerHeight - (window.__aptaKbH || 0) * (KB.scale || 1));
+    if (a.top < b.top + 8) sp.scrollTop -= b.top + 8 - a.top; else if (a.bottom > vb - 12) sp.scrollTop += Math.min(a.bottom - vb + 12, a.top - b.top - 8);
   }
   function detach() {
     if (NF.el && NF.sel) NF.last = { s: NF.sel.s, e: NF.sel.e, key: NF.key };
@@ -204,7 +222,7 @@
     NF.row = null; NF.key = null; NF.sel = null;
   }
   function attach(row, nf, comp) {
-    var rich = row.hasAttribute('data-rich'), inner = row.querySelector('span') || row, wrap = rich || !(/nowrap/.test(getComputedStyle(row).whiteSpace) || /nowrap/.test(getComputedStyle(inner).whiteSpace));
+    var rcs = getComputedStyle(row), isC = rcs.textAlign === 'center' || rcs.justifyContent === 'center'; var rich = row.hasAttribute('data-rich'), inner = row.querySelector('span') || row, wrap = rich || (!isC) && !(/nowrap/.test(getComputedStyle(row).whiteSpace) || /nowrap/.test(getComputedStyle(inner).whiteSpace));
     NF.color = getComputedStyle(inner).color;
     var type = nf.type || 'text';
     var e = type === 'text' && (rich || wrap) ? document.createElement('textarea') : document.createElement('input');
@@ -251,13 +269,22 @@
   document.addEventListener('compositionend', function () { NF.composing = false; }, true);
   document.addEventListener('selectionchange', saveSel);
   // tapping a button while typing keeps the text focused and its selection (so tools act on it)
-  document.addEventListener('mousedown', function (ev) { if (NF.el && document.activeElement === NF.el && ev.target.closest && ev.target.closest('button') && ev.target !== NF.el) ev.preventDefault(); }, true);
+  document.addEventListener('mousedown', function (ev) { if (NF.el && document.activeElement === NF.el && ev.target.closest && ev.target.closest('button,[role="button"]') && ev.target !== NF.el) ev.preventDefault(); }, true);
+  document.addEventListener('pointerdown', function () { NF.downEl = NF.el && document.activeElement === NF.el ? NF.el : null; }, true);
+  document.addEventListener('click', function (ev) { var e = NF.el; if (!e || e !== NF.downEl || document.activeElement !== e || !ev.target.closest) return; var t = ev.target;
+    if (t === e || t.closest('[role="toolbar"]') || t.closest('[aria-label="Пернетақта"]') || (NF.row && t.contains && t.contains(NF.row))) return;
+    var was = e; setTimeout(function () { if (NF.el === was && document.activeElement === was) was.blur(); }, 0); });
+  var TM = null;
+  document.addEventListener('touchstart', function (ev) { TM = ev.touches && ev.touches[0] ? { x: ev.touches[0].clientX, y: ev.touches[0].clientY } : null; }, { passive: true, capture: true });
+  document.addEventListener('touchmove', function (ev) { var e = NF.el; if (!e || !TM || document.activeElement !== e || ev.target === e) return; var c = NF.comp, st = (c && c.state) || {};
+    if (c && (c._armed || c._vArm || (st.drag && st.drag.id != null) || st.vdrag)) return; var t = ev.touches && ev.touches[0]; if (t && Math.hypot(t.clientX - TM.x, t.clientY - TM.y) > 12) { TM = null; e.blur(); } }, { passive: true, capture: true });
   document.addEventListener('scroll', function () { if (NF.el) place(); }, true);
   // after a long press picks something up, the finger moves it instead of scrolling the page
   document.addEventListener('touchmove', function (ev) { var c = NF.comp; if (!c) return; var st = c.state || {};
     if (c._armed || c._vArm || (st.drag && st.drag.id != null) || st.vdrag || (st.mDrag)) { if (ev.cancelable) ev.preventDefault(); } }, { passive: false });
   document.addEventListener('contextmenu', function (ev) { var t = ev.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) return; ev.preventDefault(); });
   document.addEventListener('transitionend', function () { if (NF.el) place(); }, true);
+  document.addEventListener('animationend', function () { if (NF.el) place(); }, true);
 
   function fit(stage) {
     var W = window.innerWidth, H = window.innerHeight, s, h, x = 0;
