@@ -94,7 +94,7 @@ button:active{transform:scale(0.96)}
       <div style="margin: 24px 16px 0; display: flex; flex-direction: column; gap: 8px">
         <h2 style="margin: 0 0 8px 8px; font-size: 18px; font-weight: 600">{{agendaTitle}}</h2>
         <sc-if value="{{agendaEmpty}}" hint-placeholder-val="{{ false }}">
-          <div style="position: relative; padding: 20px; border-radius: 30px; font-size: 13px; color: rgba(245,244,241,0.72); text-align: center; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">Бұл күнге жоспар жоқ</div>
+          <div style="padding: 14px 20px 6px; font-size: 13px; color: rgba(245,244,241,0.72); text-align: center">Бұл күнге жоспар жоқ</div>
         </sc-if>
         <sc-for list="{{agenda}}" as="a" hint-placeholder-count="3">
           <div onClick="{{a.open}}" onPointerDown="{{a.pd}}" onPointerMove="{{a.pm}}" onPointerUp="{{a.pu}}" onPointerCancel="{{a.pc}}" style="{{a.row}}">
@@ -158,9 +158,9 @@ button:active{transform:scale(0.96)}
       <div style="{{hwWrap}}">
         <div style="margin: 8px 16px 0; display: flex; flex-direction: column; gap: 8px">
           <sc-for list="{{hrows}}" as="r" hint-placeholder-count="7">
-            <div style="position: relative; display: flex; align-items: center; height: 56px; padding: 0 12px 0 6px; border-radius: 22px; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
-              <button aria-label="{{r.editLabel}}" onClick="{{r.edit}}" style="flex: 1 1 auto; min-width: 0; height: 44px; padding: 0 0 0 10px; border: none; background: transparent; text-align: left; color: #F5F4F1; font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.name}}</button>
-              <span style="display: grid; grid-template-columns: repeat(7, 26px)">
+            <div role="button" tabindex="0" aria-label="{{r.editLabel}}" onClick="{{r.edit}}" style="position: relative; display: flex; align-items: center; height: 56px; padding: 0 12px 0 6px; border-radius: 22px; cursor: pointer; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+              <span style="position: relative; flex: 1 1 auto; min-width: 0; padding: 0 0 0 10px; color: #F5F4F1; font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.name}}</span>
+              <span onClick="{{keepTap}}" style="position: relative; display: grid; grid-template-columns: repeat(7, 26px)">
                 <sc-for list="{{r.cells}}" as="q" hint-placeholder-count="7">
                   <button aria-label="{{q.label}}" onClick="{{q.tap}}" style="{{q.btn}}"><span style="{{q.dot}}"><sc-if value="{{q.plus}}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(245,244,241,0.72)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></sc-if></span></button>
                 </sc-for>
@@ -287,6 +287,17 @@ button:active{transform:scale(0.96)}
         <span style="font-size: 11px; color: rgba(245,244,241,0.72)">Сипаттамасы · міндетті емес</span>
         <span style="display: block; min-height: 22px; max-width: 100%; font-size: 13px; line-height: 1.4"><span style="{{teDescStyle}}">{{teDescShown}}</span><sc-if value="{{teCaretD}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="display: inline-block; vertical-align: -3px; width: 2px; height: 18px; margin-left: 1px; border-radius: 1px; background: {{accent}}; animation: aptaBlink 1s steps(1) infinite"></span></sc-if></span>
       </button>
+      <div style="position: relative; display: flex; flex-direction: column; border-radius: 30px; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none">
+        <button aria-label="Күні: {{teDateShown}}" aria-expanded="{{teDateAria}}" onClick="{{teToggleDate}}" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: none; background: transparent; color: #F5F4F1; text-align: left">
+          <span style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 11px; color: rgba(245,244,241,0.72)">Күні · міндетті емес</span><span style="font-size: 15px; font-weight: 500">{{teDateShown}}</span></span>
+          <span style="{{teDateChev}}"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"/></svg></span>
+        </button>
+        <sc-if value="{{teDateOpen}}" hint-placeholder-val="{{ false }}">
+          <div role="radiogroup" aria-label="Күнді таңдау" style="display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 0 12px 12px; animation: aptaFade 0.25s ease both">
+            <sc-for list="{{teDateChips}}" as="c" hint-placeholder-count="21"><button role="radio" aria-checked="{{c.sel}}" aria-label="{{c.label}}" onClick="{{c.pick}}" style="{{c.style}}"><span style="font-size: 11px; opacity: 0.7">{{c.wd}}</span><span style="font-size: 15px; font-weight: 600">{{c.n}}</span></button></sc-for>
+          </div>
+        </sc-if>
+      </div>
       <div style="position: relative; display: flex; flex-direction: column; border-radius: 30px; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none">
         <button aria-label="Уақыты: {{teTimeShown}}" onClick="{{teToggleTime}}" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: none; background: transparent; color: #F5F4F1; text-align: left">
           <span style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 11px; color: rgba(245,244,241,0.72)">Уақыты · міндетті емес</span><span style="font-size: 15px; font-weight: 500">{{teTimeShown}}</span></span>
@@ -418,7 +429,7 @@ class Component extends DCLogic {
   onAccent(c) { const h = (c || '#C8F542').replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(x => x + x).join('') : h, 16); const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? 'var(--onacc, #111111)' : '#FFFFFF'; }
   sBoot() {
     if (this._booted) return; this._booted = true;
-    try { this.rebase(); } catch (e) {}
+    try { this.rebase(); if (!this.sGet().since) this.sPut({ since: Date.now() }); } catch (e) {}
     try { if (typeof window !== 'undefined' && window.__aptaApp && navigator.storage && navigator.storage.persist) navigator.storage.persisted().then(p => p || navigator.storage.persist()).catch(() => {}); } catch (e) {}
     if (typeof window !== 'undefined' && window.__aptaApp) { try { this.appPrep(); } catch (e) {} if (this.appEmpty) { try { Object.assign(this.state, this.appEmpty(this.sGet())); } catch (e) {} } }
     const S0 = this.sGet();
@@ -533,7 +544,7 @@ class Component extends DCLogic {
   vStop() { this._vAs = false; if (typeof cancelAnimationFrame === 'function') cancelAnimationFrame(this._vRaf); }
   renderVals() {
     this.sBoot();
-    const C = {"fg": "#F5F4F1", "sub": "rgba(245,244,241,0.72)", "strike": "rgba(245,244,241,0.62)", "ring": "rgba(245,244,241,0.38)", "edge": "0 0 0 0.5px rgba(0,0,0,0.3)", "glassStrong": "background: rgba(255,255,255,0.15); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)", "block": "background: rgba(23,6,27,0.78); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 0 0 1px rgba(212,84,184,0.55), inset 0 8px 16px -6px rgba(212,84,184,0.8), inset 0 0 10px rgba(212,84,184,0.45); color: #FFFFFF", "line": "rgba(255,255,255,0.1)", "wglass": "background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none", "glass": "background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)", "doneRow": "background: rgba(0,0,0,0.38); border: 0.5px solid rgba(255,255,255,0.05)", "key": "rgba(255,255,255,0.22)", "keyAlt": "rgba(255,255,255,0.1)"};
+    const C = {"fg": "#F5F4F1", "sub": "rgba(245,244,241,0.72)", "strike": "rgba(245,244,241,0.62)", "ring": "rgba(245,244,241,0.38)", "edge": "0 0 0 0.5px rgba(0,0,0,0.3)", "glassStrong": "background: rgba(255,255,255,0.15); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)", "block": "background: rgba(23,6,27,0.78); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 0 0 1px rgba(212,84,184,0.55), inset 0 8px 16px -6px rgba(212,84,184,0.8), inset 0 0 10px rgba(212,84,184,0.45); color: #FFFFFF", "light": false, "line": "rgba(255,255,255,0.1)", "wglass": "background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none", "glass": "background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)", "doneRow": "background: rgba(0,0,0,0.38); border: 0.5px solid rgba(255,255,255,0.05)", "key": "rgba(255,255,255,0.22)", "keyAlt": "rgba(255,255,255,0.1)"};
     const accent = this.accentNow();
     const st = this.state;
     const ACC = 'background: ' + accent + '; box-shadow: ' + C.edge + ';';
@@ -555,7 +566,7 @@ class Component extends DCLogic {
       chars.forEach((ch, ci) => { const gg = G[ch]; if (!gg) return; gg.forEach((row, r) => [...row].forEach((v, c) => { if (v !== '#') return; dots.push({ style: 'position: absolute; left: ' + ((ci * 6 + c) * pitch) + 'px; top: ' + (r * pitch) + 'px; width: ' + d + 'px; height: ' + d + 'px; border-radius: 50%; background: ' + color + '; animation: aptaFade 0.5s ease both; animation-delay: ' + (n++ * 7) + 'ms;' }); })); });
       return { dots, box: 'position: relative; display: block; width: ' + ((chars.length * 6 - 1) * pitch) + 'px; height: ' + (7 * pitch) + 'px;' };
     };
-    const DAY = 86400000, T0 = this.today0();
+    const DAY = 86400000, T0 = this.today0(); const MNG = ['қаңтар', 'ақпан', 'наурыз', 'сәуір', 'мамыр', 'маусым', 'шілде', 'тамыз', 'қыркүйек', 'қазан', 'қараша', 'желтоқсан'];
     const dOf = (o) => this.dOff(o);
     const offOf = (d) => Math.round((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - T0) / DAY);
     const MN = ['Қаңтар','Ақпан','Наурыз','Сәуір','Мамыр','Маусым','Шілде','Тамыз','Қыркүйек','Қазан','Қараша','Желтоқсан'];
@@ -627,14 +638,14 @@ class Component extends DCLogic {
       let off = 0; if (grp === VD.grp) { if (vTo > vFrom && k > vFrom && k <= vTo) off = -VD.h; if (vTo < vFrom && k < vFrom && k >= vTo) off = VD.h; }
       return ' translate: 0px ' + off + 'px; scale: 0.98; opacity: 0.85; transition: translate 0.3s ' + VE + ', scale 0.25s ' + VE + ', opacity 0.25s ease;'; };
     const rel = sel === 0 ? 'Бүгін' : sel === 1 ? 'Ертең' : sel === 2 ? 'Арғы күні' : WD[selD.getDay()];
-    const openTask = (x) => () => { if (this._fired || this._tog) return; this.setState({ te: x.id, teTitle: x.title, teDesc: x.desc || '', teTime: x.time || '', timeOpen: false, kbOpen: false }); };
+    const openTask = (x) => () => { if (this._fired || this._tog) return; this.setState({ te: x.id, teDay: x.d || 0, teDateOpen: false, teTitle: x.title, teDesc: x.desc || '', teTime: x.time || '', timeOpen: false, kbOpen: false }); };
     const agenda = agendaList.map(x => ({ time: x.time || '—', title: x.title, desc: x.desc || '', hasDesc: !!x.desc, done: !!DONE[x.id], pressed: DONE[x.id] ? 'true' : 'false',
       label: x.title + (DONE[x.id] ? ': орындалды' : ': орындалды деп белгілеу'), open: openTask(x),
       toggle: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this._tog = true; setTimeout(() => { this._tog = false; }, 50); const S = this.state; this.setState({ tdone: { ...S.tdone, [x.id]: !S.tdone[x.id] } }); },
       row: 'position: relative; display: flex; align-items: center; gap: 8px; min-height: 56px; box-sizing: border-box; padding: 8px 16px; border-radius: 30px; touch-action: pan-y; ' + (DONE[x.id] ? C.doneRow : C.glass) + ';' + vCss(x),
       pd: (e) => { const el = e.currentTarget; const r = el.getBoundingClientRect(); const kk = (r.width / (el.offsetWidth || r.width)) || 1; const pid = e.pointerId; const y0 = e.clientY, x0 = e.clientX;
         this._p0 = { x: x0, y: y0 }; clearTimeout(this._vT);
-        this._vT = setTimeout(() => { this._vT = null; this._fired = true; try { el.setPointerCapture(pid); } catch (er) {}
+        this._vT = setTimeout(() => { this._vT = null; this._fired = true; try { navigator.vibrate && navigator.vibrate(12); } catch (x) {} try { el.setPointerCapture(pid); } catch (er) {}
           this._vArm = { id: x.id, grp: x.time ? 'timed' : 'any', k: kk, y0, cy: y0, h: (el.offsetHeight || 56) + 8, sc0: this._sc ? this._sc.scrollTop : 0 }; this.vUpd(); this.vAuto(); }, 420); },
       pm: (e) => { if (this._vArm && this._vArm.id === x.id) { this._vArm.cy = e.clientY; this.vUpd(); return; }
         if (this._vT && this._p0 && Math.hypot(e.clientX - this._p0.x, e.clientY - this._p0.y) > 8) { clearTimeout(this._vT); this._vT = null; } },
@@ -685,15 +696,19 @@ class Component extends DCLogic {
         pick: () => { if (this._fired) return; this.setState({ sel: off }); } };
     });
     const hours = Array.from({ length: 24 }, (_, i) => ({ label: String(i).padStart(2, '0') + ':00', style: 'position: absolute; left: 0; right: 0; top: ' + (i * 44) + 'px; display: flex; align-items: center; gap: 2px; height: 0;' }));
+    const TINTS = ['212,84,184', '84,132,230', '230,140,40', '40,170,150', '150,100,230', '110,170,40'];
+    const tintOf = (x) => { let h = 0; String(x.id).split('').forEach(ch => { h = (h * 31 + ch.charCodeAt(0)) >>> 0; }); return TINTS[h % TINTS.length]; };
+    const blockStyle = (t) => C.light ? 'background: radial-gradient(80% 140% at 50% 50%, rgba(' + t + ',0.24), rgba(' + t + ',0) 85%), rgba(255,255,255,0.6); border: 0.5px solid rgba(' + t + ',0.3); color: ' + C.fg
+      : 'background: rgba(20,20,26,0.78); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 0 0 1px rgba(' + t + ',0.55), inset 0 8px 16px -6px rgba(' + t + ',0.8), inset 0 0 10px rgba(' + t + ',0.45); color: #FFFFFF';
     const blocks = [];
     for (let i = 0; i < span; i++) (byDay[start + i] || []).filter(x => x.time).forEach(x => {
       const [h, m] = x.time.split(':').map(Number);
       const top = h * 44 + m / 60 * 44;
       blocks.push({ open: openTask(x), title: span === 7 ? x.title.split(' ')[0].replace(/[«»]/g, '') : x.title, time: span === 7 ? '' : x.time,
         tStyle: 'font-size: ' + (span === 7 ? 11 : 12) + 'px; font-weight: 500; line-height: 1.2; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;' + (DONE[x.id] ? ' text-decoration: line-through; opacity: 0.6;' : ''),
-        style: 'position: absolute; top: ' + (top + 2) + 'px; left: ' + (36 + i * colW + 2) + 'px; width: ' + (colW - 4) + 'px; height: 40px; box-sizing: border-box; padding: 4px ' + (span === 7 ? 4 : 8) + 'px; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; gap: 1px; overflow: hidden; ' + C.block });
+        style: 'position: absolute; top: ' + (top + 2) + 'px; left: ' + (36 + i * colW + 2) + 'px; width: ' + (colW - 4) + 'px; height: 40px; box-sizing: border-box; padding: 4px ' + (span === 7 ? 4 : 8) + 'px; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; gap: 1px; overflow: hidden; ' + blockStyle(tintOf(x)) });
     });
-    const NOWTOP = 13 * 44 + 20 / 60 * 44;
+    const NOWTOP = (() => { const d = new Date(); return d.getHours() * 44 + d.getMinutes() / 60 * 44; })();
     const nowCol = 0 - start;
     const showNow = nowCol >= 0 && nowCol < span;
     const fmtRange = () => { const a = dOf(start), b = dOf(start + span - 1); return span === 1 ? a.getDate() + ' ' + MN[a.getMonth()].toLowerCase() : (a.getMonth() === b.getMonth() ? a.getDate() + '–' + b.getDate() + ' ' + MN[a.getMonth()].toLowerCase() : a.getDate() + ' ' + MN[a.getMonth()].toLowerCase().slice(0, 3) + ' – ' + b.getDate() + ' ' + MN[b.getMonth()].toLowerCase().slice(0, 3)); };
@@ -724,7 +739,7 @@ class Component extends DCLogic {
       menuOpen: !!st.menuOpen, menuExpanded: st.menuOpen ? 'true' : 'false',
       closeMenu: () => this.setState({ menuOpen: false }), togglePlus: () => this.setState({ menuOpen: !this.state.menuOpen }),
       plusIcon: 'display: flex; transition: transform 0.35s cubic-bezier(.2,.9,.3,1.3); transform: rotate(' + (st.menuOpen ? 135 : 0) + 'deg);',
-      menuTask: (e) => { if (e && e.preventDefault) e.preventDefault(); const id = 'x' + Date.now(); this.setState({ menuOpen: false, section: 'cal', extra: this.state.extra.concat({ id, d: this.state.sel, title: '' }), te: id, teTitle: '', teDesc: '', teTime: '', timeOpen: false, kbOpen: true, kf: 'tt', kbMode: 'abc' }); },
+      menuTask: (e) => { if (e && e.preventDefault) e.preventDefault(); const id = 'x' + Date.now(); this.setState({ menuOpen: false, section: 'cal', extra: this.state.extra.concat({ id, d: 0, title: '' }), te: id, teDay: 0, teDateOpen: false, teTitle: '', teDesc: '', teTime: '', timeOpen: false, kbOpen: true, kf: 'tt', kbMode: 'abc' }); },
       menuHabit: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ menuOpen: false, hs: 'new', hsT: 1, hsName: '', hsD: [1,1,1,1,1,1,1], kbOpen: true, kf: 'hs', kbMode: 'abc' }); },
       accent, title: dotText(st.section === 'habits' ? 'Әдеттер' : 'Күнтізбе', 4, 3, C.fg), titleText: st.section === 'habits' ? 'Әдеттер' : 'Күнтізбе',
       headLine: st.section === 'habits' ? 'Апта · ' + hwName : MN[selD.getMonth()] + ' ' + selD.getFullYear(),
@@ -754,7 +769,15 @@ class Component extends DCLogic {
       teDescShown: st.teDesc || (st.kbOpen && st.kf === 'td' ? '' : 'Қысқаша не істеу керек'), teDescStyle: st.teDesc ? '' : 'opacity: 0.45;',
       teTimeShown: st.teTime || 'Уақытсыз', timeOpen: !!st.timeOpen,
       teChev: 'display: flex; transition: transform 0.3s ease; transform: rotate(' + (st.timeOpen ? 180 : 0) + 'deg);',
-      teToggleTime: () => this.setState({ timeOpen: !this.state.timeOpen, kbOpen: false, teTime: this.state.teTime || '12:00' }),
+      keepTap: (e) => { if (e && e.stopPropagation) e.stopPropagation(); },
+      teToggleDate: () => this.setState({ teDateOpen: !this.state.teDateOpen, timeOpen: false, kbOpen: false }),
+      teDateAria: st.teDateOpen ? 'true' : 'false', teDateOpen: !!st.teDateOpen,
+      teDateChev: 'display: flex; transition: transform 0.3s ease; transform: rotate(' + (st.teDateOpen ? 180 : 0) + 'deg);',
+      teDateShown: (() => { const o = st.teDay || 0; if (o === 0) return 'Бүгін'; if (o === 1) return 'Ертең'; if (o === -1) return 'Кеше'; const d = dOf(o); return ['Жс', 'Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб'][d.getDay()] + ', ' + d.getDate() + ' ' + MNG[d.getMonth()]; })(),
+      teDateChips: Array.from({ length: 22 }, (_, i) => i - 1).concat((st.teDay || 0) < -1 || (st.teDay || 0) > 20 ? [st.teDay] : []).map(o => { const d = dOf(o); const on = (st.teDay || 0) === o;
+        return { wd: o === 0 ? 'Бүгін' : o === 1 ? 'Ертең' : ['Жс', 'Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб'][d.getDay()], n: String(d.getDate()), sel: on ? 'true' : 'false', label: d.getDate() + ' ' + MNG[d.getMonth()], pick: () => this.setState({ teDay: o, teDateOpen: false }),
+          style: 'position: relative; flex-shrink: 0; min-width: 52px; height: 56px; padding: 0 8px; border-radius: 22px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; ' + (on ? 'border: none; background: ' + accent + '; color: var(--onacc, #111111);' : C.wglass + '; color: ' + C.fg + ';') }; }),
+      teToggleTime: () => this.setState({ timeOpen: !this.state.timeOpen, teDateOpen: false, kbOpen: false, teTime: this.state.teTime || '12:00' }),
       teClearTime: () => this.setState({ teTime: '', timeOpen: false }),
       teBottom: 'bottom: ' + (st.kbOpen && (st.kf === 'tt' || st.kf === 'td') ? (window.__aptaApp ? Math.round(window.__aptaKbH || 0) + 8 : 300) : 8) + 'px',
       whours: Array.from({ length: 24 }, (_, i) => ({ v: String(i).padStart(2, '0'), style: wheelItem(i === curH) })),
@@ -765,7 +788,7 @@ class Component extends DCLogic {
       onMinScroll: (e) => { const el = e.currentTarget; clearTimeout(this._wm); this._wm = setTimeout(() => { const i = Math.max(0, Math.min(11, Math.round(el.scrollTop / 36))); const h = (this.state.teTime || '12:00').split(':')[0]; this.setState({ teTime: h + ':' + String(i * 5).padStart(2, '0') }); }, 90); },
       tePostpone: () => { const S = this.state; const x = TASKS.find(y => y.id === S.te); this.setState({ tmov: { ...S.tmov, [S.te]: (x ? x.d : 0) + 1 }, te: null, kbOpen: false }); },
       teDelete: () => { const S = this.state; this.setState({ tdel: { ...S.tdel, [S.te]: true }, te: null, kbOpen: false }); },
-      teSave: () => { const S = this.state; this.setState({ tedit: { ...S.tedit, [S.te]: { title: (S.teTitle || '').trim() || 'Жаңа тапсырма', desc: (S.teDesc || '').trim() || undefined, time: S.teTime || undefined } }, te: null, kbOpen: false, timeOpen: false }); },
+      teSave: () => { const S = this.state; const dN = S.teDay || 0; this.setState({ tmov: { ...S.tmov, [S.te]: dN }, sel: dN, tedit: { ...S.tedit, [S.te]: { title: (S.teTitle || '').trim() || 'Жаңа тапсырма', desc: (S.teDesc || '').trim() || undefined, time: S.teTime || undefined } }, te: null, kbOpen: false, timeOpen: false }); },
       hsT: st.hsT, hsTText: st.hsT === 1 ? 'Күніне бір рет' : 'Күніне ' + st.hsT + ' рет',
       hsMinus: () => this.setState({ hsT: Math.max(1, this.state.hsT - 1) }), hsPlus: () => this.setState({ hsT: Math.min(12, this.state.hsT + 1) }),
       hsOpen: !!st.hs, hsEditing: !!st.hs && st.hs !== 'new', hsTitle: st.hs === 'new' ? 'Жаңа әдет' : 'Әдет', hsSaveText: st.hs === 'new' ? 'Қосу' : 'Сақтау',
@@ -806,14 +829,14 @@ class Component extends DCLogic {
       hrows, hwHeads, hwName, hwNotNow: st.hwOff !== 0, accentDot: ACC,
       hwWrap: st.section === 'habits' ? slide(st.n, st.dir) : '',
       hwPrev: () => go(-1), hwNext: () => go(1), hwToday: () => this.setState({ hwOff: 0, n: 0 }),
-      addTask: () => { const id = 'x' + Date.now(); this.setState({ extra: this.state.extra.concat({ id, d: this.state.sel, title: '' }), te: id, teTitle: '', teDesc: '', teTime: '', timeOpen: false, kbOpen: true, kf: 'tt', kbMode: 'abc' }); },
+      addTask: () => { const id = 'x' + Date.now(); this.setState({ extra: this.state.extra.concat({ id, d: this.state.sel, title: '' }), te: id, teDay: this.state.sel, teDateOpen: false, teTitle: '', teDesc: '', teTime: '', timeOpen: false, kbOpen: true, kf: 'tt', kbMode: 'abc' }); },
       setScroller: (el) => { this._sc = el; },
-      tlRef: (el) => { const key = st.view + ':' + st.start + ':' + st.tlN; if (el && el._k !== key) { el._k = key; const sc = this._sc; if (!sc) return; const y = showNow ? NOWTOP : 8 * 44; setTimeout(() => { const top = el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop; sc.scrollTo({ top: Math.max(top + y - 170, 0), behavior: 'smooth' }); }, 60); } },
+      tlRef: (el) => { const key = st.view + ':' + st.start + ':' + st.tlN; if (el && el._k !== key) { el._k = key; const sc = this._sc; if (!sc) return; const y = 6 * 44; setTimeout(() => { const top = el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop; sc.scrollTo({ top: Math.max(top + y - 222, 0), behavior: 'auto' }); }, 60); } },
       monthName: MN[mFirst.getMonth()] + ' ' + mFirst.getFullYear(), wdHeads: WS.map(n => ({ n })), cells,
       gridStyle: 'display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); row-gap: 2px;' + slide(st.n, st.dir),
       agendaTitle: rel + ' · ' + selD.getDate() + ' ' + MN[selD.getMonth()].toLowerCase(), agenda, agendaEmpty: agenda.length === 0, streaks,
       rangeName: fmtRange(), cols, hours, blocks,
-      colHeadStyle: 'display: grid; grid-template-columns: 36px repeat(' + span + ', minmax(0, 1fr)); gap: 0;',
+      colHeadStyle: 'position: sticky; top: -8px; z-index: 3; display: grid; grid-template-columns: 36px repeat(' + span + ', minmax(0, 1fr)); gap: 0; margin: 0 -8px; padding: 6px 8px; border-radius: 30px; ' + C.glassStrong + ';',
       tlWrap: slide(st.n, st.dir) || (st.swapN ? 'animation: aptaSwap' + (st.swapN % 2 ? 'A' : 'B') + ' 0.3s ease both;' : ''),
       showNow, nowStyle: 'position: absolute; left: ' + (36 + nowCol * colW) + 'px; width: ' + colW + 'px; top: ' + NOWTOP + 'px; display: flex; align-items: center; height: 0;',
       prev: () => go(-1), next: () => go(1),

@@ -178,7 +178,7 @@ button:active{transform:scale(0.96)}
       </div>
   </div>
   <sc-if value="{{showAdd}}" hint-placeholder-val="{{ true }}"><div style="position: absolute; z-index: 25; left: 16px; right: 16px; bottom: 102px">
-    <button onClick="{{addMain}}" style="position: relative; width: 100%; height: 56px; border-radius: 28px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; font-weight: 600; color: #F5F4F1; background: rgba(255,255,255,0.15); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>{{addLabel}}</button>
+    <button onClick="{{addMain}}" style="position: relative; width: 100%; height: 56px; border: none; border-radius: 28px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; font-weight: 600; color: #111111; background: {{accent}}; box-shadow: 0 8px 24px -10px {{accent}}"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color: var(--onacc, #111111)"><path d="M12 5v14M5 12h14"/></svg>{{addLabel}}</button>
   </div></sc-if>
   <sc-if value="{{selMode}}" hint-placeholder-val="{{ false }}">
     <div style="position: absolute; z-index: 25; left: 16px; right: 16px; bottom: 102px; display: grid; grid-template-columns: 56px minmax(0, 1fr) minmax(0, 1fr); gap: 8px; animation: aptaSheet 0.35s cubic-bezier(.2,.9,.3,1) both">
@@ -568,7 +568,7 @@ class Component extends DCLogic {
   onAccent(c) { const h = (c || '#C8F542').replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(x => x + x).join('') : h, 16); const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? 'var(--onacc, #111111)' : '#FFFFFF'; }
   sBoot() {
     if (this._booted) return; this._booted = true;
-    try { this.rebase(); } catch (e) {}
+    try { this.rebase(); if (!this.sGet().since) this.sPut({ since: Date.now() }); } catch (e) {}
     try { if (typeof window !== 'undefined' && window.__aptaApp && navigator.storage && navigator.storage.persist) navigator.storage.persisted().then(p => p || navigator.storage.persist()).catch(() => {}); } catch (e) {}
     if (typeof window !== 'undefined' && window.__aptaApp) { try { this.appPrep(); } catch (e) {} if (this.appEmpty) { try { Object.assign(this.state, this.appEmpty(this.sGet())); } catch (e) {} } }
     const S0 = this.sGet();
@@ -744,11 +744,12 @@ class Component extends DCLogic {
     const long = (d, t) => (d === 0 ? 'Бүгін' : d === -1 ? 'Кеше' : dm(d)) + ' · ' + t;
     const textOf = (n) => n.blocks.filter(isText).map(b => b.text).filter(Boolean).join(' · ');
     const attOf = (n) => { const k = new Set(n.blocks.map(b => b.type)); return [k.has('audio') && 'Аудио', k.has('image') && 'Сурет', k.has('file') && 'Файл', k.has('draw') && 'Сызба'].filter(Boolean).join(' · '); };
-    const byDate = (a, b) => (b.d - a.d) || b.t.localeCompare(a.t);
+    const byDate = (a, b) => ((b.d || 0) - (a.d || 0)) || String(b.t || '').localeCompare(String(a.t || ''));
     const notesAll = st.notes.filter(n => n.kind === 'note').sort(byDate);
     const diaryAll = st.notes.filter(n => n.kind === 'diary').sort(byDate);
     const open = (n) => () => this.setState(this.load(n));
-    const GLOW = ['155,123,255', '242,104,58'];
+    const GLOW = ['155,123,255', '242,104,58', '40,170,150', '230,84,150', '70,130,240', '220,160,30', '120,180,50', '200,90,230'];
+    const glowOf = (n) => { let h = 7; String(n.id).split('').forEach(ch => { h = (h * 31 + ch.charCodeAt(0)) >>> 0; }); return GLOW[h % GLOW.length]; };
     const subC = C.light ? C.sub : C.oSub;
     const fName = (n) => (st.folders.find(f => f.id === n.folder) || {}).name || '';
     const TINT0 = { lime: '200,245,66', peach: '255,138,61', lilac: '155,123,255', sky: '90,170,255' };
@@ -770,7 +771,7 @@ class Component extends DCLogic {
       lpDown: (e) => { const el = e.currentTarget; const r = el.getBoundingClientRect(); this._lpScale = (r.width / (el.offsetWidth || r.width)) || 1; this._lpW = el.offsetWidth || 160; this._lpH = el.offsetHeight || 80;
         try { el.setPointerCapture(e.pointerId); } catch (_) {}
         this._scEl = el.closest ? el.closest('.apta-scroll') : null; this._sc0 = this._scEl ? this._scEl.scrollTop : 0; this._lastCY = e.clientY; this._lastCX = e.clientX;
-        this._lpX = e.clientX; this._lpY = e.clientY; this._armed = null; clearTimeout(this._lpT); if (this.state.selMode) return; this._lpT = setTimeout(() => { this._lpT = null; this._lpFired = true; this._armed = n.id; this.setState({ ctx: n.id }); }, 420); },
+        this._lpX = e.clientX; this._lpY = e.clientY; this._armed = null; clearTimeout(this._lpT); if (this.state.selMode) return; this._lpT = setTimeout(() => { this._lpT = null; this._lpFired = true; this._armed = n.id; try { navigator.vibrate && navigator.vibrate(12); } catch (x) {} this.setState({ ctx: n.id }); }, 420); },
       lpMove: (e) => { const k = this._lpScale || 1; this._lastCX = e.clientX; this._lastCY = e.clientY; const dx = (e.clientX - this._lpX) / k, dy = (e.clientY - this._lpY) / k;
         if (this._lpT && Math.hypot(dx, dy) > 8) { clearTimeout(this._lpT); this._lpT = null; }
         if (this._armed === n.id && (this.state.drag || Math.hypot(dx, dy) > 10)) { this.dragTo(n.id); this.autoScroll(); } },
@@ -781,7 +782,7 @@ class Component extends DCLogic {
         this.setState({ drag: { ...D2, dx: tx, dy: ty, settle: true } });
         setTimeout(() => { const S = this.state;
         const order = vis.slice(); order.splice(to, 0, order.splice(from, 1)[0]);
-        const ords = vis.map(id => (S.notes.find(x => x.id === id) || {}).ord || 0).sort((a, b) => a - b);
+        let ords = vis.map(id => (S.notes.find(x => x.id === id) || {}).ord || 0).sort((a, b) => a - b); if (new Set(ords).size < ords.length) ords = ords.map((_, i) => ords[0] + i);
         const map = Object.fromEntries(order.map((id, i) => [id, ords[i]]));
         this.setState({ drag: null, notes: S.notes.map(x => map[x.id] != null ? { ...x, ord: map[x.id] } : x) }); }, 240); },
       ctx: (e) => { if (e && e.preventDefault) e.preventDefault(); if (this.state.selMode) return; this._lpFired = false; this.setState({ ctx: n.id }); },
@@ -808,7 +809,7 @@ class Component extends DCLogic {
       if (dTo > dFrom && k > dFrom && k <= dTo) return ' translate: ' + slotOff(k, -1) + '; scale: 0.97; opacity: 0.85; transition: translate 0.3s ' + EASE + ', scale 0.25s ' + EASE + ', opacity 0.25s ease;';
       if (dTo < dFrom && k < dFrom && k >= dTo) return ' translate: ' + slotOff(k, 1) + '; scale: 0.97; opacity: 0.85; transition: translate 0.3s ' + EASE + ', scale 0.25s ' + EASE + ', opacity 0.25s ease;';
       return ' translate: 0px 0px; scale: 0.97; opacity: 0.85; transition: translate 0.3s ' + EASE + ', scale 0.25s ' + EASE + ', opacity 0.25s ease;'; };
-    let gi = 0; const items = visN.map((n, k) => { const c0 = card(n, n.pin && st.layout === 'grid' ? GLOW[(gi++) % 2] : null); c0.card += dragCss(k); c0.row += dragCss(k); return { ...c0, pinned: !!n.pin, pinShow: !!n.pin && !st.selMode, hasTop: (!inFolder && !!n.folder) || (!!n.pin && !st.selMode),
+    let gi = 0; const items = visN.map((n, k) => { const c0 = card(n, n.pin && st.layout === 'grid' ? GLOW[(gi++) % GLOW.length] : null); c0.card += dragCss(k); c0.row += dragCss(k); return { ...c0, pinned: !!n.pin, pinShow: !!n.pin && !st.selMode, hasTop: (!inFolder && !!n.folder) || (!!n.pin && !st.selMode),
         pinBadge: 'flex-shrink: 0; display: flex; color: ' + accent + '; filter: drop-shadow(0 0 0.5px rgba(0,0,0,' + (C.light ? 0.55 : 0) + '));',
         folderLine: 'display: flex; align-items: center; gap: 5px; min-width: 0; font-size: 11px; font-weight: 500; white-space: nowrap; overflow: hidden; color: ' + (n.pin && st.layout === 'grid' && !C.light ? C.oSub : C.sub) + ';', ...(inFolder ? { hasFolder: false } : {}), checkStyle: st.layout === 'list' ? c0.checkStyle.replace('top: 12px; right: 12px;', 'top: 50%; right: 16px; margin-top: -12px;') : c0.checkStyle }; });
     const folders = st.folders.map(f => ({ name: f.name, count: String(notesAll.filter(n => n.folder === f.id).length), open: () => this.setState({ folderOpen: f.id }) }));
@@ -824,8 +825,8 @@ class Component extends DCLogic {
       const lab = b.type === 'audio' ? 'Аудио · ' + Math.floor((b.dur || 0) / 60) + ':' + String((b.dur || 0) % 60).padStart(2, '0') : b.type === 'image' ? 'Сурет · ' + b.name : b.type === 'file' ? 'Файл · ' + b.name : 'Сызба';
       return { text: lab, style: 'display: block; font-size: 13px; color: rgba(255,255,255,0.7);', mark: '' }; };
     const diaryItem = (n) => { const x = dt(n.d); const bl = n.blocks.filter(b => !isText(b) || b.text);
-      return { wd: n.d === 0 ? 'Бүгін' : n.d === -1 ? 'Кеше' : WD[x.getDay()][0].toUpperCase() + WD[x.getDay()].slice(1), dd: dm(n.d) + '.' + String(x.getFullYear()).slice(2),
-        lines: bl.map((b, i) => lineOf(b, i === 0 && b.type === 'p', i === bl.length - 1 && b.type === 'p')), btn: 'Оқу', openFn: open(n), bgLayer: layerOf(n.bg, true), ...attFlags(n) }; };
+      return { id: n.id, wd: n.d === 0 ? 'Бүгін' : n.d === -1 ? 'Кеше' : WD[x.getDay()][0].toUpperCase() + WD[x.getDay()].slice(1), dd: dm(n.d) + '.' + String(x.getFullYear()).slice(2),
+        lines: bl.map((b, i) => lineOf(b, i === 0 && b.type === 'p', i === bl.length - 1 && b.type === 'p')), btn: 'Жазу', openFn: open(n), bgLayer: layerOf(n.bg, true), ...attFlags(n) }; };
     const newDiary = () => { const T = this.state.notes.find(n => n.kind === 'diary' && n.d === 0); if (T) return this.setState(this.load(T));
       const b = this.nb('p'); this.setState({ edit: 'new', eKind: 'diary', eTitle: '', eBlocks: [b], eBg: 'none', eFolder: null, ePin: false, active: 0, field: 'block', panel: null, kbMode: 'abc' }); };
     const dRaw = diaryAll.slice().reverse().map(diaryItem).concat(diaryToday ? [] : [{ wd: 'Бүгін', dd: dm(0) + '.' + String(dt(0).getFullYear()).slice(2),
@@ -845,7 +846,9 @@ class Component extends DCLogic {
     const SQ = squircle(DW, DH, 128, 4.2);
     const diary = dRaw.map((n, i) => ({ ...n, cur: i === dIdx ? 'true' : 'false', dateText: n.dd, date: dotText(n.dd, 2, 1.5, 'rgba(255,255,255,0.9)'),
       tap: () => { if (this._dMoved) return; if (i !== dIdx) return dGo(i); n.openFn(); },
-      open: (e) => { if (e && e.stopPropagation) e.stopPropagation(); if (this._dMoved) return; if (i !== dIdx) return dGo(i); n.openFn(); },
+      open: (e) => { if (e && e.stopPropagation) e.stopPropagation(); if (this._dMoved) return; if (i !== dIdx) return dGo(i);
+        const src = this.state.notes.find(x => x.id === n.id); if (!src) return n.openFn(); const L = this.load(src); let at = -1; for (let k = L.eBlocks.length - 1; k >= 0; k--) if (isText(L.eBlocks[k])) { at = k; break; }
+        if (at < 0) { L.eBlocks = L.eBlocks.concat(this.nb('p')); at = L.eBlocks.length - 1; } this.setState({ ...L, active: at, field: 'block', kbMode: 'abc', kbShift: false }); },
       grain: GRAIN,
       sq: SQ, vb: '0 0 ' + DW + ' ' + DH,
       wrap: 'position: relative; flex: 0 0 ' + DW + 'px; height: ' + DH + 'px; transition: transform 0.45s cubic-bezier(.2,.9,.3,1), opacity 0.45s ease; transform: scale(' + (i === dIdx ? 1 : 0.93) + '); opacity: ' + (i === dIdx ? 1 : 0.55) + ';',

@@ -251,6 +251,10 @@
   // tapping a button while typing keeps the text focused and its selection (so tools act on it)
   document.addEventListener('mousedown', function (ev) { if (NF.el && document.activeElement === NF.el && ev.target.closest && ev.target.closest('button') && ev.target !== NF.el) ev.preventDefault(); }, true);
   document.addEventListener('scroll', function () { if (NF.el) place(); }, true);
+  // after a long press picks something up, the finger moves it instead of scrolling the page
+  document.addEventListener('touchmove', function (ev) { var c = NF.comp; if (!c) return; var st = c.state || {};
+    if (c._armed || c._vArm || (st.drag && st.drag.id != null) || st.vdrag || (st.mDrag)) { if (ev.cancelable) ev.preventDefault(); } }, { passive: false });
+  document.addEventListener('contextmenu', function (ev) { var t = ev.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) return; ev.preventDefault(); });
   document.addEventListener('transitionend', function () { if (NF.el) place(); }, true);
 
   function fit(stage) {

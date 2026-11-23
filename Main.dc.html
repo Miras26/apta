@@ -52,7 +52,7 @@ button:active{transform:scale(0.96)}
 
   <div class="apta-scroll" ref="{{setRoot}}" style="position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-top: 108px; box-sizing: border-box">
 
-  <div onPointerDown="{{stripDown}}" onPointerMove="{{stripMove}}" onPointerUp="{{stripUp}}" onPointerCancel="{{stripUp}}" style="position: relative; margin: 24px 16px 0; padding: 8px 8px 0; border-radius: 36px; touch-action: pan-y; background: rgba(255,255,255,0.45); border: 0.5px solid rgba(0,0,0,0.08); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.95), 0 4px 16px rgba(30,30,40,0.05); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)"><span aria-hidden="true" style="position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(160deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 20%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 72%, rgba(255,255,255,0.6) 100%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); pointer-events: none"></span>
+  <div ref="{{stripRef}}" onPointerDown="{{stripDown}}" onPointerMove="{{stripMove}}" onPointerUp="{{stripUp}}" onPointerCancel="{{stripUp}}" style="position: relative; margin: 24px 16px 0; padding: 8px 8px 0; border-radius: 36px; touch-action: none; background: rgba(255,255,255,0.45); border: 0.5px solid rgba(0,0,0,0.08); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.95), 0 4px 16px rgba(30,30,40,0.05); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)"><span aria-hidden="true" style="position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(160deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 20%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 72%, rgba(255,255,255,0.6) 100%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); pointer-events: none"></span>
     <sc-if value="{{weekMode}}" hint-placeholder-val="{{ true }}">
       <div style="{{weekWrap}}">
         <sc-for list="{{days}}" as="d" hint-placeholder-count="7">
@@ -292,6 +292,20 @@ button:active{transform:scale(0.96)}
         <span style="display: block; min-height: 22px; max-width: 100%; font-size: 13px; line-height: 1.4; overflow-wrap: anywhere"><span style="{{descTextStyle}}">{{descShown}}</span><sc-if value="{{descCaret}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="display: inline-block; vertical-align: -3px; width: 2px; height: 18px; margin-left: 1px; border-radius: 1px; background: {{accent}}; animation: aptaBlink 1s steps(1) infinite"></span></sc-if></span>
       </button>
       <div style="position: relative; display: flex; flex-direction: column; border-radius: 30px; {{timeCell}}"><span aria-hidden="true" style="position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(160deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 20%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 72%, rgba(255,255,255,0.6) 100%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); pointer-events: none"></span>
+        <button aria-label="Күні: {{dateShown}}" aria-expanded="{{dateAria}}" onClick="{{toggleDate}}" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: none; background: transparent; color: #141414; text-align: left">
+          <span style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 11px; color: rgba(20,20,20,0.7)">Күні · міндетті емес</span>
+            <span style="font-size: 15px; font-weight: 500">{{dateShown}}</span>
+          </span>
+          <span style="{{dateChev}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#141414" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"/></svg></span>
+        </button>
+        <sc-if value="{{dateOpen}}" hint-placeholder-val="{{ false }}">
+          <div role="radiogroup" aria-label="Күнді таңдау" style="display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 0 12px 12px; animation: aptaFade 0.25s ease both">
+            <sc-for list="{{dateChips}}" as="c" hint-placeholder-count="21"><button role="radio" aria-checked="{{c.sel}}" aria-label="{{c.label}}" onClick="{{c.pick}}" style="{{c.style}}"><span style="font-size: 11px; opacity: 0.7">{{c.wd}}</span><span style="font-size: 15px; font-weight: 600">{{c.n}}</span></button></sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <div style="position: relative; display: flex; flex-direction: column; border-radius: 30px; {{timeCell}}"><span aria-hidden="true" style="position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(160deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 20%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 72%, rgba(255,255,255,0.6) 100%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); pointer-events: none"></span>
         <button aria-label="Уақыты: {{timeShown}}" aria-expanded="{{timeAria}}" onClick="{{toggleTime}}" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: none; background: transparent; color: #141414; text-align: left">
           <span style="display: flex; flex-direction: column; gap: 4px">
             <span style="font-size: 11px; color: rgba(20,20,20,0.7)">Уақыты · міндетті емес</span>
@@ -527,7 +541,7 @@ class Component extends DCLogic {
   onAccent(c) { const h = (c || '#C8F542').replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(x => x + x).join('') : h, 16); const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? 'var(--onacc, #111111)' : '#FFFFFF'; }
   sBoot() {
     if (this._booted) return; this._booted = true;
-    try { this.rebase(); } catch (e) {}
+    try { this.rebase(); if (!this.sGet().since) this.sPut({ since: Date.now() }); } catch (e) {}
     try { if (typeof window !== 'undefined' && window.__aptaApp && navigator.storage && navigator.storage.persist) navigator.storage.persisted().then(p => p || navigator.storage.persist()).catch(() => {}); } catch (e) {}
     if (typeof window !== 'undefined' && window.__aptaApp) { try { this.appPrep(); } catch (e) {} if (this.appEmpty) { try { Object.assign(this.state, this.appEmpty(this.sGet())); } catch (e) {} } }
     const S0 = this.sGet();
@@ -632,7 +646,7 @@ class Component extends DCLogic {
     Object.keys(st.cnt || {}).forEach(d => Object.keys(st.cnt[d] || {}).forEach(hid => { (log[hid] = log[hid] || {})[d] = st.cnt[d][hid]; }));
     return { tasks: { done: st.done, edits: st.edits, del: st.del, moved: st.moved, extra: st.extra, anyOrd: st.anyOrd, post: st.post, doneOrder: st.doneOrder, trem: st.trem || {} }, habits: { list: st.hl, log } }; }
   onIntent(a) { const S = this.state;
-    if (a === 'newTask') { const id = 'n' + Date.now(); return { extra: S.extra.concat({ id, title: '', d: S.sel }), editId: id, editTitle: '', editRem: null, editDesc: '', editTime: '', kbOpen: true, kbField: 'title', kbMode: 'abc', timeOpen: false, menuOpen: false }; }
+    if (a === 'newTask') { const id = 'n' + Date.now(); return { extra: S.extra.concat({ id, title: '', d: 0 }), editId: id, editDay: 0, dateOpen: false, editTitle: '', editRem: null, editDesc: '', editTime: '', kbOpen: true, kbField: 'title', kbMode: 'abc', timeOpen: false, menuOpen: false }; }
     if (a === 'newHabit') return { nhOpen: true, nhEdit: null, nhName: '', nhTarget: 1, nhD: [1,1,1,1,1,1,1], kbOpen: true, kbField: 'nh', kbMode: 'abc', menuOpen: false };
     return {}; }
   componentWillUnmount() { clearTimeout(this._tt); clearTimeout(this._ft); this.vStopAuto(); }
@@ -755,6 +769,7 @@ class Component extends DCLogic {
     const offOf = (d) => Math.round((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - T0) / DAY);
     const MN = ['Қаңтар','Ақпан','Наурыз','Сәуір','Мамыр','Маусым','Шілде','Тамыз','Қыркүйек','Қазан','Қараша','Желтоқсан'];
     const WD = ['Жексенбі','Дүйсенбі','Сейсенбі','Сәрсенбі','Бейсенбі','Жұма','Сенбі'];
+    const WSH = ['Жс', 'Дс', 'Сс', 'Ср', 'Бс', 'Жм', 'Сб']; const MN2 = ['қаңтар', 'ақпан', 'наурыз', 'сәуір', 'мамыр', 'маусым', 'шілде', 'тамыз', 'қыркүйек', 'қазан', 'қараша', 'желтоқсан'];
     const WS = ['Дс','Сс','Ср','Бс','Жм','Сб','Жс'];
     const sel = st.sel;
     const selD = dOf(sel);
@@ -810,6 +825,10 @@ class Component extends DCLogic {
     const goMonth = (d) => this.setState({ monthOff: this.state.monthOff + d, monthDir: d, monthN: this.state.monthN + 1 });
     const goWeek = (d) => this.moveState({ sel: this.state.sel + 7 * d, weekDir: d, weekN: this.state.weekN + 1 });
     const strip = {
+      stripRef: (el) => { this._stripEl = el; if (this._outsideOn || typeof document === 'undefined') return; this._outsideOn = true;
+        // the open month folds back to the week when you touch anywhere else; that touch does nothing else
+        document.addEventListener('pointerdown', (ev) => { if (!this.state.monthOpen || !this._stripEl || this._stripEl.contains(ev.target)) return; this._swallow = Date.now(); this.setState({ monthOpen: false }); }, true);
+        document.addEventListener('click', (ev) => { if (this._swallow && Date.now() - this._swallow < 700) { this._swallow = 0; ev.stopPropagation(); ev.preventDefault(); } }, true); },
       stripDown: (e) => { this._sd = { x: e.clientX, y: e.clientY, fired: false }; this._stripFired = false; },
       stripMove: (e) => {
         const g = this._sd; if (!g || g.fired) return;
@@ -891,7 +910,7 @@ class Component extends DCLogic {
     };
     const postpone = (id) => { const x = BASE.find(y => y.id === id); const from = x ? dayOf(x) : sel; this.showToast({ kind: 'post', id, prev: this.state.moved[id], text: 'Ертеңге қалдырылды' }, { moved: { ...this.state.moved, [id]: from + 1 }, post: { ...this.state.post, [id]: true }, editId: null, kbOpen: false }); };
     const remove = (id) => { const x = BASE.find(y => y.id === id); this.remSet('task:' + id, null); this.sTrash({ id: 'task:' + id, title: x ? x.title || 'Тапсырма' : 'Тапсырма', kind: 'Тапсырма', type: 'task', data: { id } }); this.showToast({ kind: 'del', id, text: 'Тапсырма өшірілді' }, { del: { ...this.state.del, [id]: true }, editId: null }); };
-    const openEdit = (x) => this.setState({ editId: x.id, editTitle: x.title, editDesc: x.desc || '', editTime: x.time || '', editRem: (this.state.trem || {})[x.id] || null, kbMode: 'abc', kbOpen: false, timeOpen: false });
+    const openEdit = (x) => this.setState({ editId: x.id, editDay: dayOf(x), dateOpen: false, editTitle: x.title, editDesc: x.desc || '', editTime: x.time || '', editRem: (this.state.trem || {})[x.id] || null, kbMode: 'abc', kbOpen: false, timeOpen: false });
 
     const late = (x) => sel === 0 && x.time && x.time < NOW && !st.done[x.id];
     const timedSrc = SRC.filter(x => x.time && !gone(x)).sort((a, b) => a.time.localeCompare(b.time));
@@ -929,7 +948,7 @@ class Component extends DCLogic {
         dotStyle: 'width: 24px; height: 24px; border-radius: 12px; box-sizing: border-box; display: flex; align-items: center; justify-content: center;' + (done ? ' ' + ACC + ' animation: aptaPop 0.35s ease;' : ' border: 1px solid ' + (isLate ? C.late : (big ? C.oRing : C.ring)) + ';'),
         pd: (e) => { this._moved = false; this._drag = { id, x0: e.clientX, y0: e.clientY, active: false }; if (inDone) return;
           const el = e.currentTarget; const wrap = el.closest ? el.closest('[data-flip]') : el; const r = el.getBoundingClientRect(); const kk = (r.width / (el.offsetWidth || r.width)) || 1; const pid = e.pointerId;
-          clearTimeout(this._vT); this._vT = setTimeout(() => { this._vT = null; this._drag = null; this._moved = true; try { el.setPointerCapture(pid); } catch (er) {}
+          clearTimeout(this._vT); this._vT = setTimeout(() => { this._vT = null; this._drag = null; this._moved = true; try { navigator.vibrate && navigator.vibrate(12); } catch (x) {} try { el.setPointerCapture(pid); } catch (er) {}
             this._vArm = { id, grp, k: kk, y0: e.clientY, cy: e.clientY, h: ((wrap && wrap.offsetHeight) || 56) + 8, sc0: this._root ? this._root.scrollTop : 0 }; this.vDragUpdate(); this.vAuto(); }, 420); },
         pm: (e) => {
           if (this._vArm && this._vArm.id === id) { this._vArm.cy = e.clientY; this.vDragUpdate(); return; }
@@ -1042,10 +1061,10 @@ class Component extends DCLogic {
         const days = S.nhD.every(Boolean) ? undefined : S.nhD.map((v, i) => v ? i : -1).filter(i => i >= 0);
         const hl = S.nhEdit ? S.hl.map(h => h.id === S.nhEdit ? { ...h, name, target: S.nhTarget, days } : h) : S.hl.concat({ id: 'h' + Date.now(), name, target: S.nhTarget, days });
         this.setState({ hl, nhOpen: false, nhEdit: null, kbOpen: false, habitsOpen: !S.nhEdit }); },
-      menuTask: (e) => { if (e && e.preventDefault) e.preventDefault(); const id = 'n' + Date.now(); this.moveState({ menuOpen: false, extra: this.state.extra.concat({ id, title: '', d: this.state.sel }), editId: id, editTitle: '', editRem: null, editDesc: '', editTime: '', kbOpen: true, kbField: 'title', kbMode: 'abc', timeOpen: false }); },
+      menuTask: (e) => { if (e && e.preventDefault) e.preventDefault(); const id = 'n' + Date.now(); this.moveState({ menuOpen: false, extra: this.state.extra.concat({ id, title: '', d: 0 }), editId: id, editDay: 0, dateOpen: false, editTitle: '', editRem: null, editDesc: '', editTime: '', kbOpen: true, kbField: 'title', kbMode: 'abc', timeOpen: false }); },
       menuHabit: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ menuOpen: false, nhOpen: true, nhEdit: null, nhName: '', nhTarget: 1, nhD: [1,1,1,1,1,1,1], kbOpen: true, kbField: 'nh', kbMode: 'abc' }); },
       showAddRow: totalCount > 0,
-      addTask: () => { const id = 'n' + Date.now(); this.moveState({ extra: this.state.extra.concat({ id, title: '', d: this.state.sel }), editId: id, editTitle: '', editRem: null, editDesc: '', editTime: '', kbOpen: true, kbField: 'title', kbMode: 'abc', timeOpen: false }); },
+      addTask: () => { const id = 'n' + Date.now(); this.moveState({ extra: this.state.extra.concat({ id, title: '', d: 0 }), editId: id, editDay: 0, dateOpen: false, editTitle: '', editRem: null, editDesc: '', editTime: '', kbOpen: true, kbField: 'title', kbMode: 'abc', timeOpen: false }); },
       nowTime: NOW,
       emptyTitle: sel === 0 ? 'Бүгінге жоспар жоқ' : (sel === 1 ? 'Ертеңге жоспар жоқ' : 'Бұл күнге жоспар жоқ'),
       openHabits: () => this.setState({ habitsOpen: true }), closeHabits: () => this.setState({ habitsOpen: false }),
@@ -1064,7 +1083,7 @@ class Component extends DCLogic {
       summaryLine: totalCount === 0 ? 'Бүгін жоспар болған жоқ' : (allDone ? 'Бәрі орындалды. Керемет күн!' : 'Тағы ' + (totalCount - doneCount) + ' тапсырма қалды'),
       sDone: doneCount, sLate: lateCount, sPost: Object.keys(st.post).length, sHabits: habitsDone + ' / ' + dayHl.length,
       isEmpty: totalCount === 0,
-      addFirst: () => { const id = 'n' + Date.now(); this.moveState({ extra: this.state.extra.concat({ id, title: '', d: this.state.sel }), editId: id, editTitle: '', editRem: null, editDesc: '', editTime: '', kbOpen: true, kbField: 'title', kbMode: 'abc', timeOpen: false }); },
+      addFirst: () => { const id = 'n' + Date.now(); this.moveState({ extra: this.state.extra.concat({ id, title: '', d: 0 }), editId: id, editDay: 0, dateOpen: false, editTitle: '', editRem: null, editDesc: '', editTime: '', kbOpen: true, kbField: 'title', kbMode: 'abc', timeOpen: false }); },
       editOpen: !!st.editId, editTitle: st.editTitle, editTime: st.editTime,
       closeEdit: () => { const id = this.state.editId; const x = SRC.find(y => y.id === id); if (x && !x.title && !this.state.editTitle) this.setState({ del: { ...this.state.del, [id]: true }, editId: null, kbOpen: false, timeOpen: false }); else this.setState({ editId: null, kbOpen: false, timeOpen: false }); },
       focusTitle: () => this.setState({ kbOpen: true, kbField: 'title', timeOpen: false }),
@@ -1074,7 +1093,14 @@ class Component extends DCLogic {
       descTextStyle: st.editDesc ? '' : 'opacity: 0.45;',
       descCell: C.wglass + (st.kbOpen && st.kbField === 'desc' ? '; box-shadow: inset 0 0 0 1.5px ' + accent : ''),
       titleCaret: !!st.kbOpen && st.kbField !== 'desc', descCaret: !!st.kbOpen && st.kbField === 'desc',
-      toggleTime: () => { const tm = this.state.editTime || '12:00'; this._wheelInit = false; this.setState({ timeOpen: !this.state.timeOpen, kbOpen: false, editTime: tm }); },
+      toggleTime: () => { const tm = this.state.editTime || '12:00'; this._wheelInit = false; this.setState({ timeOpen: !this.state.timeOpen, dateOpen: false, kbOpen: false, editTime: tm }); },
+      toggleDate: () => this.setState({ dateOpen: !this.state.dateOpen, timeOpen: false, kbOpen: false }),
+      dateShown: (() => { const o = st.editDay || 0; if (o === 0) return 'Бүгін'; if (o === 1) return 'Ертең'; if (o === -1) return 'Кеше'; const d = dOf(o); return WSH[d.getDay()] + ', ' + d.getDate() + ' ' + MN2[d.getMonth()]; })(),
+      dateAria: st.dateOpen ? 'true' : 'false', dateOpen: !!st.dateOpen,
+      dateChev: 'display: flex; transition: transform 0.3s ease; transform: rotate(' + (st.dateOpen ? 180 : 0) + 'deg);',
+      dateChips: Array.from({ length: 22 }, (_, i) => i - 1).map(o => { const d = dOf(o); const on = (st.editDay || 0) === o;
+        return { wd: o === 0 ? 'Бүгін' : o === 1 ? 'Ертең' : WSH[d.getDay()], n: String(d.getDate()), sel: on ? 'true' : 'false', label: d.getDate() + ' ' + MN2[d.getMonth()], pick: () => this.setState({ editDay: o, dateOpen: false }),
+          style: 'position: relative; flex-shrink: 0; min-width: 52px; height: 56px; padding: 0 8px; border-radius: 22px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; ' + (on ? 'border: none; background: ' + accent + '; color: var(--onacc, #111111);' : C.wglass + '; color: ' + C.oFg + ';') }; }),
       clearTime: () => this.setState({ editTime: '', timeOpen: false }),
       titleShown: st.editTitle || (st.kbOpen && st.kbField !== 'desc' ? '' : 'Мысалы: эссе жазу'),
       titleTextStyle: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;' + (st.editTitle ? '' : ' opacity: 0.45;'),
@@ -1098,7 +1124,7 @@ class Component extends DCLogic {
         const x = BASE.find(y => y.id === id); const off = x ? dayOf(x) : this.state.sel; let at = null;
         if (rk === 'p5') at = Date.now() + 300000; else if (rk) { const d = new Date(); d.setDate(d.getDate() + off); const hm = (this.state.editTime || '09:00').split(':').map(Number); d.setHours(hm[0], hm[1], 0, 0); at = d.getTime() - ({ at: 0, m10: 600000, h1: 3600000 }[rk] || 0); }
         this.remSet('task:' + id, title, at, 'Тапсырма');
-        this.moveState({ edits: { ...this.state.edits, [id]: { title, desc: (this.state.editDesc || '').trim() || undefined, time: this.state.editTime || undefined } }, trem: { ...(this.state.trem || {}), [id]: rk }, editId: null, kbOpen: false, timeOpen: false }); },
+        const dNew = this.state.editDay || 0; this.moveState({ moved: { ...this.state.moved, [id]: dNew }, sel: dNew, edits: { ...this.state.edits, [id]: { title, desc: (this.state.editDesc || '').trim() || undefined, time: this.state.editTime || undefined } }, trem: { ...(this.state.trem || {}), [id]: rk }, editId: null, kbOpen: false, timeOpen: false }); },
       editPostpone: () => postpone(this.state.editId),
       editDelete: () => remove(this.state.editId),
       timed, anytime, doneList,
