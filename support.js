@@ -7,7 +7,7 @@
   hide.textContent = 'x-dc{display:none!important}html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%}#apta-stage{position:fixed;left:0;top:0;transform-origin:0 0}';
   document.head.appendChild(hide);
   if (!document.querySelector('meta[name=viewport]')) {
-    var mv = document.createElement('meta'); mv.name = 'viewport'; mv.content = 'width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, interactive-widget=resizes-content'; document.head.appendChild(mv);
+    var mv = document.createElement('meta'); mv.name = 'viewport'; mv.content = 'width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, interactive-widget=overlays-content'; document.head.appendChild(mv);
   }
 
   // light <-> dark twin of every screen; the profile's theme choice (or the phone's) picks one
@@ -159,6 +159,11 @@
     '.apta-nf.rich{color:transparent!important;-webkit-text-fill-color:transparent}' +
     '.apta-nf::selection{background:rgba(120,160,255,0.35)}';
   document.head.appendChild(css);
+  window.__aptaKbH = 0;
+  var KB = { full: 0, scale: 1, onChange: null };
+  function kbSet(px) { var h = Math.max(0, Math.round(px / (KB.scale || 1))); if (h < 60) h = 0; if (h !== window.__aptaKbH) { window.__aptaKbH = h; if (KB.onChange) KB.onChange(); } }
+  try { if ('virtualKeyboard' in navigator) { navigator.virtualKeyboard.overlaysContent = true; navigator.virtualKeyboard.addEventListener('geometrychange', function (e) { kbSet(e.target.boundingRect.height); }); } } catch (x) {}
+  if (window.visualViewport) visualViewport.addEventListener('resize', function () { if (!('virtualKeyboard' in navigator)) kbSet(Math.max(0, (KB.full || window.innerHeight) - visualViewport.height)); });
   var NF = { el: null, row: null, key: null, comp: null, stage: null, sel: null };
   window.__aptaSel = function () { var x = NF.el && NF.sel ? { s: NF.sel.s, e: NF.sel.e, key: NF.key } : NF.last; if (!x || !(x.s < x.e)) return null; return { s: x.s, e: x.e, key: String(x.key || '').split('|')[0] }; };
   function nfOf(comp) { return comp && comp.state && comp.state.srOpen ? comp._nfSr : comp && comp._nf; }
@@ -182,10 +187,13 @@
     if (!e.classList.contains('rich')) e.style.color = NF.color || cs.color;
     var ac = '#C8F542'; try { ac = NF.comp.accentNow(); } catch (x) {} e.style.caretColor = /^#(fff|ffffff)$/i.test(ac) ? cs.color : ac;
   }
+  // keep the text layer glued to its field while sheets slide (keyboard opening/closing)
+  function follow(ms) { var until = Date.now() + (ms || 600); if (NF.fol) { NF.folUntil = Math.max(NF.folUntil, until); return; } NF.fol = true; NF.folUntil = until;
+    (function step() { place(); if (Date.now() < NF.folUntil && NF.el) requestAnimationFrame(step); else NF.fol = false; })(); }
   function reveal() {
     var r = NF.row; if (!r || !r.isConnected) return; var sp = scrollParent(r); if (!sp) return;
-    var a = r.getBoundingClientRect(), b = sp.getBoundingClientRect();
-    if (a.bottom > b.bottom - 24) sp.scrollTop += a.bottom - b.bottom + 48; else if (a.top < b.top + 8) sp.scrollTop -= b.top - a.top + 24;
+    var a = r.getBoundingClientRect(), b = sp.getBoundingClientRect(); var vb = Math.min(b.bottom, window.innerHeight - (window.__aptaKbH || 0) * (KB.scale || 1) - 70);
+    if (a.bottom > vb - 24) sp.scrollTop += a.bottom - vb + 48; else if (a.top < b.top + 8) sp.scrollTop -= b.top - a.top + 24;
   }
   function detach() {
     if (NF.el && NF.sel) NF.last = { s: NF.sel.s, e: NF.sel.e, key: NF.key };
@@ -235,7 +243,7 @@
     var v = nf.get() || '';
     if (NF.el.value !== v && !NF.composing) { var p = NF.el.selectionStart; NF.el.value = v; try { NF.el.setSelectionRange(Math.min(p, v.length), Math.min(p, v.length)); } catch (x) {} }
     if (typeof NF.pendingCaret === 'number') { try { var q = Math.min(NF.pendingCaret, NF.el.value.length); NF.el.setSelectionRange(q, q); } catch (x) {} NF.pendingCaret = null; }
-    place(); reveal();
+    place(); follow(500); reveal();
   }
   document.addEventListener('compositionstart', function () { NF.composing = true; }, true);
   document.addEventListener('compositionend', function () { NF.composing = false; }, true);
@@ -243,11 +251,13 @@
   // tapping a button while typing keeps the text focused and its selection (so tools act on it)
   document.addEventListener('mousedown', function (ev) { if (NF.el && document.activeElement === NF.el && ev.target.closest && ev.target.closest('button') && ev.target !== NF.el) ev.preventDefault(); }, true);
   document.addEventListener('scroll', function () { if (NF.el) place(); }, true);
+  document.addEventListener('transitionend', function () { if (NF.el) place(); }, true);
 
   function fit(stage) {
     var W = window.innerWidth, H = window.innerHeight, s, h, x = 0;
+    if (NF.el && document.activeElement === NF.el && KB.full && H < KB.full && W === KB.w) H = KB.full; else { KB.full = H; KB.w = W; }
     if (W / H < 0.66) { s = W / 390; h = H / s; } else { s = Math.min(1, H / 844); h = 844; x = (W - 390 * s) / 2; }
-    stage.style.transform = 'translate(' + x + 'px,0) scale(' + s + ')';
+    KB.scale = s; stage.style.transform = 'translate(' + x + 'px,0) scale(' + s + ')';
     stage.style.setProperty('--appH', Math.round(h) + 'px');
     stage.style.width = '390px'; stage.style.height = Math.round(h) + 'px';
   }
@@ -266,6 +276,7 @@
     var stage = document.createElement('div'); stage.id = 'apta-stage'; document.body.appendChild(stage);
     fit(stage); window.addEventListener('resize', function () { fit(stage); if (NF.el) { place(); setTimeout(reveal, 50); } });
     var comp = new Comp(props), tree = [], queued = false;
+    KB.onChange = function () { comp.forceUpdate(); if (NF.el) { follow(700); setTimeout(reveal, 350); } };
     function draw() {
       queued = false; var vals;
       try { vals = comp.renderVals(); } catch (e) { console.error(e); return; }

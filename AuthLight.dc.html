@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Апта — кіру / тіркелу, ашық</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, interactive-widget=resizes-content">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, interactive-widget=overlays-content">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -177,12 +177,24 @@ class Component extends DCLogic {
     if (S.fin && Array.isArray(S.fin.tx)) P.fin = { ...S.fin, tx: S.fin.tx.map(x => ({ ...x, d: sh(x.d) })) };
     if (S.notes) { const N = { ...S.notes }; if (Array.isArray(N.notes)) N.notes = N.notes.map(x => ({ ...x, d: sh(x.d) })); if (Array.isArray(N.maps)) N.maps = N.maps.map(x => ({ ...x, d: sh(x.d) })); P.notes = N; }
     this.sPut(P); }
+  // installed app: the screens start empty; sample items saved by an earlier version are removed once
+  appPrep() { if (!this.appSeeds) return; const S = this.sGet(); const C = { ...(S.clean || {}) }; const P = {}; const sd = this.appSeeds();
+    const fp = (x) => Array.isArray(x) ? String(x[0]) + '|' + String(x[1] || '') : String(x.id != null ? x.id : '') + '|' + (x.title || x.name || x.text || ((x.nodes || [])[0] || {}).text || '');
+    const strip = (arr, seeds) => { if (!Array.isArray(arr)) return arr; const F = new Set((seeds || []).map(fp)); return arr.filter(x => !F.has(fp(x))); };
+    if (sd.notes && !C.notes) { if (S.notes) P.notes = { ...S.notes, notes: strip(S.notes.notes, sd.notes.notes), folders: strip(S.notes.folders, sd.notes.folders), maps: strip(S.notes.maps, sd.notes.maps) }; C.notes = 1; }
+    if (sd.tx && !C.fin) { if (S.fin) P.fin = { ...S.fin, tx: strip(S.fin.tx, sd.tx) }; C.fin = 1; }
+    if (sd.habits && !C.habits) { if (S.habits && Array.isArray(S.habits.list)) { const F = new Set(sd.habits.map(fp)); const gone = S.habits.list.filter(h => F.has(fp(h))).map(h => h.id);
+        const log = { ...(S.habits.log || {}) }; gone.forEach(id => { delete log[id]; }); P.habits = { ...S.habits, list: S.habits.list.filter(h => !F.has(fp(h))), log }; } C.habits = 1; }
+    if (sd.trash && !C.trash) { if (Array.isArray(S.trash)) { const F = new Set(sd.trash); P.trash = S.trash.filter(t => !F.has(t.title)); } C.trash = 1; }
+    if (sd.profile && !C.profile) { const Pr = S.profile || {}; if (Pr.name === sd.profile && !(S.auth && S.auth.name === Pr.name)) P.profile = { ...Pr, name: (S.auth && S.auth.name) || '' }; C.profile = 1; }
+    P.clean = C; this.sPut(P); }
   notice(title, text) { this.setState({ notice: { title, text } }); }
   accentNow() { const p = this.sGet().profile || {}; return p.accent || this.props.accent || '#C8F542'; }
   onAccent(c) { const h = (c || '#C8F542').replace('#', ''); const n = parseInt(h.length === 3 ? h.split('').map(x => x + x).join('') : h, 16); const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? 'var(--onacc, #111111)' : '#FFFFFF'; }
   sBoot() {
     if (this._booted) return; this._booted = true;
     try { this.rebase(); } catch (e) {}
+    if (typeof window !== 'undefined' && window.__aptaApp) { try { this.appPrep(); } catch (e) {} if (this.appEmpty) { try { Object.assign(this.state, this.appEmpty(this.sGet())); } catch (e) {} } }
     const S0 = this.sGet();
     if (this.hydrate) { try { Object.assign(this.state, this.hydrate(S0)); } catch (e) {} }
     const it = S0.intent; if (it && it.board === this.boardName() && this.onIntent) { try { Object.assign(this.state, this.onIntent(it.action) || {}); } catch (e) {} this.sPut({ intent: null }); }
@@ -281,12 +293,12 @@ class Component extends DCLogic {
     const HB = [['Ерте тұру', '6 күн қатарынан', [1,1,1,1,1,1,0]], ['Домбыра', '3 күн қатарынан', [0,1,0,1,1,1,0]], ['Кітап оқу', '1 күн', [1,0,0,0,0,1,0]]];
     return {
       rootVars: '--onacc: ' + this.onAccent(accent) + ';',
-      ...(() => { const P = this.sGet().profile || {}; const av = P.avatar; const ini = ((P.name || 'Мирас')[0] || 'М').toUpperCase();
+      ...(() => { const P = this.sGet().profile || {}; const av = P.avatar; const ini = ((P.name || (typeof window !== 'undefined' && window.__aptaApp ? 'А' : 'Мирас'))[0] || 'А').toUpperCase();
         return { avLetter: av ? '' : ini, avBtn: av ? "background: url('" + av + "') center / cover no-repeat; border: none; color: transparent;" : '' }; })(),
       bnOn: !!this.state.banner, bnTitle: this.state.banner ? this.state.banner.title : '', bnKind: this.state.banner && this.state.banner.kind === 'task' ? 'Тапсырма' : 'Жазба',
       bnClose: () => { clearTimeout(this._bnT); this.setState({ banner: null }); },
       ntOn: !!this.state.notice, ntTitle: this.state.notice ? this.state.notice.title : '', ntText: this.state.notice ? this.state.notice.text : '', ntClose: () => this.setState({ notice: null }),
-      todayText: this.todayLine(0),
+      dayLine: this.todayLine(0),
       accent,
       isIntro: st.step === 'intro', isAuth: st.step === 'auth', isDone: st.step === 'done',
       s0: st.slide === 0, s1: st.slide === 1, s2: st.slide === 2, notLast: st.slide < SLIDES.length - 1,
