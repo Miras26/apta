@@ -158,7 +158,7 @@
     '-webkit-user-select:text;user-select:text;-webkit-tap-highlight-color:transparent;border-radius:0;appearance:none}' +
     '.apta-nf.rich{color:transparent!important;-webkit-text-fill-color:transparent}' +
     '.apta-nf::selection{background:rgba(120,160,255,0.35)}' +
-    '#apta-stage section[role="dialog"]{max-height:calc(var(--appH, 844px) - var(--kbH, 0px) - 64px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}';
+    '#apta-stage section[role="dialog"]{max-height:calc(var(--appH, 844px) - var(--kbH, 0px) - 64px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}#apta-stage section[role="dialog"]:not([style*="; top: "])>*{flex-shrink:0}';
   document.head.appendChild(css);
   window.__aptaKbH = 0;
   var KB = { full: 0, scale: 1, onChange: null };
