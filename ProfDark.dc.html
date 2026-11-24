@@ -399,6 +399,34 @@ class Component extends DCLogic {
     if (sd.trash && !C.trash) { if (Array.isArray(S.trash)) { const F = new Set(sd.trash); P.trash = S.trash.filter(t => !F.has(t.title)); } C.trash = 1; }
     if (sd.profile && !C.profile) { const Pr = S.profile || {}; if (Pr.name === sd.profile && !(S.auth && S.auth.name === Pr.name)) P.profile = { ...Pr, name: (S.auth && S.auth.name) || '' }; C.profile = 1; }
     P.clean = C; this.sPut(P); }
+  quickParse(text) { const tk = String(text || '').trim().split(/\s+/).filter(Boolean); if (!tk.length) return null; const T0 = this.today0(), DAY = 86400000;
+    const MON = [['қаңтар', 0], ['ақпан', 1], ['наурыз', 2], ['сәуір', 3], ['мамыр', 4], ['маусым', 5], ['шілде', 6], ['тамыз', 7], ['қыркүйек', 8], ['қазан', 9], ['қараша', 10], ['желтоқсан', 11], ['январ', 0], ['феврал', 1], ['март', 2], ['апрел', 3], ['мая', 4], ['май', 4], ['июн', 5], ['июл', 6], ['август', 7], ['сентябр', 8], ['октябр', 9], ['ноябр', 10], ['декабр', 11]];
+    const REL = { 'бүгін': 0, 'ертең': 1, 'бүрсігүні': 2, 'бүрсүгүні': 2, 'сегодня': 0, 'завтра': 1, 'послезавтра': 2 };
+    const WD = { 'жексенбі': 0, 'дүйсенбі': 1, 'сейсенбі': 2, 'сәрсенбі': 3, 'бейсенбі': 4, 'жұма': 5, 'сенбі': 6, 'воскресенье': 0, 'понедельник': 1, 'вторник': 2, 'среда': 3, 'среду': 3, 'четверг': 4, 'пятница': 5, 'пятницу': 5, 'суббота': 6, 'субботу': 6 };
+    const SUF = /[-‑]?(ге|ға|ке|қа|де|да|те|та|ден|дан|тен|тан|нан|нен|гі|ғы|кі|қы)$/;
+    const low = (w) => w.toLowerCase().replace(/[.,!?;]+$/, '');
+    const word = (w) => { const x = low(w); return (x in REL || x in WD) ? x : x.replace(SUF, ''); };
+    const now = new Date(T0); const off = (dt) => Math.round((dt.getTime() - T0) / DAY);
+    const dateOf = (dd, mm) => { if (!(dd >= 1 && dd <= 31 && mm >= 0 && mm < 12)) return null; let dt = new Date(now.getFullYear(), mm, dd); if (dt.getMonth() !== mm) return null; if (off(dt) < 0) dt = new Date(now.getFullYear() + 1, mm, dd); return off(dt); };
+    const hm = (h, m) => String(Number(h)).padStart(2, '0') + ':' + (m || '00');
+    const one = (w) => { const x = low(w), y = word(w); let m;
+      if ((m = x.match(/^([01]?\d|2[0-3])[:.]([0-5]\d)(?:[-‑]?(?:де|да|те|та|ге|ға|ке|қа))?$/))) return ['t', hm(m[1], m[2])];
+      if (y in REL) return ['d', REL[y]];
+      if (y in WD) { let k = (WD[y] - now.getDay() + 7) % 7; if (k === 0) k = 7; return ['d', k]; }
+      if ((m = x.match(/^(\d{1,2})[.\/](\d{1,2})$/))) { const o = dateOf(Number(m[1]), Number(m[2]) - 1); if (o != null) return ['d', o]; }
+      return null; };
+    const two = (w1, w2) => { const a = low(w1), b = low(w2); let m;
+      if ((a === 'сағат' || a === 'в') && (m = b.match(/^([01]?\d|2[0-3])(?:[:.]([0-5]\d))?(?:[-‑]?(?:де|да|те|та|ге|ға|ке|қа))?$/))) return ['t', hm(m[1], m[2])];
+      if ((m = a.match(/^(\d{1,2})(?:[-‑].*)?$/))) { const mo = MON.find(p => b.indexOf(p[0]) === 0); if (mo) { const o = dateOf(Number(m[1]), mo[1]); if (o != null) return ['d', o]; } }
+      return null; };
+    let d = null, time = null; const take = (r) => { if (!r) return false; if (r[0] === 'd') { if (d != null) return false; d = r[1]; } else { if (time != null) return false; time = r[1]; } return true; };
+    let i = 0, j = tk.length - 1;
+    while (i <= j) { if (i + 1 <= j && take(two(tk[i], tk[i + 1]))) { i += 2; continue; } if (take(one(tk[i]))) { i += 1; continue; } break; }
+    while (j >= i) { if (j - 1 >= i && take(two(tk[j - 1], tk[j]))) { j -= 2; continue; } if (take(one(tk[j]))) { j -= 1; continue; } break; }
+    if (d == null && time == null) return null;
+    let title = tk.slice(i, j + 1).join(' ').trim(); if (!title) return null; if (i > 0) title = title.charAt(0).toUpperCase() + title.slice(1);
+    return { title, d, time };
+  }
   navOrder() { const D = ['home', 'cal', 'notes', 'fin']; const o = ((this.sGet().profile || {}).nav || []).filter((k, i, a) => D.includes(k) && a.indexOf(k) === i); return o.length === 4 ? o : D; }
   navApply() { try { const L = { home: 'Бүгін', cal: 'Күнтізбе', notes: 'Жазбалар', fin: 'Қаржы' }; const css = this.navOrder().map((k, i) => 'nav[aria-label="Негізгі мәзір"] a[aria-label="' + L[k] + '"]{order:' + (i + 1) + '}').join('');
     let el = document.getElementById('apta-nav-order'); if (!el) { el = document.createElement('style'); el.id = 'apta-nav-order'; document.head.appendChild(el); } if (el.textContent !== css) el.textContent = css; } catch (e) {} }

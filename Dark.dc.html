@@ -110,6 +110,7 @@ button:active{transform:scale(0.96)}
       <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
         <sc-for list="{{homeHabits}}" as="h" hint-placeholder-count="4">
           <button aria-label="{{h.aria}}" aria-pressed="{{h.pressed}}" onClick="{{h.tap}}" onPointerDown="{{h.lpd}}" onPointerUp="{{h.lpu}}" onPointerLeave="{{h.lpu}}" onContextMenu="{{h.noCtx}}" style="{{h.cellStyle}}">
+            <sc-if value="{{h.hasStreak}}" hint-placeholder-val="{{ false }}"><span aria-label="{{h.streakLabel}}" style="position: absolute; top: 5px; right: 7px; font-size: 11px; font-weight: 700; line-height: 1; opacity: 0.9">🔥{{h.streak}}</span></sc-if>
             <span style="font-size: 11px; font-weight: 500; line-height: 1.2; text-align: center; max-width: 100%; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{h.name}}</span>
             <span style="{{h.wrap}}">
               <sc-if value="{{h.showOn}}" hint-placeholder-val="{{ false }}"><span style="{{h.onStyle}}"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></sc-if>
@@ -121,6 +122,33 @@ button:active{transform:scale(0.96)}
       </div>
     </div>
   </div>
+
+  <sc-if value="{{wkOn}}" hint-placeholder-val="{{ false }}">
+    <section aria-label="Апта қорытындысы" style="position: relative; margin: 24px 16px 0; padding: 16px; border-radius: 30px; display: flex; flex-direction: column; gap: 12px; animation: aptaFade 0.35s ease both; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+      <div style="position: relative; display: flex; align-items: center; gap: 12px">
+        <span style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 3px"><span style="font-size: 18px; font-weight: 600">Апта қорытындысы</span><span style="font-size: 11px; color: rgba(245,244,241,0.72)">{{wkRange}}</span></span>
+        <button aria-label="Жабу" onClick="{{wkClose}}" style="position: relative; width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <div style="position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+        <sc-for list="{{wkStats}}" as="k" hint-placeholder-count="4">
+          <div style="position: relative; display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-radius: 30px; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none">
+            <span style="position: relative; font-size: 11px; color: rgba(245,244,241,0.72)">{{k.label}}</span>
+            <span style="position: relative; font-size: 18px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{k.value}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </sc-if>
+  <sc-if value="{{mgOn}}" hint-placeholder-val="{{ false }}">
+    <section aria-label="Таңғы шолу" style="position: relative; margin: 24px 16px 0; padding: 16px 12px 16px 18px; border-radius: 30px; display: flex; align-items: center; gap: 12px; animation: aptaFade 0.35s ease both; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+      <span aria-hidden="true" style="position: relative; font-size: 26px">☀️</span>
+      <span style="position: relative; flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+        <span style="font-size: 15px; font-weight: 600">Қайырлы таң!</span>
+        <span style="font-size: 13px; color: rgba(245,244,241,0.72); line-height: 1.4">{{mgLine}}</span>
+      </span>
+      <button aria-label="Жабу" onClick="{{mgClose}}" style="position: relative; flex-shrink: 0; width: 36px; height: 36px; border-radius: 18px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </section>
+  </sc-if>
 
   <div style="margin: 24px 16px 0; display: flex; flex-direction: column; gap: 8px">
     <h2 style="margin: 0 0 8px 8px; font-size: 18px; font-weight: 600; letter-spacing: -0.2px">Кесте</h2>
@@ -222,6 +250,7 @@ button:active{transform:scale(0.96)}
   <sc-if value="{{toastOn}}" hint-placeholder-val="{{ false }}">
     <div role="status" style="{{toastStyle}}; z-index: 29">
       <span style="font-size: 13px; font-weight: 500">{{toastText}}</span>
+      <sc-if value="{{toastExp}}" hint-placeholder-val="{{ false }}"><button onClick="{{expOpenT}}" style="height: 40px; padding: 0 14px; border: none; border-radius: 20px; background: {{accent}}; color: var(--onacc, #111111); font-size: 13px; font-weight: 600; white-space: nowrap">₸ Шығын</button></sc-if>
       <sc-if value="{{toastUndo}}" hint-placeholder-val="{{ true }}"><button aria-label="Қайтару" onClick="{{undo}}" style="width: 40px; height: 40px; border: none; border-radius: 20px; background: #F5F4F1; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg></button></sc-if>
     </div>
   </sc-if>
@@ -262,6 +291,7 @@ button:active{transform:scale(0.96)}
       <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
         <sc-for list="{{allHabits}}" as="h" hint-placeholder-count="7">
           <button aria-label="{{h.aria}}" aria-pressed="{{h.pressed}}" onClick="{{h.tap}}" onPointerDown="{{h.lpd}}" onPointerUp="{{h.lpu}}" onPointerLeave="{{h.lpu}}" onContextMenu="{{h.noCtx}}" style="{{h.cellStyle}}">
+            <sc-if value="{{h.hasStreak}}" hint-placeholder-val="{{ false }}"><span aria-label="{{h.streakLabel}}" style="position: absolute; top: 5px; right: 7px; font-size: 11px; font-weight: 700; line-height: 1; opacity: 0.9">🔥{{h.streak}}</span></sc-if>
             <span style="font-size: 11px; font-weight: 500; line-height: 1.2; text-align: center; max-width: 100%; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{h.name}}</span>
             <span style="{{h.wrap}}">
               <sc-if value="{{h.showOn}}" hint-placeholder-val="{{ false }}"><span style="{{h.onStyle}}"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></sc-if>
@@ -287,6 +317,12 @@ button:active{transform:scale(0.96)}
         <button aria-label="Атауы: {{editTitle}}" onClick="{{focusTitle}}" style="position: relative; display: flex; align-items: center; min-height: 52px; padding: 12px 16px 8px; border: none; background: transparent; text-align: left; color: #FFFFFF">
           <span style="display: flex; align-items: center; min-height: 26px; max-width: 100%; font-size: 18px; font-weight: 600"><span style="{{titleTextStyle}}">{{titleShown}}</span><sc-if value="{{titleCaret}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="width: 2px; height: 20px; margin-left: 1px; border-radius: 1px; background: {{accent}}; animation: aptaBlink 1s steps(1) infinite"></span></sc-if></span>
         </button>
+        <sc-if value="{{qpOn}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; align-items: center; gap: 6px; padding: 0 12px 10px 16px; animation: aptaFade 0.2s ease both">
+            <span style="display: flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px; border-radius: 14px; background: {{accent}}; color: var(--onacc, #111111); font-size: 11px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">✨ {{qpText}}</span>
+            <button aria-label="Күн мен уақытты танымау" onClick="{{qpNo}}" style="width: 28px; height: 28px; flex-shrink: 0; border: none; border-radius: 14px; background: transparent; color: rgba(255,255,255,0.74); font-size: 15px; line-height: 1">×</button>
+          </div>
+        </sc-if>
         <div aria-hidden="true" style="height: 0.5px; margin: 0 16px; background: rgba(255,255,255,0.74); opacity: 0.35"></div>
         <button aria-label="Сипаттамасы: {{editDesc}}" onClick="{{focusDesc}}" style="position: relative; display: flex; align-items: flex-start; min-height: 44px; padding: 10px 16px 12px; border: none; background: transparent; text-align: left; color: #FFFFFF">
           <span style="display: block; min-height: 22px; max-width: 100%; font-size: 13px; line-height: 1.4; overflow-wrap: anywhere"><span style="{{descTextStyle}}">{{descShown}}</span><sc-if value="{{descCaret}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="display: inline-block; vertical-align: -3px; width: 2px; height: 18px; margin-left: 1px; border-radius: 1px; background: {{accent}}; animation: aptaBlink 1s steps(1) infinite"></span></sc-if></span>
@@ -386,6 +422,24 @@ button:active{transform:scale(0.96)}
           </sc-for>
         </div>
       </sc-if>
+    </section>
+  </sc-if>
+  <sc-if value="{{expOn}}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{expClose}}" style="position: absolute; inset: 0; z-index: 30; background: rgba(11,11,13,0.3); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); animation: aptaFade 0.25s ease both"></div>
+    <section role="dialog" aria-label="Шығын жазу" style="position: absolute; z-index: 31; left: 8px; right: 8px; bottom: 8px; box-sizing: border-box; padding: 20px 16px 16px; border-radius: 36px; display: flex; flex-direction: column; gap: 12px; animation: aptaSheet 0.42s cubic-bezier(.2,.9,.3,1.05) both; background: rgba(26,26,30,0.82); border: 0.5px solid rgba(255,255,255,0.12); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.18), 0 -10px 40px rgba(0,0,0,0.45); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); color: #FFFFFF">
+      <div aria-hidden="true" style="align-self: center; width: 36px; height: 4px; border-radius: 2px; background: #FFFFFF; opacity: 0.3; margin-top: -8px"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-left: 8px">
+        <span style="display: flex; flex-direction: column; gap: 3px; min-width: 0"><span style="font-size: 18px; font-weight: 600">Шығын жазу</span><span style="font-size: 11px; color: rgba(255,255,255,0.74); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{expTitle}}</span></span>
+        <button aria-label="Жабу" onClick="{{expClose}}" style="position: relative; flex-shrink: 0; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <div role="status" aria-label="Сома" style="display: flex; justify-content: center; align-items: baseline; gap: 6px; padding: 6px 0 2px"><span style="{{expAmtStyle}}">{{expAmt}}</span><span style="font-size: 18px; font-weight: 500; opacity: 0.6">₸</span></div>
+      <div role="radiogroup" aria-label="Санат" style="display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -4px; padding: 0 4px">
+        <sc-for list="{{expCats}}" as="c" hint-placeholder-count="6"><button role="radio" aria-checked="{{c.sel}}" onClick="{{c.pick}}" style="{{c.style}}">{{c.label}}</button></sc-for>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+        <sc-for list="{{expKeys}}" as="k" hint-placeholder-count="12"><button aria-label="{{k.label}}" onClick="{{k.press}}" style="position: relative; height: 50px; border-radius: 22px; border: none; font-size: 18px; font-weight: 500; color: #FFFFFF; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none">{{k.t}}</button></sc-for>
+      </div>
+      <button onClick="{{expSave}}" aria-disabled="{{expOff}}" style="height: 52px; border: none; border-radius: 26px; background: #F5F4F1; color: #111111; font-size: 15px; font-weight: 600; transition: opacity 0.2s ease; opacity: {{expOp}}">Сақтау</button>
     </section>
   </sc-if>
   <sc-if value="{{nhOpen}}" hint-placeholder-val="{{ false }}">
@@ -527,6 +581,34 @@ class Component extends DCLogic {
     if (sd.trash && !C.trash) { if (Array.isArray(S.trash)) { const F = new Set(sd.trash); P.trash = S.trash.filter(t => !F.has(t.title)); } C.trash = 1; }
     if (sd.profile && !C.profile) { const Pr = S.profile || {}; if (Pr.name === sd.profile && !(S.auth && S.auth.name === Pr.name)) P.profile = { ...Pr, name: (S.auth && S.auth.name) || '' }; C.profile = 1; }
     P.clean = C; this.sPut(P); }
+  quickParse(text) { const tk = String(text || '').trim().split(/\s+/).filter(Boolean); if (!tk.length) return null; const T0 = this.today0(), DAY = 86400000;
+    const MON = [['қаңтар', 0], ['ақпан', 1], ['наурыз', 2], ['сәуір', 3], ['мамыр', 4], ['маусым', 5], ['шілде', 6], ['тамыз', 7], ['қыркүйек', 8], ['қазан', 9], ['қараша', 10], ['желтоқсан', 11], ['январ', 0], ['феврал', 1], ['март', 2], ['апрел', 3], ['мая', 4], ['май', 4], ['июн', 5], ['июл', 6], ['август', 7], ['сентябр', 8], ['октябр', 9], ['ноябр', 10], ['декабр', 11]];
+    const REL = { 'бүгін': 0, 'ертең': 1, 'бүрсігүні': 2, 'бүрсүгүні': 2, 'сегодня': 0, 'завтра': 1, 'послезавтра': 2 };
+    const WD = { 'жексенбі': 0, 'дүйсенбі': 1, 'сейсенбі': 2, 'сәрсенбі': 3, 'бейсенбі': 4, 'жұма': 5, 'сенбі': 6, 'воскресенье': 0, 'понедельник': 1, 'вторник': 2, 'среда': 3, 'среду': 3, 'четверг': 4, 'пятница': 5, 'пятницу': 5, 'суббота': 6, 'субботу': 6 };
+    const SUF = /[-‑]?(ге|ға|ке|қа|де|да|те|та|ден|дан|тен|тан|нан|нен|гі|ғы|кі|қы)$/;
+    const low = (w) => w.toLowerCase().replace(/[.,!?;]+$/, '');
+    const word = (w) => { const x = low(w); return (x in REL || x in WD) ? x : x.replace(SUF, ''); };
+    const now = new Date(T0); const off = (dt) => Math.round((dt.getTime() - T0) / DAY);
+    const dateOf = (dd, mm) => { if (!(dd >= 1 && dd <= 31 && mm >= 0 && mm < 12)) return null; let dt = new Date(now.getFullYear(), mm, dd); if (dt.getMonth() !== mm) return null; if (off(dt) < 0) dt = new Date(now.getFullYear() + 1, mm, dd); return off(dt); };
+    const hm = (h, m) => String(Number(h)).padStart(2, '0') + ':' + (m || '00');
+    const one = (w) => { const x = low(w), y = word(w); let m;
+      if ((m = x.match(/^([01]?\d|2[0-3])[:.]([0-5]\d)(?:[-‑]?(?:де|да|те|та|ге|ға|ке|қа))?$/))) return ['t', hm(m[1], m[2])];
+      if (y in REL) return ['d', REL[y]];
+      if (y in WD) { let k = (WD[y] - now.getDay() + 7) % 7; if (k === 0) k = 7; return ['d', k]; }
+      if ((m = x.match(/^(\d{1,2})[.\/](\d{1,2})$/))) { const o = dateOf(Number(m[1]), Number(m[2]) - 1); if (o != null) return ['d', o]; }
+      return null; };
+    const two = (w1, w2) => { const a = low(w1), b = low(w2); let m;
+      if ((a === 'сағат' || a === 'в') && (m = b.match(/^([01]?\d|2[0-3])(?:[:.]([0-5]\d))?(?:[-‑]?(?:де|да|те|та|ге|ға|ке|қа))?$/))) return ['t', hm(m[1], m[2])];
+      if ((m = a.match(/^(\d{1,2})(?:[-‑].*)?$/))) { const mo = MON.find(p => b.indexOf(p[0]) === 0); if (mo) { const o = dateOf(Number(m[1]), mo[1]); if (o != null) return ['d', o]; } }
+      return null; };
+    let d = null, time = null; const take = (r) => { if (!r) return false; if (r[0] === 'd') { if (d != null) return false; d = r[1]; } else { if (time != null) return false; time = r[1]; } return true; };
+    let i = 0, j = tk.length - 1;
+    while (i <= j) { if (i + 1 <= j && take(two(tk[i], tk[i + 1]))) { i += 2; continue; } if (take(one(tk[i]))) { i += 1; continue; } break; }
+    while (j >= i) { if (j - 1 >= i && take(two(tk[j - 1], tk[j]))) { j -= 2; continue; } if (take(one(tk[j]))) { j -= 1; continue; } break; }
+    if (d == null && time == null) return null;
+    let title = tk.slice(i, j + 1).join(' ').trim(); if (!title) return null; if (i > 0) title = title.charAt(0).toUpperCase() + title.slice(1);
+    return { title, d, time };
+  }
   navOrder() { const D = ['home', 'cal', 'notes', 'fin']; const o = ((this.sGet().profile || {}).nav || []).filter((k, i, a) => D.includes(k) && a.indexOf(k) === i); return o.length === 4 ? o : D; }
   navApply() { try { const L = { home: 'Бүгін', cal: 'Күнтізбе', notes: 'Жазбалар', fin: 'Қаржы' }; const css = this.navOrder().map((k, i) => 'nav[aria-label="Негізгі мәзір"] a[aria-label="' + L[k] + '"]{order:' + (i + 1) + '}').join('');
     let el = document.getElementById('apta-nav-order'); if (!el) { el = document.createElement('style'); el.id = 'apta-nav-order'; document.head.appendChild(el); } if (el.textContent !== css) el.textContent = css; } catch (e) {} }
@@ -694,7 +776,7 @@ class Component extends DCLogic {
       const p = { toast: null };
       if (cur.kind === 'done') p.settled = { ...this.state.settled, [cur.id]: true };
       this.moveState(p);
-    }, 2800);
+    }, toast && toast.exp ? 4500 : 2800);
   }
 
   renderVals() {
@@ -848,7 +930,9 @@ class Component extends DCLogic {
     const RC = 2 * Math.PI * 9.5;
     const habitVM = (h) => {
       const n = cntDay[h.id] || 0, T = h.target, full = n >= T;
+      const streak = (() => { const tg = h.target || 1; const ok = (o) => ((st.cnt[o] || {})[h.id] || 0) >= tg; const sch = (o) => !h.days || h.days.includes((dOf(o).getDay() + 6) % 7); let c = 0, o = ok(0) ? 0 : -1; for (let k = 0; k < 400; k++, o--) { if (!sch(o)) continue; if (ok(o)) c++; else break; } return c; })();
       const vm = {
+        hasStreak: streak >= 2, streak: String(streak), streakLabel: 'Қатарынан ' + streak + ' күн',
         name: h.name, pressed: full ? 'true' : 'false',
         aria: h.name + (T > 1 ? ': ' + n + ' / ' + T : (full ? ': орындалды' : '')) + (future ? ' (болашақ күн)' : '') + '. Өзгерту үшін басып тұрыңыз',
         cellStyle: C.cell + (future ? '; opacity: 0.5' : ''),
@@ -894,7 +978,8 @@ class Component extends DCLogic {
     const setDone = (id, v, title) => {
       const S = this.state;
       if (v) {
-        this.showToast({ kind: 'done', id, text: 'Тапсырма орындалды' },
+        const tt = ((BASE.find(y => y.id === id) || {}).title) || ''; const exp = /сатып|төле|дүкен|базар|магазин|маркет|купи|покуп|оплат|заплат|тапсырыс|заказ|кофе|такси|билет|жалға|аренд|коммунал|сыйлық|подар|\d+\s?(₸|тг|тең)/i.test(tt);
+        this.showToast({ kind: 'done', id, text: 'Тапсырма орындалды', exp, title: tt, day: dayOf(BASE.find(y => y.id === id) || { id }) },
           { done: { ...S.done, [id]: true }, settled: { [id]: false }, doneOrder: S.doneOrder.filter(x => x !== id).concat(id) });
       } else {
         const toast = S.toast && S.toast.id === id ? null : S.toast;
@@ -1123,13 +1208,17 @@ class Component extends DCLogic {
       kbRows: kbRows,
       remOpts: [[null, 'Жоқ'], ['at', 'Уақытында'], ['m10', '10 мин бұрын'], ['h1', '1 сағат бұрын'], ['p5', '5 мин кейін']].map(([k, label]) => { const on = (st.editRem || null) === k;
         return { label, sel: on ? 'true' : 'false', pick: () => this.setState({ editRem: k }), style: 'position: relative; flex-shrink: 0; height: 36px; padding: 0 14px; border-radius: 18px; font-size: 13px; font-weight: ' + (on ? 600 : 400) + '; white-space: nowrap; ' + (on ? 'border: none; background: ' + accent + '; color: var(--onacc, #111111);' : 'background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: inset 0 0 10px rgba(255,255,255,0.06); border: none; color: #FFFFFF;') }; }),
-      editSave: () => { const id = this.state.editId; const prev = BASE.find(y => y.id === id); const title = (this.state.editTitle || '').trim() || ((this.state.edits[id] || {}).title) || (prev && prev.title) || ''; if (!title) return; const rk = this.state.editRem || null;
-        const x = BASE.find(y => y.id === id); const off = x ? dayOf(x) : this.state.sel; let at = null;
-        if (rk === 'p5') at = Date.now() + 300000; else if (rk) { const d = new Date(); d.setDate(d.getDate() + off); const hm = (this.state.editTime || '09:00').split(':').map(Number); d.setHours(hm[0], hm[1], 0, 0); at = d.getTime() - ({ at: 0, m10: 600000, h1: 3600000 }[rk] || 0); }
+      editSave: () => { const id = this.state.editId; const prev = BASE.find(y => y.id === id); const qp = this.state.qpOff === id ? null : this.quickParse(this.state.editTitle); const title = qp ? qp.title : (this.state.editTitle || '').trim() || ((this.state.edits[id] || {}).title) || (prev && prev.title) || ''; if (!title) return; const rk = this.state.editRem || null;
+        const dNew = qp && qp.d != null ? qp.d : (this.state.editDay || 0); const tmNew = qp && qp.time ? qp.time : this.state.editTime; const off = dNew; let at = null;
+        if (rk === 'p5') at = Date.now() + 300000; else if (rk) { const d = new Date(); d.setDate(d.getDate() + off); const hm = (tmNew || '09:00').split(':').map(Number); d.setHours(hm[0], hm[1], 0, 0); at = d.getTime() - ({ at: 0, m10: 600000, h1: 3600000 }[rk] || 0); }
         this.remSet('task:' + id, title, at, 'Тапсырма');
-        const dNew = this.state.editDay || 0; this.moveState({ moved: { ...this.state.moved, [id]: dNew }, sel: dNew, edits: { ...this.state.edits, [id]: { title, desc: (this.state.editDesc || '').trim() || undefined, time: this.state.editTime || undefined } }, trem: { ...(this.state.trem || {}), [id]: rk }, editId: null, kbOpen: false, timeOpen: false }); },
+        this.moveState({ moved: { ...this.state.moved, [id]: dNew }, sel: dNew, edits: { ...this.state.edits, [id]: { title, desc: (this.state.editDesc || '').trim() || undefined, time: tmNew || undefined } }, trem: { ...(this.state.trem || {}), [id]: rk }, editId: null, kbOpen: false, timeOpen: false }); },
       saveOff: (st.editId && !(st.editTitle || '').trim() && !((st.edits[st.editId] || {}).title) && !((BASE.find(y => y.id === st.editId) || {}).title)) ? 'true' : 'false',
       saveOp: (st.editId && !(st.editTitle || '').trim() && !((st.edits[st.editId] || {}).title) && !((BASE.find(y => y.id === st.editId) || {}).title)) ? 0.4 : 1,
+      ...(() => { const qp = st.editId && st.qpOff !== st.editId ? this.quickParse(st.editTitle) : null; if (!qp) return { qpOn: false, qpText: '' };
+        const parts = []; if (qp.d != null) { const d = dOf(qp.d); parts.push((qp.d === 0 ? 'Бүгін, ' : qp.d === 1 ? 'Ертең, ' : '') + WSH[d.getDay()] + ' ' + d.getDate() + ' ' + MN2[d.getMonth()]); } if (qp.time) parts.push(qp.time);
+        return { qpOn: true, qpText: parts.join(' · ') }; })(),
+      qpNo: () => this.setState({ qpOff: this.state.editId }),
       editPostpone: () => postpone(this.state.editId),
       editDelete: () => remove(this.state.editId),
       timed, anytime, doneList,
@@ -1138,7 +1227,34 @@ class Component extends DCLogic {
       doneToggleText: st.doneExpanded ? 'Жасыру' : 'Барлығы',
       chevStyle: 'display: flex; transition: transform 0.3s ease; transform: rotate(' + (st.doneExpanded ? 180 : 0) + 'deg);',
       toggleDone: () => this.moveState({ doneExpanded: !this.state.doneExpanded }),
-      toastOn: !!T, toastText: T ? T.text : '',
+      ...(() => { const S0 = this.sGet(); const ui = S0.ui || {}; const now = new Date(); const hr = now.getHours(), wd = now.getDay(); const dn = this.dayNum(); const out = { wkOn: false, wkRange: '', wkStats: [], mgOn: false, mgLine: '' };
+        const habOn = (h, o) => !h.days || h.days.includes((dOf(o).getDay() + 6) % 7); const hFull = (h, o) => ((st.cnt[o] || {})[h.id] || 0) >= (h.target || 1);
+        if ((wd === 0 && hr >= 18) || wd === 1) { const end = wd === 0 ? 0 : -1, from = end - 6; const key = dn + end;
+          if (ui.wk !== key) { let tTot = 0, tDone = 0, hTot = 0, hDone = 0, spent = 0; const score = {};
+            BASE.forEach(x => { const o = dayOf(x); if (o >= from && o <= end && x.title) { tTot++; if (st.done[x.id]) { tDone++; score[o] = (score[o] || 0) + 1; } } });
+            for (let o = from; o <= end; o++) st.hl.forEach(h => { if (!habOn(h, o)) return; hTot++; if (hFull(h, o)) { hDone++; score[o] = (score[o] || 0) + 1; } });
+            ((S0.fin || {}).tx || []).forEach(x => { if (x.d >= from && x.d <= end && x.v < 0) spent += -x.v; });
+            if (tTot || hTot || spent) { const best = Object.keys(score).sort((a, b) => score[b] - score[a])[0]; const WF = ['Жексенбі', 'Дүйсенбі', 'Сейсенбі', 'Сәрсенбі', 'Бейсенбі', 'Жұма', 'Сенбі'];
+              const a = dOf(from), b = dOf(end); out.wkOn = true; out.wkRange = a.getDate() + (a.getMonth() === b.getMonth() ? '' : ' ' + MN2[a.getMonth()]) + '–' + b.getDate() + ' ' + MN2[b.getMonth()];
+              out.wkStats = [{ label: 'Тапсырмалар', value: tDone + ' / ' + tTot }, { label: 'Әдеттер', value: hTot ? Math.round(hDone / hTot * 100) + '%' : '—' }, { label: 'Ең үздік күн', value: best != null ? WF[dOf(Number(best)).getDay()] : '—' }, { label: 'Шығын', value: spent.toLocaleString('ru-RU').replace(/,/g, ' ') + ' ₸' }];
+              out.wkClose = () => { const S = this.sGet(); this.sPut({ ui: { ...(S.ui || {}), wk: key } }); this.setState({ uiN: (this.state.uiN || 0) + 1 }); }; } } }
+        if (hr >= 5 && hr < 12 && sel === 0 && ui.mg !== dn) { const tl = BASE.filter(x => dayOf(x) === 0 && x.title && !st.done[x.id]); const hl = st.hl.filter(h => habOn(h, 0) && !hFull(h, 0));
+          if (tl.length || hl.length) { const first = tl.filter(x => x.time).sort((a, b) => a.time < b.time ? -1 : 1)[0] || tl[0]; const parts = []; if (tl.length) parts.push(tl.length + ' тапсырма'); if (hl.length) parts.push(hl.length + ' әдет');
+            out.mgOn = true; out.mgLine = 'Бүгін ' + parts.join(', ') + '.' + (first ? ' Алғашқысы: ' + (first.time ? first.time + ' — ' : '') + first.title + '.' : '');
+            out.mgClose = () => { const S = this.sGet(); this.sPut({ ui: { ...(S.ui || {}), mg: dn } }); this.setState({ uiN: (this.state.uiN || 0) + 1 }); }; } }
+        out.wkClose = out.wkClose || (() => {}); out.mgClose = out.mgClose || (() => {}); return out; })(),
+      toastOn: !!T, toastText: T ? T.text : '', toastExp: !!(T && T.exp),
+      expOpenT: () => { const t = this.state.toast; if (!t) return; const tt = t.title || ''; const g = [['food', /тамақ|ас|кофе|нан|азық|продукт|еда|кафе|дүкен|базар|магазин|маркет/i], ['road', /такси|автобус|жол|бензин|билет|проезд/i], ['study', /кітап|курс|оқу|дәптер|книг|учеб/i], ['fun', /кино|ойын|концерт|подписк|жазылым/i], ['home', /үй|коммунал|жалға|аренд|жиһаз|квартир/i]].find(c => c[1].test(tt));
+        clearTimeout(this._tt); this.moveState({ toast: null, settled: { ...this.state.settled, [t.id]: true }, exp: { title: tt, d: t.day || 0, amt: '', cat: g ? g[0] : 'other' } }); },
+      expOn: !!st.exp, expTitle: st.exp ? st.exp.title : '',
+      expAmt: st.exp && st.exp.amt ? Number(st.exp.amt).toLocaleString('ru-RU').replace(/,/g, ' ') : '0',
+      expAmtStyle: 'font-size: 44px; font-weight: 600; letter-spacing: -1px;' + (st.exp && st.exp.amt ? '' : ' opacity: 0.35;'),
+      expClose: () => this.setState({ exp: null }),
+      expCats: [['food', 'Тамақ'], ['road', 'Жол'], ['study', 'Оқу'], ['fun', 'Ойын-сауық'], ['home', 'Үй'], ['other', 'Басқа']].map(([k, label]) => { const on = !!st.exp && st.exp.cat === k; return { label, sel: on ? 'true' : 'false', pick: () => this.setState({ exp: { ...this.state.exp, cat: k } }),
+        style: 'flex-shrink: 0; height: 34px; padding: 0 14px; border-radius: 17px; font-size: 13px; font-weight: ' + (on ? 600 : 400) + '; white-space: nowrap; ' + (on ? 'border: none; background: ' + accent + '; color: var(--onacc, #111111);' : 'border: 1px solid ' + C.oRing + '; background: transparent; color: ' + C.oFg + ';') }; }),
+      expKeys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '000', '0', '⌫'].map(k => ({ t: k, label: k === '⌫' ? 'Өшіру' : k, press: () => { const e = this.state.exp; if (!e) return; let a = e.amt || ''; if (k === '⌫') a = a.slice(0, -1); else if (a.length < 9) a = (a + k).replace(/^0+/, ''); this.setState({ exp: { ...e, amt: a } }); } })),
+      expOff: st.exp && Number(st.exp.amt) ? 'false' : 'true', expOp: st.exp && Number(st.exp.amt) ? 1 : 0.4,
+      expSave: () => { const e = this.state.exp; const v = e && Number(e.amt); if (!v) return; const S = this.sGet(); const F = S.fin || {}; const tx = F.tx || []; this.sPut({ fin: { ...F, tx: tx.concat({ id: Math.max(0, ...tx.map(x => Number(x.id) || 0)) + 1, d: e.d || 0, t: this.nowHM(), title: e.title || 'Шығын', cat: e.cat || 'other', v: -v }) } }); this.setState({ exp: null }); this.showToast({ kind: 'info', text: 'Шығын жазылды: ' + v.toLocaleString('ru-RU').replace(/,/g, ' ') + ' ₸' }); },
       toastStyle: 'position: absolute; left: 50%; bottom: 104px; display: flex; align-items: center; gap: 12px; padding: 6px 6px 6px 18px; border-radius: 30px; color: ' + C.fg + '; white-space: nowrap; animation: ' + (st.toastN % 2 ? 'aptaToast' : 'aptaToastB') + ' 2.8s ease both; ' + C.glassStrong,
       toastUndo: !!(st.toast && st.toast.kind !== 'info'),
       saveImg: () => this.showToast({ kind: 'info', text: 'Күн қорытындысы суретке сақталды' }, {}),
