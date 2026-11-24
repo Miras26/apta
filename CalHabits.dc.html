@@ -27,6 +27,8 @@ button:active{transform:scale(0.96)}
 @keyframes aptaSheet{from{transform:translateY(105%)}to{transform:none}}
 @keyframes aptaBlink{0%{opacity:1}50%{opacity:0}}
 @keyframes aptaFade{from{opacity:0}to{opacity:1}}
+@keyframes aptaJigA{0%{transform:rotate(-1.4deg)}100%{transform:rotate(1.4deg)}}
+@keyframes aptaJigB{0%{transform:rotate(1.2deg)}100%{transform:rotate(-1.2deg)}}
 @keyframes aptaMenu{from{opacity:0;transform:scale(.6) translateY(24px)}to{opacity:1;transform:none}}
 @keyframes aptaMItem{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes aptaSlideLA{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
@@ -115,13 +117,13 @@ button:active{transform:scale(0.96)}
               <button aria-label="{{c.label}}" onClick="{{c.pick}}" style="{{c.style}}"><span style="font-size: 11px; color: rgba(20,20,20,0.7)">{{c.wd}}</span><span style="{{c.numStyle}}">{{c.num}}</span><span style="{{c.anyStyle}}">{{c.any}}</span></button>
             </sc-for>
           </div>
-          <div ref="{{tlRef}}"><div style="position: relative; height: 1064px; margin-top: 14px">
+          <div ref="{{tlRef}}"><div ref="{{gridRef}}" onClick="{{gridTap}}" style="position: relative; height: 1064px; margin-top: 14px">
             <sc-for list="{{hours}}" as="h" hint-placeholder-count="14">
               <div style="{{h.style}}"><span style="width: 34px; font-size: 11px; color: rgba(20,20,20,0.7); transform: translateY(-7px)">{{h.label}}</span><span style="flex-grow: 1; height: 0.5px; background: #141414; opacity: 0.12"></span></div>
             </sc-for>
             <sc-if value="{{showNow}}" hint-placeholder-val="{{ false }}"><div style="{{nowStyle}}"><span style="width: 7px; height: 7px; border-radius: 4px; margin-left: -3px; background: {{accent}}"></span><span style="flex-grow: 1; height: 1px; background: {{accent}}"></span></div></sc-if>
             <sc-for list="{{blocks}}" as="k" hint-placeholder-count="6">
-              <div onClick="{{k.open}}" style="{{k.style}}"><span style="{{k.tStyle}}">{{k.title}}</span><span style="font-size: 11px; opacity: 0.75">{{k.time}}</span></div>
+              <div role="button" aria-label="{{k.aria}}" onClick="{{k.open}}" onPointerDown="{{k.down}}" onPointerMove="{{k.move}}" onPointerUp="{{k.up}}" onPointerCancel="{{k.cancel}}" onContextMenu="{{k.noCtx}}" style="{{k.style}}"><span style="{{k.tStyle}}">{{k.title}}</span><span style="font-size: 11px; opacity: 0.75">{{k.time}}</span></div>
             </sc-for>
           </div></div>
         </div>
@@ -265,6 +267,12 @@ button:active{transform:scale(0.96)}
       </sc-if>
       <button onClick="{{hsSave}}" style="height: 52px; border: none; border-radius: 26px; background: #141414; color: #FFFFFF; font-size: 15px; font-weight: 600">{{hsSaveText}}</button>
     </section>
+  </sc-if>
+  <sc-if value="{{jigOn}}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position: absolute; z-index: 27; left: 16px; right: 16px; bottom: 104px; display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 18px; border-radius: 30px; animation: aptaFade 0.25s ease both; background: rgba(255,255,255,0.78); border: 0.5px solid rgba(0,0,0,0.08); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.95), 0 4px 16px rgba(30,30,40,0.05); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)"><span aria-hidden="true" style="position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(160deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 20%, rgba(255,255,255,0) 42%, rgba(255,255,255,0) 72%, rgba(255,255,255,0.6) 100%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); pointer-events: none"></span>
+      <span style="position: relative; flex: 1 1 auto; min-width: 0; font-size: 13px; font-weight: 500; color: #141414; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{jigHint}}</span>
+      <button onClick="{{jigDone}}" style="position: relative; flex-shrink: 0; height: 40px; padding: 0 18px; border: none; border-radius: 20px; background: {{accent}}; color: var(--onacc, #111111); font-size: 13px; font-weight: 600">Дайын</button>
+    </div>
   </sc-if>
   <sc-if value="{{teOpen}}" hint-placeholder-val="{{ false }}">
     <div onClick="{{teClose}}" style="position: absolute; inset: 0; z-index: 30; background: rgba(243,242,239,0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); animation: aptaFade 0.25s ease both"></div>
@@ -550,7 +558,7 @@ class Component extends DCLogic {
     Object.keys(seed).forEach(k => { hw[k] = {}; seed[k].forEach(o => { hw[k][o] = true; }); });
     const RATE = { water: 6, dombyra: 9, kitap: 7, phone: 3, gitara: 4, ertu: 6, sport: 5 };
     Object.keys(seed).forEach((k, i) => { for (let o = -40; o <= -13; o++) if (((o * -7 + i * 3) % 10 + 10) % 10 < RATE[k]) hw[k][o] = true; });
-    this.state = { section: 'habits', view: 'month', viewMenu: false, sel: 0, monthOff: 0, start: 0, n: 0, dir: 1, swapN: 0, tlN: 0, extra: [], hwOff: 0, hw, hl: [['water', 'Су', undefined, 8], ['dombyra', 'Домбыра'], ['kitap', 'Кітап'], ['phone', 'Телефонсыз'], ['gitara', 'Гитара'], ['ertu', 'Ерте тұру'], ['sport', 'Спорт', [0, 2, 4]]], hs: null, hsName: '', hsT: 1, hsD: [1,1,1,1,1,1,1], tdone: { t0: true }, tedit: {}, tdel: {}, tmov: {}, te: null, teTitle: '', teDesc: '', teTime: '', timeOpen: false, kf: 'hs', kbOpen: false, kbShift: false, kbMode: 'abc', vdrag: null, anyOrd: [] };
+    this.state = { section: 'habits', view: 'week', viewMenu: false, sel: 0, monthOff: 0, start: -((new Date().getDay() + 6) % 7), jig: false, bDrag: null, n: 0, dir: 1, swapN: 0, tlN: 0, extra: [], hwOff: 0, hw, hl: [['water', 'Су', undefined, 8], ['dombyra', 'Домбыра'], ['kitap', 'Кітап'], ['phone', 'Телефонсыз'], ['gitara', 'Гитара'], ['ertu', 'Ерте тұру'], ['sport', 'Спорт', [0, 2, 4]]], hs: null, hsName: '', hsT: 1, hsD: [1,1,1,1,1,1,1], tdone: { t0: true }, tedit: {}, tdel: {}, tmov: {}, te: null, teTitle: '', teDesc: '', teTime: '', timeOpen: false, kf: 'hs', kbOpen: false, kbShift: false, kbMode: 'abc', vdrag: null, anyOrd: [] };
   }
   vUpd() { const a = this._vArm; if (!a) return; const sc = this._sc ? this._sc.scrollTop - a.sc0 : 0; this.setState({ vdrag: { id: a.id, grp: a.grp, h: a.h, dy: (a.cy - a.y0) / a.k + sc } }); }
   vAuto() { if (this._vAs || !this._sc || typeof requestAnimationFrame !== 'function') return; this._vAs = true;
@@ -734,13 +742,30 @@ class Component extends DCLogic {
     const tintOf = (x) => { let h = 0; String(x.id).split('').forEach(ch => { h = (h * 31 + ch.charCodeAt(0)) >>> 0; }); return TINTS[h % TINTS.length]; };
     const blockStyle = (t) => C.light ? 'background: radial-gradient(80% 140% at 50% 50%, rgba(' + t + ',0.24), rgba(' + t + ',0) 85%), rgba(255,255,255,0.6); border: 0.5px solid rgba(' + t + ',0.3); color: ' + C.fg
       : 'background: rgba(20,20,26,0.78); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 0 0 1px rgba(' + t + ',0.55), inset 0 8px 16px -6px rgba(' + t + ',0.8), inset 0 0 10px rgba(' + t + ',0.45); color: #FFFFFF';
-    const blocks = [];
+    const blocks = []; const BD = st.bDrag;
+    const gridPt = (e) => { const g = this._grid; if (!g) return null; const r = g.getBoundingClientRect(); const k = r.width / (g.offsetWidth || r.width || 1); return { x: (e.clientX - r.left) / k, y: (e.clientY - r.top) / k }; };
+    const dropAt = (d) => { const cx = d.x + (colW - 4) / 2; const col = Math.max(0, Math.min(span - 1, Math.floor((cx - 36) / colW))); let mins = Math.round((d.y - 2) / 44 * 60 / 15) * 15; mins = Math.max(0, Math.min(23 * 60 + 45, mins)); return { day: start + col, time: String(Math.floor(mins / 60)).padStart(2, '0') + ':' + String(mins % 60).padStart(2, '0') }; };
+    const endDrag = (commit) => { const S = this.state; const d = S.bDrag; this._armed = false; clearTimeout(this._lp); this._lp = null;
+      if (!d) return; if (commit && d.moved) { const t = dropAt(d); this._bdJust = Date.now(); this.setState({ bDrag: null, tmov: { ...S.tmov, [d.id]: t.day }, tedit: { ...S.tedit, [d.id]: { ...(S.tedit[d.id] || {}), time: t.time } } }); try { navigator.vibrate && navigator.vibrate(12); } catch (e) {} } else this.setState({ bDrag: null }); };
     for (let i = 0; i < span; i++) (byDay[start + i] || []).filter(x => x.time).forEach(x => {
       const [h, m] = x.time.split(':').map(Number);
       const top = h * 44 + m / 60 * 44;
-      blocks.push({ open: openTask(x), title: span === 7 ? x.title.split(' ')[0].replace(/[«»]/g, '') : x.title, time: span === 7 ? '' : x.time,
+      const left0 = 36 + i * colW + 2; const dragging = BD && BD.id === x.id;
+      const pos = dragging ? 'top: ' + BD.y + 'px; left: ' + BD.x + 'px; z-index: 6; transform: scale(1.08); box-shadow: 0 14px 28px rgba(0,0,0,0.35); transition: transform 0.15s ease;' : 'top: ' + (top + 2) + 'px; left: ' + left0 + 'px;' + (st.jig ? ' animation: ' + ((i + h) % 2 ? 'aptaJigA' : 'aptaJigB') + ' 0.24s ease-in-out infinite alternate; animation-delay: -' + ((h * 7 + i * 3) % 10) / 40 + 's;' : '');
+      const down = (e) => { if (e.button) return; const p = gridPt(e); if (!p) return; const base = { id: x.id, offX: p.x - left0, offY: p.y - (top + 2), sx: e.clientX, sy: e.clientY, x: left0, y: top + 2, moved: false };
+        this._bdBase = base; this._pid = e.pointerId; this._tgt = e.currentTarget;
+        if (this.state.jig) { this._armed = true; try { e.currentTarget.setPointerCapture(e.pointerId); } catch (er) {} this.setState({ bDrag: base }); return; }
+        clearTimeout(this._lp); this._lp = setTimeout(() => { this._lp = null; this._armed = true; this._fired = true; try { this._tgt.setPointerCapture(this._pid); } catch (er) {} try { navigator.vibrate && navigator.vibrate(30); } catch (er) {} this.setState({ jig: true, bDrag: { ...this._bdBase } }); }, 420); };
+      const move = (e) => { const S = this.state; if (!S.bDrag) { const b = this._bdBase; if (this._lp && b && Math.hypot(e.clientX - b.sx, e.clientY - b.sy) > 8) { clearTimeout(this._lp); this._lp = null; } return; }
+        const p = gridPt(e); if (!p) return; const d = S.bDrag; const nx = p.x - d.offX, ny = p.y - d.offY; const moved = d.moved || Math.hypot(e.clientX - d.sx, e.clientY - d.sy) > 6;
+        this.setState({ bDrag: { ...d, x: Math.max(30, Math.min(36 + 306 - (colW - 4), nx)), y: Math.max(0, Math.min(1064 - 40, ny)), moved } }); };
+      blocks.push({ open: (ev) => { if (this._bdJust && Date.now() - this._bdJust < 400) return; if (BD && BD.moved) return; openTask(x)(ev); },
+        down, move, up: () => { const d = this.state.bDrag; if (d && !d.moved && this.state.jig && !this._lpJust) { endDrag(false); return; } endDrag(true); }, cancel: () => endDrag(false),
+        noCtx: (e) => { if (e && e.preventDefault) e.preventDefault(); },
+        aria: x.title + ', ' + x.time + '. Өзгерту үшін басыңыз, жылжыту үшін басып тұрыңыз',
+        title: span === 7 ? x.title.split(' ')[0].replace(/[«»]/g, '') : x.title, time: span === 7 ? '' : (dragging && BD.moved ? dropAt(BD).time : x.time),
         tStyle: 'font-size: ' + (span === 7 ? 11 : 12) + 'px; font-weight: 500; line-height: 1.2; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;' + (DONE[x.id] ? ' text-decoration: line-through; opacity: 0.6;' : ''),
-        style: 'position: absolute; top: ' + (top + 2) + 'px; left: ' + (36 + i * colW + 2) + 'px; width: ' + (colW - 4) + 'px; height: 40px; box-sizing: border-box; padding: 4px ' + (span === 7 ? 4 : 8) + 'px; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; gap: 1px; overflow: hidden; ' + blockStyle(tintOf(x)) });
+        style: 'position: absolute; ' + pos + (st.jig ? ' touch-action: none; user-select: none; -webkit-user-select: none;' : ' -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;') + ' width: ' + (colW - 4) + 'px; height: 40px; box-sizing: border-box; padding: 4px ' + (span === 7 ? 4 : 8) + 'px; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; gap: 1px; overflow: hidden; ' + blockStyle(tintOf(x)) });
     });
     const NOWTOP = (() => { const d = new Date(); return d.getHours() * 44 + d.getMinutes() / 60 * 44; })();
     const nowCol = 0 - start;
@@ -881,7 +906,11 @@ class Component extends DCLogic {
       hwPrev: () => go(-1), hwNext: () => go(1), hwToday: () => this.setState({ hwOff: 0, n: 0 }),
       addTask: () => { const id = 'x' + Date.now(); this.setState({ extra: this.state.extra.concat({ id, d: this.state.sel, title: '' }), te: id, teDay: this.state.sel, teDateOpen: false, teTitle: '', teDesc: '', teTime: '', timeOpen: false, kbOpen: true, kf: 'tt', kbMode: 'abc' }); },
       setScroller: (el) => { this._sc = el; },
-      tlRef: (el) => { const key = st.view + ':' + st.start + ':' + st.tlN; if (el && el._k !== key) { el._k = key; const sc = this._sc; if (!sc) return; const y = 6 * 44; setTimeout(() => { const top = el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop; sc.scrollTo({ top: Math.max(top + y - 286, 0), behavior: 'auto' }); }, 60); } },
+      gridRef: (el) => { if (el) this._grid = el; },
+      gridTap: (e) => { if (!this.state.jig) return; const t = e && e.target; if (t && t.closest && t.closest('[role=button]')) return; if (this._bdJust && Date.now() - this._bdJust < 400) return; this.setState({ jig: false, bDrag: null }); },
+      jigOn: !!st.jig && st.view !== 'month', jigDone: () => this.setState({ jig: false, bDrag: null }),
+      jigHint: st.bDrag && st.bDrag.moved ? (() => { const cx = st.bDrag.x + (colW - 4) / 2; const col = Math.max(0, Math.min(span - 1, Math.floor((cx - 36) / colW))); let mins = Math.round((st.bDrag.y - 2) / 44 * 60 / 15) * 15; mins = Math.max(0, Math.min(23 * 60 + 45, mins)); const d = dOf(start + col); return WD[d.getDay()] + ', ' + d.getDate() + ' ' + MN[d.getMonth()].toLowerCase() + ' · ' + String(Math.floor(mins / 60)).padStart(2, '0') + ':' + String(mins % 60).padStart(2, '0'); })() : 'Тапсырманы басқа күнге не уақытқа сүйреңіз',
+      tlRef: (el) => { const key = st.view + ':' + st.start + ':' + st.tlN; if (el && el._k !== key) { el._k = key; const y = 6 * 44; const run = (n) => { const sc = this._sc; if (!sc || !el.isConnected) { if (n < 20) setTimeout(() => run(n + 1), 40); return; } const top = el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop; sc.scrollTo({ top: Math.max(top + y - 286, 0), behavior: 'auto' }); }; setTimeout(() => run(0), 60); } },
       monthName: MN[mFirst.getMonth()] + ' ' + mFirst.getFullYear(), wdHeads: WS.map(n => ({ n })), cells,
       gridStyle: 'display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); row-gap: 2px;' + slide(st.n, st.dir),
       agendaTitle: rel + ' · ' + selD.getDate() + ' ' + MN[selD.getMonth()].toLowerCase(), agenda, agendaEmpty: agenda.length === 0, streaks,
@@ -890,8 +919,8 @@ class Component extends DCLogic {
       tlWrap: slide(st.n, st.dir) || (st.swapN ? 'animation: aptaSwap' + (st.swapN % 2 ? 'A' : 'B') + ' 0.3s ease both;' : ''),
       showNow, nowStyle: 'position: absolute; left: ' + (36 + nowCol * colW) + 'px; width: ' + colW + 'px; top: ' + NOWTOP + 'px; display: flex; align-items: center; height: 0;',
       prev: () => go(-1), next: () => go(1),
-      swDown: (e) => { this._sw = { x: e.clientX, y: e.clientY, fired: false }; this._fired = false; },
-      swMove: (e) => { const g = this._sw; if (!g || g.fired) return; const dx = e.clientX - g.x, dy = e.clientY - g.y; if (Math.abs(dx) > 46 && Math.abs(dx) > Math.abs(dy) * 1.2) { g.fired = true; this._fired = true; go(dx < 0 ? 1 : -1); } },
+      swDown: (e) => { if (this.state.jig || this._armed) { this._sw = null; return; } this._sw = { x: e.clientX, y: e.clientY, fired: false }; this._fired = false; },
+      swMove: (e) => { const g = this._sw; if (!g || g.fired || this._armed || this.state.bDrag || this._lp) return; const dx = e.clientX - g.x, dy = e.clientY - g.y; if (Math.abs(dx) > 46 && Math.abs(dx) > Math.abs(dy) * 1.2) { g.fired = true; this._fired = true; go(dx < 0 ? 1 : -1); } },
       swUp: () => { this._sw = null; setTimeout(() => { this._fired = false; }, 60); }
     };
   }
