@@ -195,7 +195,7 @@ button:active{transform:scale(0.96)}
         </div>
       </div>
     </sc-if>
-    <div style="height: 130px"></div>
+    <div style="height: {{bottomPad}}px"></div>
   </div>
 
   <header style="position: absolute; left: 0; right: 0; top: 0; z-index: 20; box-sizing: border-box; padding: 54px 16px 18px; display: flex; align-items: center; gap: 12px; background: rgba(243,242,239,0.55); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 18px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 18px), transparent)">
@@ -745,8 +745,16 @@ class Component extends DCLogic {
     const blocks = []; const BD = st.bDrag;
     const gridPt = (e) => { const g = this._grid; if (!g) return null; const r = g.getBoundingClientRect(); const k = r.width / (g.offsetWidth || r.width || 1); return { x: (e.clientX - r.left) / k, y: (e.clientY - r.top) / k }; };
     const dropAt = (d) => { const cx = d.x + (colW - 4) / 2; const col = Math.max(0, Math.min(span - 1, Math.floor((cx - 36) / colW))); let mins = Math.round((d.y - 2) / 44 * 60 / 15) * 15; mins = Math.max(0, Math.min(23 * 60 + 45, mins)); return { day: start + col, time: String(Math.floor(mins / 60)).padStart(2, '0') + ':' + String(mins % 60).padStart(2, '0') }; };
-    const endDrag = (commit) => { const S = this.state; const d = S.bDrag; this._armed = false; clearTimeout(this._lp); this._lp = null;
+    const endDrag = (commit) => { const S = this.state; const d = S.bDrag; this._armed = false; clearTimeout(this._lp); this._lp = null; this._lastPt = null; if (this._raf) { cancelAnimationFrame(this._raf); this._raf = null; }
       if (!d) return; if (commit && d.moved) { const t = dropAt(d); this._bdJust = Date.now(); this.setState({ bDrag: null, tmov: { ...S.tmov, [d.id]: t.day }, tedit: { ...S.tedit, [d.id]: { ...(S.tedit[d.id] || {}), time: t.time } } }); try { navigator.vibrate && navigator.vibrate(12); } catch (e) {} } else this.setState({ bDrag: null }); };
+    this._dragTo = (pt) => { const S = this.state; const d = S.bDrag; if (!d) return; const p = gridPt(pt); if (!p) return; const nx = p.x - d.offX, ny = p.y - d.offY; const moved = d.moved || Math.hypot(pt.clientX - d.sx, pt.clientY - d.sy) > 6;
+      this.setState({ bDrag: { ...d, x: Math.max(30, Math.min(36 + 306 - (colW - 4), nx)), y: Math.max(0, Math.min(1064 - 40, ny)), moved } }); };
+    this._autoTick = () => { this._raf = null; const S = this.state; const sc = this._sc; if (!S.bDrag || !sc) return; const lp = this._lastPt;
+      if (lp) { const r = sc.getBoundingClientRect(); const k = r.width / (sc.offsetWidth || r.width || 1); const y = lp.clientY; const top = r.top + 250 * k, bot = r.bottom - 175 * k; let v = 0;
+        if (y < top) v = -Math.min(16, (top - y) / k * 0.25 + 3); else if (y > bot) v = Math.min(16, (y - bot) / k * 0.25 + 3);
+        if (v) { const before = sc.scrollTop; sc.scrollTop = before + v; if (sc.scrollTop !== before) this._dragTo(lp); } }
+      this._raf = requestAnimationFrame(() => this._autoTick && this._autoTick()); };
+    const startAuto = () => { if (!this._raf) this._raf = requestAnimationFrame(() => this._autoTick && this._autoTick()); };
     for (let i = 0; i < span; i++) (byDay[start + i] || []).filter(x => x.time).forEach(x => {
       const [h, m] = x.time.split(':').map(Number);
       const top = h * 44 + m / 60 * 44;
@@ -754,11 +762,10 @@ class Component extends DCLogic {
       const pos = dragging ? 'top: ' + BD.y + 'px; left: ' + BD.x + 'px; z-index: 6; transform: scale(1.08); box-shadow: 0 14px 28px rgba(0,0,0,0.35); transition: transform 0.15s ease;' : 'top: ' + (top + 2) + 'px; left: ' + left0 + 'px;' + (st.jig ? ' animation: ' + ((i + h) % 2 ? 'aptaJigA' : 'aptaJigB') + ' 0.24s ease-in-out infinite alternate; animation-delay: -' + ((h * 7 + i * 3) % 10) / 40 + 's;' : '');
       const down = (e) => { if (e.button) return; const p = gridPt(e); if (!p) return; const base = { id: x.id, offX: p.x - left0, offY: p.y - (top + 2), sx: e.clientX, sy: e.clientY, x: left0, y: top + 2, moved: false };
         this._bdBase = base; this._pid = e.pointerId; this._tgt = e.currentTarget;
-        if (this.state.jig) { this._armed = true; try { e.currentTarget.setPointerCapture(e.pointerId); } catch (er) {} this.setState({ bDrag: base }); return; }
-        clearTimeout(this._lp); this._lp = setTimeout(() => { this._lp = null; this._armed = true; this._fired = true; try { this._tgt.setPointerCapture(this._pid); } catch (er) {} try { navigator.vibrate && navigator.vibrate(30); } catch (er) {} this.setState({ jig: true, bDrag: { ...this._bdBase } }); }, 420); };
+        if (this.state.jig) { this._armed = true; this._lastPt = { clientX: e.clientX, clientY: e.clientY }; try { e.currentTarget.setPointerCapture(e.pointerId); } catch (er) {} this.setState({ bDrag: base }); startAuto(); return; }
+        clearTimeout(this._lp); this._lp = setTimeout(() => { this._lp = null; this._armed = true; this._fired = true; try { this._tgt.setPointerCapture(this._pid); } catch (er) {} try { navigator.vibrate && navigator.vibrate(30); } catch (er) {} this._lastPt = { clientX: this._bdBase.sx, clientY: this._bdBase.sy }; this.setState({ jig: true, bDrag: { ...this._bdBase } }); startAuto(); }, 420); };
       const move = (e) => { const S = this.state; if (!S.bDrag) { const b = this._bdBase; if (this._lp && b && Math.hypot(e.clientX - b.sx, e.clientY - b.sy) > 8) { clearTimeout(this._lp); this._lp = null; } return; }
-        const p = gridPt(e); if (!p) return; const d = S.bDrag; const nx = p.x - d.offX, ny = p.y - d.offY; const moved = d.moved || Math.hypot(e.clientX - d.sx, e.clientY - d.sy) > 6;
-        this.setState({ bDrag: { ...d, x: Math.max(30, Math.min(36 + 306 - (colW - 4), nx)), y: Math.max(0, Math.min(1064 - 40, ny)), moved } }); };
+        this._lastPt = { clientX: e.clientX, clientY: e.clientY }; this._dragTo(this._lastPt); };
       blocks.push({ open: (ev) => { if (this._bdJust && Date.now() - this._bdJust < 400) return; if (BD && BD.moved) return; openTask(x)(ev); },
         down, move, up: () => { const d = this.state.bDrag; if (d && !d.moved && this.state.jig && !this._lpJust) { endDrag(false); return; } endDrag(true); }, cancel: () => endDrag(false),
         noCtx: (e) => { if (e && e.preventDefault) e.preventDefault(); },
@@ -906,6 +913,7 @@ class Component extends DCLogic {
       hwPrev: () => go(-1), hwNext: () => go(1), hwToday: () => this.setState({ hwOff: 0, n: 0 }),
       addTask: () => { const id = 'x' + Date.now(); this.setState({ extra: this.state.extra.concat({ id, d: this.state.sel, title: '' }), te: id, teDay: this.state.sel, teDateOpen: false, teTitle: '', teDesc: '', teTime: '', timeOpen: false, kbOpen: true, kf: 'tt', kbMode: 'abc' }); },
       setScroller: (el) => { this._sc = el; },
+      bottomPad: st.jig && st.view !== 'month' ? 200 : 130,
       gridRef: (el) => { if (el) this._grid = el; },
       gridTap: (e) => { if (!this.state.jig) return; const t = e && e.target; if (t && t.closest && t.closest('[role=button]')) return; if (this._bdJust && Date.now() - this._bdJust < 400) return; this.setState({ jig: false, bDrag: null }); },
       jigOn: !!st.jig && st.view !== 'month', jigDone: () => this.setState({ jig: false, bDrag: null }),
