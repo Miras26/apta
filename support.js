@@ -29,7 +29,7 @@
   };
   if (window.__aptaTheme()) return;
   try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () { window.__aptaTheme(); }); } catch (e) {}
-  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(function () {});
+  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(function (r) { try { r.update(); } catch (e) {} }).catch(function () {});
 
   var HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
   var uid = 0;

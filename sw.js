@@ -1,6 +1,6 @@
 /* Апта — offline cache. Pages load from the network first, so a published fix
    arrives on the next launch; with no connection the saved copy opens instead. */
-const VERSION = 'apta-20261124075413';
+const VERSION = 'apta-20261124080328';
 const CORE = ['./', './index.html', './support.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable.png',
   './Main.dc.html', './Dark.dc.html', './CalLight.dc.html', './CalDark.dc.html', './CalHabits.dc.html', './CalHabitsDark.dc.html',
   './FinLight.dc.html', './FinDark.dc.html', './ProfLight.dc.html', './ProfDark.dc.html', './NotesLight.dc.html', './NotesDark.dc.html',
@@ -22,7 +22,8 @@ self.addEventListener('fetch', (e) => {
     e.respondWith(caches.match(req).then((hit) => hit || fetch(req).then((res) => { const cp = res.clone(); caches.open(VERSION).then((c) => c.put(req, cp)); return res; })));
     return;
   }
-  e.respondWith(fetch(req).then((res) => { if (res.ok) { const cp = res.clone(); caches.open(VERSION).then((c) => c.put(req, cp)); } return res; })
+  // no-cache: always ask the server (cheap ETag check), so a page from GitHub's 10-minute HTTP cache never hides a fresh fix
+  e.respondWith(fetch(req, { cache: 'no-cache' }).then((res) => { if (res.ok) { const cp = res.clone(); caches.open(VERSION).then((c) => c.put(req, cp)); } return res; })
     .catch(() => caches.match(req, { ignoreSearch: true }).then((hit) => hit || caches.match('./index.html'))));
 });
 self.addEventListener('notificationclick', (e) => {
