@@ -641,6 +641,23 @@ class Component extends DCLogic {
     let title = tk.slice(i, j + 1).join(' ').trim(); if (!title) return null; if (i > 0) title = title.charAt(0).toUpperCase() + title.slice(1);
     return { title, d, time };
   }
+  spendGuess(text) { const x = String(text || '').toLocaleLowerCase('kk').replace(/ё/g, 'е'); if (!x.trim()) return null;
+    const D = {
+      food: ['кофе', 'кафе', 'кофейн', 'ресторан', 'асхана', 'столов', 'донер', 'дөнер', 'шаурм', 'шаверм', 'пицц', 'бургер', 'гамбургер', 'хот-дог', 'хотдог', 'суши', 'ролл', 'лағман', 'лагман', 'палау', 'плов', 'манты', 'самса', 'бәліш', 'беляш', 'бауырсақ', 'тамақ', 'тамак', 'түскі ас', 'кешкі ас', 'таңғы ас', 'обед', 'ужин', 'завтрак', 'нан', 'сүт', 'азық', 'продукт', 'еда', 'шай', 'чай', 'торт', 'тәтті', 'балмұздақ', 'мороженое', 'сусын', 'кола', 'жеміс', 'көкөніс', '~ет', 'мясо', 'базар', 'дүкен', 'магазин', 'маркет', 'супермаркет', 'магнум', 'small', 'galmart', 'kfc', 'макдон', 'mcdonald', 'бургер кинг', 'starbucks', 'фастфуд', 'доставк', 'жеткізу', 'glovo', 'wolt', 'chocofood', 'тапсырыс беру тамақ', 'кешкі тамақ', 'тамақтану'],
+      road: ['такси', 'яндекс го', 'yandex', 'indrive', 'индрайв', 'автобус', 'метро', 'трамвай', 'электричк', 'пойыз', 'поезд', 'ұшақ', 'самолет', 'авиабилет', 'билет', 'бензин', 'жанармай', 'заправк', 'газ құю', 'көлік жуу', 'автомойк', 'тұрақ', 'парковк', 'жол ақы', 'проезд', 'онай', 'onay', 'каршеринг', 'самокат', 'жолақы'],
+      fun: ['кино', 'кинотеатр', '~фильм', 'театр', 'концерт', 'шоу', 'боулинг', 'бильярд', 'караоке', 'клуб', 'кальян', 'аквапарк', 'бассейн', 'аттракцион', 'лунапарк', 'квест', '~ойын', 'playstation', 'steam', '~игра', 'подписк', 'жазылым', 'netflix', 'spotify', 'youtube premium', 'музей', 'көрме', 'выставк', '~демалыс', '~тур', '~саяхат', 'спортзал', 'фитнес', 'абонемент', 'йога', 'футбол алаң'],
+      study: ['~кітап', '~книг', 'курс', 'оқу ақы', 'оплата учеб', 'дәптер', 'тетрад', 'қалам', 'ручк', 'кеңсе', 'канцеляр', 'ксерокс', 'көшірме', 'басып шығар', 'распечат', 'принтер', 'репетитор', 'сабақ ақы', 'семинар', 'тренинг', 'мастер-класс', 'оқулық', 'учебник', 'emtihan', 'емтихан ақы'],
+      home: ['коммунал', 'пәтер ақы', 'жалға', 'аренд', 'квартплат', 'жарық ақы', 'свет', 'электр', 'газ ақы', 'су ақы', 'интернет', 'wi-fi', 'вайфай', 'ұялы байланыс', 'телефон толтыр', 'балансты толтыр', 'баланс толтыр', 'теле2', 'beeline', 'билайн', 'kcell', 'activ', 'altel', 'жиһаз', 'мебел', 'жөндеу', 'ремонт', 'тазалау құрал', 'химия', 'ыдыс', 'посуд', 'шам', 'лампа', 'жуғыш', 'ұнтақ', 'порошок'],
+      other: ['дәріхана', 'аптек', 'дәрі', 'лекарств', 'дәрігер', 'врач', 'стоматолог', 'тіс', 'анализ', 'шаштараз', 'барбер', 'парикмах', 'маникюр', 'косметик', 'киім', 'одежд', 'аяқкиім', 'обув', 'кроссовк', 'куртк', 'көйлек', 'футболк', 'шалбар', 'сыйлық', 'подар', 'гүл', 'цвет', '~той', '~туған күн', 'жарна', 'взнос', 'kaspi', 'каспи', 'wildberries', 'вайлдберриз', 'ozon', 'озон', 'aliexpress', 'алиэкспресс', 'тапсырыс', 'заказ', 'наушник', 'құлаққап', 'зарядк', 'чехол']
+    };
+    const VERB = ['сатып ал', 'сатып алу', 'төле', 'төлеу', 'оплат', 'заплат', 'купить', 'куплю', 'покуп', 'шығын', 'ақша жібер', 'аудар', 'перевод', 'қарызды қайтар', 'долг'];
+    const SUF = /^(ға|ге|қа|ке|да|де|та|те|дан|ден|тан|тен|нан|нен|ны|ні|ды|ді|ты|ті|н|ның|нің|дың|дің|тың|тің|ым|ім|м|ың|ің|ы|і|сы|сі|лар|лер|дар|дер|тар|тер|мен|бен|пен|ша|ше|шы|ші|ке|ки|а|е|у|ов|ой|ом|ах|ами|и|ы)*$/;
+    const toks = x.split(/[^a-zа-яәіңғүұқөһё0-9-]+/i).filter(Boolean);
+    const buy = VERB.some(v => x.indexOf(v) >= 0) || toks.some(t => /^(ал|алу|алып|алдым|аламын|алайын|алған)$/.test(t));
+    const hit = (st0) => { const weak = st0.charAt(0) === '~'; const stem = weak ? st0.slice(1) : st0; if (weak && !buy) return false; if (stem.indexOf(' ') >= 0 || stem.indexOf('-') >= 0) return x.indexOf(stem) >= 0; return toks.some(t => t === stem || (t.indexOf(stem) === 0 && (stem.length >= 5 || SUF.test(t.slice(stem.length))))); };
+    for (const k of ['food', 'road', 'fun', 'study', 'home', 'other']) if (D[k].some(hit)) return k;
+    if (VERB.some(v => x.indexOf(v) >= 0) || /\d+\s?(₸|тг|теңге|тенге)/.test(x)) return 'other';
+    return null; }
   voiceStart(base, apply) { const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) { this.notice('Дауыспен енгізу қолжетімсіз', 'Бұл браузер дауысты танымайды. Қолданбаны Chrome арқылы ашып көріңіз.'); return; }
     if (this._rec) { try { this._rec.stop(); } catch (e) {} return; }
@@ -1018,7 +1035,7 @@ class Component extends DCLogic {
     const setDone = (id, v, title) => {
       const S = this.state;
       if (v) {
-        const tt = ((BASE.find(y => y.id === id) || {}).title) || ''; const exp = /сатып|төле|дүкен|базар|магазин|маркет|купи|покуп|оплат|заплат|тапсырыс|заказ|кофе|такси|билет|жалға|аренд|коммунал|сыйлық|подар|\d+\s?(₸|тг|тең)/i.test(tt);
+        const tt = ((BASE.find(y => y.id === id) || {}).title) || ''; const exp = !!this.spendGuess(tt);
         { const xo = BASE.find(y => y.id === id); const dd = xo ? dayOf(xo) : sel; const dayT = BASE.filter(y => dayOf(y) === dd && y.title); if (dayT.length && dayT.every(y => y.id === id || S.done[y.id])) { clearTimeout(this._pt); this.setState({ party: (this.state.party || 0) + 1 }); try { navigator.vibrate && navigator.vibrate([40, 60, 40, 60, 90]); } catch (e) {} this._pt = setTimeout(() => this.setState({ party: 0 }), 2700); } }
         this.showToast({ kind: 'done', id, text: 'Тапсырма орындалды', exp, title: tt, day: dayOf(BASE.find(y => y.id === id) || { id }) },
           { done: { ...S.done, [id]: true }, settled: { [id]: false }, doneOrder: S.doneOrder.filter(x => x !== id).concat(id) });
@@ -1304,7 +1321,7 @@ class Component extends DCLogic {
       partyOn: !!st.party, partyBits: st.party ? Array.from({ length: 36 }, (_, i) => { const cols = [accent, '#FF7BAC', '#6B8BFF', '#FFB13D', '#3CC6B8', '#FFFFFF']; const r = (n) => { const x = Math.sin(i * 12.9898 + n * 78.233 + st.party) * 43758.5453; return x - Math.floor(x); };
         return 'position: absolute; top: -20px; left: ' + (r(1) * 100).toFixed(1) + '%; width: ' + (6 + r(2) * 6).toFixed(0) + 'px; height: ' + (10 + r(3) * 8).toFixed(0) + 'px; border-radius: ' + (r(4) > 0.6 ? 6 : 2) + 'px; background: ' + cols[i % cols.length] + '; --dx: ' + ((r(5) - 0.5) * 160).toFixed(0) + 'px; --rot: ' + (360 + r(6) * 720).toFixed(0) + 'deg; animation: aptaConf ' + (1.6 + r(7) * 1.1).toFixed(2) + 's cubic-bezier(.2,.6,.4,1) ' + (r(8) * 0.35).toFixed(2) + 's both;'; }) : [],
       toastOn: !!T, toastText: T ? T.text : '', toastExp: !!(T && T.exp),
-      expOpenT: () => { const t = this.state.toast; if (!t) return; const tt = t.title || ''; const g = [['food', /тамақ|ас|кофе|нан|азық|продукт|еда|кафе|дүкен|базар|магазин|маркет/i], ['road', /такси|автобус|жол|бензин|билет|проезд/i], ['study', /кітап|курс|оқу|дәптер|книг|учеб/i], ['fun', /кино|ойын|концерт|подписк|жазылым/i], ['home', /үй|коммунал|жалға|аренд|жиһаз|квартир/i]].find(c => c[1].test(tt));
+      expOpenT: () => { const t = this.state.toast; if (!t) return; const tt = t.title || ''; const gk = this.spendGuess(tt); const g = gk ? [gk] : null;
         clearTimeout(this._tt); this.moveState({ toast: null, settled: { ...this.state.settled, [t.id]: true }, exp: { title: tt, d: t.day || 0, amt: '', cat: g ? g[0] : 'other' } }); },
       expOn: !!st.exp, expTitle: st.exp ? st.exp.title : '',
       expAmt: st.exp && st.exp.amt ? Number(st.exp.amt).toLocaleString('ru-RU').replace(/,/g, ' ') : '0',
