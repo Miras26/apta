@@ -17,6 +17,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
 @keyframes aptaBanner{from{opacity:0;transform:translateY(-30px) scale(.96)}to{opacity:1;transform:none}}
+nav[aria-label="Негізгі мәзір"]>div{gap:4px;padding:0 6px!important;justify-content:stretch!important}nav[aria-label="Негізгі мәзір"]>div>a{flex:1 1 0;min-width:0;width:auto!important;height:52px!important;border-radius:26px!important;transition:background .25s ease}nav[aria-label="Негізгі мәзір"]>div>a[aria-current]{box-shadow:inset 0 0.5px 0 rgba(255,255,255,0.22)!important}
 body{margin:0}
 a{color:#F5F4F1}a:hover{color:#F5F4F1}
 button{font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s ease}
@@ -110,7 +111,6 @@ button:active{transform:scale(0.96)}
       <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
         <sc-for list="{{homeHabits}}" as="h" hint-placeholder-count="4">
           <button aria-label="{{h.aria}}" aria-pressed="{{h.pressed}}" onClick="{{h.tap}}" onPointerDown="{{h.lpd}}" onPointerUp="{{h.lpu}}" onPointerLeave="{{h.lpu}}" onContextMenu="{{h.noCtx}}" style="{{h.cellStyle}}">
-            <sc-if value="{{h.hasStreak}}" hint-placeholder-val="{{ false }}"><span aria-label="{{h.streakLabel}}" style="position: absolute; top: 5px; right: 7px; font-size: 11px; font-weight: 700; line-height: 1; opacity: 0.9">🔥{{h.streak}}</span></sc-if>
             <span style="font-size: 11px; font-weight: 500; line-height: 1.2; text-align: center; max-width: 100%; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{h.name}}</span>
             <span style="{{h.wrap}}">
               <sc-if value="{{h.showOn}}" hint-placeholder-val="{{ false }}"><span style="{{h.onStyle}}"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></sc-if>
@@ -291,7 +291,6 @@ button:active{transform:scale(0.96)}
       <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
         <sc-for list="{{allHabits}}" as="h" hint-placeholder-count="7">
           <button aria-label="{{h.aria}}" aria-pressed="{{h.pressed}}" onClick="{{h.tap}}" onPointerDown="{{h.lpd}}" onPointerUp="{{h.lpu}}" onPointerLeave="{{h.lpu}}" onContextMenu="{{h.noCtx}}" style="{{h.cellStyle}}">
-            <sc-if value="{{h.hasStreak}}" hint-placeholder-val="{{ false }}"><span aria-label="{{h.streakLabel}}" style="position: absolute; top: 5px; right: 7px; font-size: 11px; font-weight: 700; line-height: 1; opacity: 0.9">🔥{{h.streak}}</span></sc-if>
             <span style="font-size: 11px; font-weight: 500; line-height: 1.2; text-align: center; max-width: 100%; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{h.name}}</span>
             <span style="{{h.wrap}}">
               <sc-if value="{{h.showOn}}" hint-placeholder-val="{{ false }}"><span style="{{h.onStyle}}"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></sc-if>

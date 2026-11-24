@@ -16,6 +16,11 @@
     var dark = t === 'dark' || (t !== 'light' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
     var signedOut = S.auth && S.auth.signed === false;
     var page = !S.onboarded ? (dark ? 'OnboardDark' : 'OnboardLight') : signedOut ? (dark ? 'AuthDark' : 'AuthLight') : (dark ? 'Dark' : 'Main');
+    var go = (location.search.match(/[?&]go=(\w+)/) || [])[1];
+    if (go && S.onboarded && !signedOut) {
+      var T = { task: [dark ? 'Dark' : 'Main', 'newTask'], expense: [dark ? 'FinDark' : 'FinLight', 'newExpense'], note: [dark ? 'NotesDark' : 'NotesLight', 'newNote'] }[go];
+      if (T) { page = T[0]; S.intent = { board: T[0] + '.dc.html', action: T[1], at: Date.now() }; try { localStorage.setItem('apta.v1', JSON.stringify(S)); } catch (e) {} }
+    }
     location.replace(page + '.dc.html');
   })();
 </script>

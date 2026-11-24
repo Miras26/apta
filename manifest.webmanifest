@@ -10,8 +10,59 @@
   "background_color": "#0B0B0D",
   "theme_color": "#0B0B0D",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Жаңа тапсырма",
+      "short_name": "Тапсырма",
+      "url": "./index.html?go=task",
+      "icons": [
+        {
+          "src": "sc-task.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Шығын қосу",
+      "short_name": "Шығын",
+      "url": "./index.html?go=expense",
+      "icons": [
+        {
+          "src": "sc-expense.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Жаңа жазба",
+      "short_name": "Жазба",
+      "url": "./index.html?go=note",
+      "icons": [
+        {
+          "src": "sc-note.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
   ]
 }
