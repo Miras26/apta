@@ -1,6 +1,6 @@
 /* Апта — offline cache. Pages load from the network first, so a published fix
    arrives on the next launch; with no connection the saved copy opens instead. */
-const VERSION = 'apta-20261124082610';
+const VERSION = 'apta-20261124085043';
 const CORE = ['./', './index.html', './support.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable.png',
   './Main.dc.html', './Dark.dc.html', './CalLight.dc.html', './CalDark.dc.html', './CalHabits.dc.html', './CalHabitsDark.dc.html',
   './FinLight.dc.html', './FinDark.dc.html', './ProfLight.dc.html', './ProfDark.dc.html', './NotesLight.dc.html', './NotesDark.dc.html',

@@ -17,7 +17,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
 @keyframes aptaBanner{from{opacity:0;transform:translateY(-30px) scale(.96)}to{opacity:1;transform:none}}
-nav[aria-label="Негізгі мәзір"]>div{gap:4px;padding:0 6px!important;justify-content:stretch!important}nav[aria-label="Негізгі мәзір"]>div>a{flex:1 1 0;min-width:0;width:auto!important;height:52px!important;border-radius:26px!important;transition:background .25s ease}nav[aria-label="Негізгі мәзір"]>div>a[aria-current]{box-shadow:inset 0 0.5px 0 rgba(255,255,255,0.22)!important}
+.apta-seg{border-radius:999px!important;min-height:48px;box-sizing:border-box;align-items:stretch}.apta-seg>button,.apta-seg>a{border-radius:999px!important;min-height:40px}@keyframes aptaPulse{0%{box-shadow:0 0 0 0 rgba(200,245,66,.55)}100%{box-shadow:0 0 0 12px rgba(200,245,66,0)}}nav[aria-label="Негізгі мәзір"]>div{gap:4px;padding:0 6px!important;justify-content:stretch!important}nav[aria-label="Негізгі мәзір"]>div>a{flex:1 1 0;min-width:0;width:auto!important;height:52px!important;border-radius:26px!important;transition:background .25s ease}nav[aria-label="Негізгі мәзір"]>div>a[aria-current]{box-shadow:inset 0 0.5px 0 rgba(255,255,255,0.22)!important}
 body{margin:0}
 a{color:#F5F4F1}a:hover{color:#F5F4F1}
 button{font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s ease}
@@ -61,6 +61,18 @@ button:active{transform:scale(0.96)}
       </button>
     </div>
 
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 10px 16px 0">
+      <button onClick="{{openBud}}" style="position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-height: 84px; box-sizing: border-box; padding: 14px 16px; border-radius: 30px; color: #F5F4F1; text-align: left; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+        <span style="position: relative; font-size: 11px; color: rgba(245,244,241,0.72)">Айлық шектер</span>
+        <span style="position: relative; font-size: 15px; font-weight: 600; line-height: 1.25">{{budTitle}}</span>
+        <sc-if value="{{budHasBar}}" hint-placeholder-val="{{ false }}"><span style="position: relative; align-self: stretch; height: 5px; border-radius: 3px; background: {{budTrack}}; overflow: hidden"><span style="{{budBar}}"></span></span></sc-if>
+      </button>
+      <button onClick="{{openDebt}}" style="position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-height: 84px; box-sizing: border-box; padding: 14px 16px; border-radius: 30px; color: #F5F4F1; text-align: left; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+        <span style="position: relative; font-size: 11px; color: rgba(245,244,241,0.72)">Қарыздар</span>
+        <span style="position: relative; font-size: 15px; font-weight: 600; line-height: 1.25">{{debtTitle}}</span>
+        <sc-if value="{{debtHasSub}}" hint-placeholder-val="{{ false }}"><span style="position: relative; font-size: 11px; color: rgba(245,244,241,0.72)">{{debtSub}}</span></sc-if>
+      </button>
+    </div>
     <div style="display: flex; flex-direction: column; gap: 8px; margin: 0 16px">
       <sc-for list="{{days}}" as="g" hint-placeholder-count="2">
         <span style="align-self: center; margin: 16px 0 0; font-size: 11px; color: rgba(245,244,241,0.72)">{{g.day}}</span>
@@ -77,7 +89,7 @@ button:active{transform:scale(0.96)}
     </sc-if>
     <sc-if value="{{isCats}}" hint-placeholder-val="{{ false }}">
     <div style="display: flex; flex-direction: column; gap: 12px; margin: 0 16px; animation: aptaFade 0.3s ease both">
-      <div role="tablist" aria-label="Кезең" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; border-radius: 30px; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
+      <div class="apta-seg" role="tablist" aria-label="Кезең" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; border-radius: 30px; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
         <sc-for list="{{anTabs}}" as="o" hint-placeholder-count="2"><button role="tab" aria-selected="{{o.sel}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button></sc-for>
       </div>
       <div style="position: relative; padding: 20px; border-radius: 30px; display: flex; flex-direction: column; gap: 6px; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%)">
@@ -147,12 +159,83 @@ button:active{transform:scale(0.96)}
     <button aria-label="Шығын жазу" onClick="{{openOut}}" style="position: relative; height: 56px; border-radius: 28px; display: flex; align-items: center; justify-content: center; background: rgba(30,6,8,0.78); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 1px rgba(229,72,77,0.55), inset 0 22px 40px -10px rgba(229,72,77,0.9), inset 0 0 30px rgba(229,72,77,0.6), inset 0 -14px 30px -12px rgba(229,72,77,0.45), 0 12px 30px rgba(0,0,0,0.3); color: #FFFFFF"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"/></svg></button>
     <button aria-label="Кіріс жазу" onClick="{{openIn}}" style="position: relative; height: 56px; border-radius: 28px; display: flex; align-items: center; justify-content: center; background: rgba(4,26,12,0.78); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 0 0 1px rgba(52,199,110,0.55), inset 0 22px 40px -10px rgba(52,199,110,0.9), inset 0 0 30px rgba(52,199,110,0.6), inset 0 -14px 30px -12px rgba(52,199,110,0.45), 0 12px 30px rgba(0,0,0,0.3); color: #FFFFFF"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"/></svg></button>
   </div>
+  <sc-if value="{{budOpen}}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{closeBud}}" style="position: absolute; inset: 0; z-index: 30; background: rgba(11,11,13,0.55); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); animation: aptaFade 0.25s ease both"></div>
+    <section role="dialog" aria-label="Айлық шектер" style="position: absolute; z-index: 31; left: 8px; right: 8px; bottom: 8px; box-sizing: border-box; padding: 20px 16px 16px; border-radius: 36px; display: flex; flex-direction: column; gap: 10px; animation: aptaSheet 0.42s cubic-bezier(.2,.9,.3,1.05) both; background: rgba(26,26,30,0.82); border: 0.5px solid rgba(255,255,255,0.12); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.18), 0 -10px 40px rgba(0,0,0,0.45); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); color: #FFFFFF">
+      <div aria-hidden="true" style="align-self: center; width: 36px; height: 4px; border-radius: 2px; background: #F5F4F1; opacity: 0.3; margin-top: -8px"></div>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <sc-if value="{{budEditing}}" hint-placeholder-val="{{ false }}"><button aria-label="Артқа" onClick="{{budBack}}" style="position: relative; flex-shrink: 0; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6l-6 6 6 6"/></svg></button></sc-if>
+        <span style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px; padding-left: 6px"><span style="font-size: 18px; font-weight: 600">{{budHead}}</span><span style="font-size: 11px; color: rgba(245,244,241,0.72)">{{budSubHead}}</span></span>
+        <button aria-label="Жабу" onClick="{{closeBud}}" style="position: relative; flex-shrink: 0; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <sc-if value="{{budList}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <sc-for list="{{budRows}}" as="b" hint-placeholder-count="6">
+            <button onClick="{{b.pick}}" style="position: relative; display: flex; flex-direction: column; gap: 8px; padding: 12px 16px; border-radius: 30px; color: #F5F4F1; text-align: left; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none">
+              <span style="position: relative; display: flex; align-items: center; gap: 10px; width: 100%"><span style="{{b.dot}}"></span><span style="flex: 1 1 auto; font-size: 15px; font-weight: 500">{{b.name}}</span><span style="{{b.rightStyle}}">{{b.right}}</span></span>
+              <sc-if value="{{b.hasBar}}" hint-placeholder-val="{{ false }}"><span style="position: relative; height: 6px; border-radius: 3px; background: {{b.track}}; overflow: hidden"><span style="{{b.bar}}"></span></span></sc-if>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{budEditing}}" hint-placeholder-val="{{ false }}">
+        <div role="status" style="display: flex; justify-content: center; align-items: baseline; gap: 6px; padding: 4px 0"><span style="{{budAmtStyle}}">{{budAmt}}</span><span style="font-size: 22px; font-weight: 500; opacity: 0.6">₸</span></div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+          <sc-for list="{{budKeys}}" as="k" hint-placeholder-count="12"><button aria-label="{{k.label}}" onClick="{{k.press}}" style="height: 52px; border: none; border-radius: 14px; font-size: 22px; font-weight: 500; color: #F5F4F1; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none">{{k.t}}</button></sc-for>
+        </div>
+        <div style="display: flex; gap: 8px">
+          <sc-if value="{{budHasLimit}}" hint-placeholder-val="{{ false }}"><button onClick="{{budRemove}}" style="position: relative; flex: 0 0 130px; height: 52px; border-radius: 26px; font-size: 13px; font-weight: 500; color: #F5F4F1; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none">Алып тастау</button></sc-if>
+          <button onClick="{{budSave}}" style="flex: 1 1 auto; height: 52px; border: none; border-radius: 26px; background: #F5F4F1; color: #111111; font-size: 15px; font-weight: 600">Сақтау</button>
+        </div>
+      </sc-if>
+    </section>
+  </sc-if>
+  <sc-if value="{{debtOpen}}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{closeDebt}}" style="position: absolute; inset: 0; z-index: 30; background: rgba(11,11,13,0.55); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); animation: aptaFade 0.25s ease both"></div>
+    <section role="dialog" aria-label="Қарыздар" style="position: absolute; z-index: 31; left: 8px; right: 8px; {{debtBottom}}; transition: bottom 0.3s cubic-bezier(.2,.9,.3,1); box-sizing: border-box; padding: 20px 16px 16px; border-radius: 36px; display: flex; flex-direction: column; gap: 10px; animation: aptaSheet 0.42s cubic-bezier(.2,.9,.3,1.05) both; background: rgba(26,26,30,0.82); border: 0.5px solid rgba(255,255,255,0.12); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.18), 0 -10px 40px rgba(0,0,0,0.45); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); color: #FFFFFF">
+      <div aria-hidden="true" style="align-self: center; width: 36px; height: 4px; border-radius: 2px; background: #F5F4F1; opacity: 0.3; margin-top: -8px"></div>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <sc-if value="{{dForm}}" hint-placeholder-val="{{ false }}"><button aria-label="Артқа" onClick="{{dBack}}" style="position: relative; flex-shrink: 0; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6l-6 6 6 6"/></svg></button></sc-if>
+        <span style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px; padding-left: 6px"><span style="font-size: 18px; font-weight: 600">{{dHead}}</span><span style="font-size: 11px; color: rgba(245,244,241,0.72)">{{dSubHead}}</span></span>
+        <button aria-label="Жабу" onClick="{{closeDebt}}" style="position: relative; flex-shrink: 0; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <sc-if value="{{dList}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; gap: 6px; max-height: 360px; overflow-y: auto">
+          <sc-for list="{{dRows}}" as="r" hint-placeholder-count="2">
+            <div style="position: relative; display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 8px 8px 8px 16px; border-radius: 30px; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none">
+              <span style="position: relative; flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.name}}</span><span style="font-size: 11px; color: rgba(245,244,241,0.72)">{{r.sub}}</span></span>
+              <span style="{{r.amtStyle}}">{{r.amt}}</span>
+              <button aria-label="{{r.doneLabel}}" onClick="{{r.done}}" style="position: relative; flex-shrink: 0; height: 40px; padding: 0 12px; border: none; border-radius: 20px; background: {{accent}}; color: var(--onacc, #111111); font-size: 11px; font-weight: 600">Қайтарылды</button>
+            </div>
+          </sc-for>
+          <sc-if value="{{dEmpty}}" hint-placeholder-val="{{ false }}"><span style="padding: 18px 8px; text-align: center; font-size: 13px; color: rgba(245,244,241,0.72); line-height: 1.45">Қарыз жоқ. Біреуге ақша берсеңіз не алсаңыз, осында жазып қойыңыз.</span></sc-if>
+        </div>
+        <button onClick="{{dAdd}}" style="height: 52px; border: none; border-radius: 26px; background: #F5F4F1; color: #111111; font-size: 15px; font-weight: 600">+ Қарыз қосу</button>
+      </sc-if>
+      <sc-if value="{{dForm}}" hint-placeholder-val="{{ false }}">
+        <div class="apta-seg" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; border-radius: 30px; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none">
+          <sc-for list="{{dDirs}}" as="o" hint-placeholder-count="2"><button aria-pressed="{{o.sel}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button></sc-for>
+        </div>
+        <button onClick="{{dFocusName}}" style="display: flex; flex-direction: column; gap: 4px; padding: 10px 16px; border-radius: 30px; text-align: left; color: #F5F4F1; {{dNameCell}}">
+          <span style="font-size: 11px; color: rgba(245,244,241,0.72)">{{dNameLabel}}</span>
+          <span style="display: flex; align-items: center; min-height: 22px; font-size: 15px"><span style="{{dNameStyle}}">{{dNameShown}}</span><sc-if value="{{dNameCaret}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="width: 2px; height: 19px; margin-left: 1px; border-radius: 1px; background: {{accent}}; animation: aptaBlink 1s steps(1) infinite"></span></sc-if></span>
+        </button>
+        <button onClick="{{dFocusAmt}}" style="display: flex; justify-content: center; align-items: baseline; gap: 6px; padding: 2px 0; border: none; background: transparent; color: #F5F4F1"><span style="{{dAmtStyle}}">{{dAmtShown}}</span><span style="font-size: 18px; font-weight: 500; opacity: 0.6">₸</span></button>
+        <sc-if value="{{dPad}}" hint-placeholder-val="{{ true }}">
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+            <sc-for list="{{dKeys}}" as="k" hint-placeholder-count="12"><button aria-label="{{k.label}}" onClick="{{k.press}}" style="height: 52px; border: none; border-radius: 14px; font-size: 22px; font-weight: 500; color: #F5F4F1; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none">{{k.t}}</button></sc-for>
+          </div>
+        </sc-if>
+        <button onClick="{{dSave}}" aria-disabled="{{dOff}}" style="height: 52px; border: none; border-radius: 26px; background: #F5F4F1; color: #111111; font-size: 15px; font-weight: 600; transition: opacity 0.2s ease; opacity: {{dOp}}">Сақтау</button>
+      </sc-if>
+    </section>
+  </sc-if>
   <sc-if value="{{addOpen}}" hint-placeholder-val="{{ false }}">
     <div onClick="{{closeAdd}}" style="position: absolute; inset: 0; z-index: 30; background: rgba(11,11,13,0.55); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); animation: aptaFade 0.25s ease both"></div>
     <section role="dialog" aria-label="{{sheetLabel}}" style="position: absolute; z-index: 31; left: 8px; right: 8px; {{sheetBottom}}; transition: bottom 0.3s cubic-bezier(.2,.9,.3,1); box-sizing: border-box; padding: 20px 16px 20px; border-radius: 36px; display: flex; flex-direction: column; gap: 12px; animation: aptaSheet 0.42s cubic-bezier(.2,.9,.3,1.05) both; background: rgba(26,26,30,0.82); border: 0.5px solid rgba(255,255,255,0.12); box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.18), 0 -10px 40px rgba(0,0,0,0.45); backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); color: #FFFFFF">
       <div aria-hidden="true" style="align-self: center; width: 36px; height: 4px; border-radius: 2px; background: #F5F4F1; opacity: 0.3; margin-top: -8px"></div>
       <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
-        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; border-radius: 30px; flex: 1 1 auto; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none">
+        <div class="apta-seg" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; border-radius: 30px; flex: 1 1 auto; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none">
           <sc-for list="{{kinds}}" as="o" hint-placeholder-count="2"><button aria-pressed="{{o.sel}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button></sc-for>
         </div>
         <button aria-label="Жабу" onClick="{{closeAdd}}" style="position: relative; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: none"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5F4F1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
@@ -327,7 +410,8 @@ class Component extends DCLogic {
       if ((m = x.match(/^(\d{1,2})[.\/](\d{1,2})$/))) { const o = dateOf(Number(m[1]), Number(m[2]) - 1); if (o != null) return ['d', o]; }
       return null; };
     const two = (w1, w2) => { const a = low(w1), b = low(w2); let m;
-      if ((a === 'сағат' || a === 'в') && (m = b.match(/^([01]?\d|2[0-3])(?:[:.]([0-5]\d))?(?:[-‑]?(?:де|да|те|та|ге|ға|ке|қа))?$/))) return ['t', hm(m[1], m[2])];
+      if ((a === 'сағат' || a === 'в') && (m = b.match(/^([01]?\d|2[0-3])(?:[:.]([0-5]\d))?(?:[-‑]?(?:де|да|те|та|ге|ға|ке|қа))?$/))) { let hh = Number(m[1]); if (!m[2] && hh >= 1 && hh <= 5) hh += 12; return ['t', hm(hh, m[2])]; }
+      if (a === 'сағат') { const NW = { 'бір': 1, 'екі': 2, 'үш': 3, 'төрт': 4, 'бес': 5, 'алты': 6, 'жеті': 7, 'сегіз': 8, 'тоғыз': 9, 'он': 10 }; const w = b.replace(/[-‑]?(де|да|те|та|ге|ға|ке|қа|те)$/, ''); if (w in NW) { let hh = NW[w]; if (hh <= 5) hh += 12; return ['t', hm(hh)]; } }
       if ((m = a.match(/^(\d{1,2})(?:[-‑].*)?$/))) { const mo = MON.find(p => b.indexOf(p[0]) === 0); if (mo) { const o = dateOf(Number(m[1]), mo[1]); if (o != null) return ['d', o]; } }
       return null; };
     let d = null, time = null; const take = (r) => { if (!r) return false; if (r[0] === 'd') { if (d != null) return false; d = r[1]; } else { if (time != null) return false; time = r[1]; } return true; };
@@ -338,6 +422,14 @@ class Component extends DCLogic {
     let title = tk.slice(i, j + 1).join(' ').trim(); if (!title) return null; if (i > 0) title = title.charAt(0).toUpperCase() + title.slice(1);
     return { title, d, time };
   }
+  voiceStart(base, apply) { const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { this.notice('Дауыспен енгізу қолжетімсіз', 'Бұл браузер дауысты танымайды. Қолданбаны Chrome арқылы ашып көріңіз.'); return; }
+    if (this._rec) { try { this._rec.stop(); } catch (e) {} return; }
+    const r = new SR(); r.lang = 'kk-KZ'; r.interimResults = true; r.maxAlternatives = 1; r.continuous = false; this._rec = r;
+    r.onresult = (e) => { let t = ''; for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript; t = t.trim(); if (t) apply(((base ? base.trim() + ' ' : '') + t.charAt(0).toUpperCase() + t.slice(1)).trim()); };
+    r.onerror = (e) => { if (e.error === 'not-allowed' || e.error === 'service-not-allowed') this.notice('Микрофонға рұқсат жоқ', 'Телефонның баптауларында Chrome-ға микрофон рұқсатын беріңіз.'); };
+    r.onend = () => { this._rec = null; this.setState({ micOn: false }); };
+    try { r.start(); this.setState({ micOn: true }); try { navigator.vibrate && navigator.vibrate(15); } catch (e) {} } catch (e) { this._rec = null; } }
   navOrder() { const D = ['home', 'cal', 'notes', 'fin']; const o = ((this.sGet().profile || {}).nav || []).filter((k, i, a) => D.includes(k) && a.indexOf(k) === i); return o.length === 4 ? o : D; }
   navApply() { try { const L = { home: 'Бүгін', cal: 'Күнтізбе', notes: 'Жазбалар', fin: 'Қаржы' }; const css = this.navOrder().map((k, i) => 'nav[aria-label="Негізгі мәзір"] a[aria-label="' + L[k] + '"]{order:' + (i + 1) + '}').join('');
     let el = document.getElementById('apta-nav-order'); if (!el) { el = document.createElement('style'); el.id = 'apta-nav-order'; document.head.appendChild(el); } if (el.textContent !== css) el.textContent = css; } catch (e) {} }
@@ -441,8 +533,8 @@ class Component extends DCLogic {
   componentWillUnmount() { if (typeof cancelAnimationFrame === 'function') cancelAnimationFrame(this._raf); }
   appSeeds() { return { tx: this.state.tx }; }
   appEmpty() { return { tx: [] }; }
-  hydrate(S) { return S.fin && S.fin.tx ? { tx: S.fin.tx } : {}; }
-  dehydrate(st) { return { fin: { tx: st.tx } }; }
+  hydrate(S) { const F = S.fin || {}; return { ...(F.tx ? { tx: F.tx } : {}), limits: F.limits || {}, debts: F.debts || [] }; }
+  dehydrate(st, S) { return { fin: { ...((S && S.fin) || {}), tx: st.tx, limits: st.limits || {}, debts: st.debts || [] } }; }
   onIntent(a) { if (a === 'newExpense') return { addOpen: true, editId: null, amt: '', kind: 'out', cat: 'other', catManual: false, title: '', tm: this.nowHM(), d: 0, focus: 'amt', view: 'main' }; return {}; }
   countFrom(fb, ft) {
     if (typeof requestAnimationFrame !== 'function') return;
@@ -554,7 +646,7 @@ class Component extends DCLogic {
       return { t: ch === 'space' ? 'бос орын' : (upper && ch.length === 1 && !special ? ch.toUpperCase() : ch), label: ch === 'space' ? 'бос орын' : ch, style: keyBase + w + bg + (ch === 'space' ? ' font-size: 15px;' : '') + (ch === '⇧' && st.kbShift ? ' outline: 1.5px solid ' + accent + ';' : ''), press: () => typeKey(ch) }; }) }));
     const ring = (on) => C.wglass + (on ? '; box-shadow: inset 0 0 0 1.5px ' + accent : '');
     const kbOpen = st.focus === 'title';
-    this._nf = kbOpen ? { key: 'fin', get: () => this.state.title || '', set: (v) => this.setState({ title: v }) } : null;
+    this._nf = kbOpen ? { key: 'fin', get: () => this.state.title || '', set: (v) => this.setState({ title: v }) } : (st.debtOpen && st.dForm && st.dFocus === 'name' ? { key: 'debt', get: () => this.state.dName || '', set: (v) => this.setState({ dName: v }), enter: () => { this.setState({ dFocus: 'amt' }); return 0; } } : null);
     return {
       ...this.srVals(accent),
       accent, title: st.view === 'cats' ? dotText('Талдау', 4, 3, C.fg) : dotText('Қаржы', 4, 3, C.fg), titleText: st.view === 'cats' ? 'Талдау' : 'Қаржы', headLine: st.view === 'cats' ? 'Аналитика · Қараша 2026' : 'Қараша 2026',
@@ -602,6 +694,49 @@ class Component extends DCLogic {
       minRef: (el) => { if (el && !el._apta) { el._apta = 1; el.scrollTop = Math.round(curM / 5) * 36; } },
       onHourScroll: (e) => { const el = e.currentTarget; clearTimeout(this._wh); this._wh = setTimeout(() => { const h = Math.max(0, Math.min(23, Math.round(el.scrollTop / 36))); this.setState({ tm: String(h).padStart(2, '0') + ':' + this.state.tm.split(':')[1] }); }, 90); },
       onMinScroll: (e) => { const el = e.currentTarget; clearTimeout(this._wm); this._wm = setTimeout(() => { const i = Math.max(0, Math.min(11, Math.round(el.scrollTop / 36))); this.setState({ tm: this.state.tm.split(':')[0] + ':' + String(i * 5).padStart(2, '0') }); }, 90); },
+      ...(() => { const lim = st.limits || {}; const m0 = -(new Date(this.today0()).getDate() - 1); const mSpent = {}; st.tx.forEach(x => { if (x.v < 0 && x.d >= m0 && x.d <= 0) mSpent[x.cat] = (mSpent[x.cat] || 0) - x.v; });
+        const red = C.minusCol, warn = '#FFB13D'; const colFor = (r, c) => r >= 1 ? red : r >= 0.8 ? warn : c;
+        const withLim = CATS.filter(c => lim[c[0]]); const worst = withLim.map(c => ({ c, r: (mSpent[c[0]] || 0) / lim[c[0]] })).sort((a, b) => b.r - a.r)[0];
+        const MN = ['қаңтар', 'ақпан', 'наурыз', 'сәуір', 'мамыр', 'маусым', 'шілде', 'тамыз', 'қыркүйек', 'қазан', 'қараша', 'желтоқсан']; const monthName = MN[new Date(this.today0()).getMonth()];
+        const be = st.budEdit; const debts = st.debts || []; const owedToMe = debts.filter(d => d.dir === 'gave').reduce((a, d) => a + d.v, 0), iOwe = debts.filter(d => d.dir === 'took').reduce((a, d) => a + d.v, 0);
+        const seg2 = (sel) => 'height: 40px; border-radius: 20px; font-size: 13px; font-weight: ' + (sel ? 600 : 400) + '; color: ' + C.fg + ';' + (sel ? ' ' + C.glassStrong : ' border: none; background: transparent;');
+        const dF = st.dFocus || 'name';
+        return {
+          budTitle: !withLim.length ? 'Шек қою' : (worst.r >= 1 ? worst.c[1] + ': асып кетті' : worst.r >= 0.8 ? worst.c[1] + ': ' + Math.round(worst.r * 100) + '%' : withLim.length + ' санат · қалыпты'),
+          budHasBar: !!worst, budTrack: C.track, budBar: worst ? 'position: absolute; left: 0; top: 0; bottom: 0; width: ' + Math.min(100, Math.round(worst.r * 100)) + '%; border-radius: 3px; background: ' + colFor(worst.r, worst.c[3]) + ';' : '',
+          openBud: () => this.setState({ budOpen: true, budEdit: null }), closeBud: () => this.setState({ budOpen: false, budEdit: null }), budOpen: !!st.budOpen,
+          budList: !be, budEditing: !!be, budBack: () => this.setState({ budEdit: null }),
+          budHead: be ? (CATS.find(c => c[0] === be) || [])[1] + ' — шек' : 'Айлық шектер', budSubHead: be ? 'Айына қанша жұмсауға болады?' : monthName.charAt(0).toUpperCase() + monthName.slice(1) + ' · санатты басып, шек қойыңыз',
+          budRows: CATS.map(([k, name, , col]) => { const L0 = lim[k], sp = mSpent[k] || 0, r = L0 ? sp / L0 : 0; return { name, dot: 'width: 10px; height: 10px; border-radius: 5px; flex-shrink: 0; background: ' + col + ';',
+            right: L0 ? fmt(sp) + ' / ' + fmt(L0) + ' ₸' : 'Шек қою', rightStyle: 'font-size: 13px; ' + (L0 ? 'font-weight: 600; color: ' + colFor(r, C.fg) + ';' : 'color: ' + C.sub + ';'),
+            hasBar: !!L0, track: C.track, bar: 'position: absolute; left: 0; top: 0; bottom: 0; width: ' + Math.min(100, Math.round(r * 100)) + '%; border-radius: 3px; background: ' + colFor(r, col) + '; transition: width 0.4s ease;',
+            pick: () => this.setState({ budEdit: k, budAmt: L0 ? String(L0) : '' }) }; }),
+          budAmt: st.budAmt ? fmt(Number(st.budAmt)) : '0', budAmtStyle: 'font-size: 44px; font-weight: 600; letter-spacing: -1px;' + (st.budAmt ? '' : ' opacity: 0.35;'),
+          budKeys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '000', '0', '⌫'].map(k => ({ t: k, label: k === '⌫' ? 'Өшіру' : k, press: () => { let a = this.state.budAmt || ''; if (k === '⌫') a = a.slice(0, -1); else if ((a + k).length <= 8) a = (a + k).replace(/^0+/, ''); this.setState({ budAmt: a }); } })),
+          budHasLimit: !!(be && lim[be]),
+          budSave: () => { const S = this.state; const v = Number(S.budAmt); const L1 = { ...(S.limits || {}) }; if (v) L1[S.budEdit] = v; else delete L1[S.budEdit]; this.setState({ limits: L1, budEdit: null }); },
+          budRemove: () => { const S = this.state; const L1 = { ...(S.limits || {}) }; delete L1[S.budEdit]; this.setState({ limits: L1, budEdit: null }); },
+          debtTitle: !debts.length ? 'Жоқ' : (owedToMe ? '+' + fmt(owedToMe) + ' ₸' : '') + (owedToMe && iOwe ? ' · ' : '') + (iOwe ? '−' + fmt(iOwe) + ' ₸' : ''),
+          debtHasSub: debts.length > 0, debtSub: (owedToMe ? 'Маған қарыз' : '') + (owedToMe && iOwe ? ' · ' : '') + (iOwe ? 'Мен қарызбын' : ''),
+          openDebt: () => this.setState({ debtOpen: true, dForm: false }), closeDebt: () => this.setState({ debtOpen: false, dForm: false, dFocus: null }), debtOpen: !!st.debtOpen,
+          debtBottom: 'bottom: ' + (st.dForm && dF === 'name' ? 'calc(var(--kbH, 0px) + 8px)' : '8px'),
+          dList: !st.dForm, dForm: !!st.dForm, dBack: () => this.setState({ dForm: false, dFocus: null }),
+          dHead: st.dForm ? 'Жаңа қарыз' : 'Қарыздар', dSubHead: st.dForm ? 'Кімге бердіңіз немесе кімнен алдыңыз?' : (debts.length ? debts.length + ' ашық қарыз' : 'Ашық қарыз жоқ'),
+          dRows: debts.map(d => ({ name: d.name, sub: (d.dir === 'gave' ? 'Маған қарыз' : 'Мен қарызбын') + (d.at ? ' · ' + new Date(d.at).getDate() + ' ' + MN[new Date(d.at).getMonth()] : ''),
+            amt: (d.dir === 'gave' ? '+' : '−') + fmt(d.v) + ' ₸', amtStyle: 'flex-shrink: 0; font-size: 15px; font-weight: 600; color: ' + (d.dir === 'gave' ? C.plusCol : C.minusCol) + ';', doneLabel: d.name + ' — қайтарылды',
+            done: () => { const S = this.state; this.setState({ debts: (S.debts || []).filter(y => y.id !== d.id) }); this.notice('Қарыз жабылды', d.name + (d.dir === 'gave' ? ' ' + fmt(d.v) + ' ₸ қайтарды.' : ' алдындағы ' + fmt(d.v) + ' ₸ қарыз жабылды.')); } })),
+          dEmpty: !debts.length,
+          dAdd: () => this.setState({ dForm: true, dDir: 'gave', dName: '', dAmt: '', dFocus: 'name' }),
+          dDirs: [['gave', 'Мен бердім'], ['took', 'Мен алдым']].map(([k, label]) => ({ label, sel: (st.dDir || 'gave') === k ? 'true' : 'false', style: seg2((st.dDir || 'gave') === k), pick: () => this.setState({ dDir: k }) })),
+          dNameLabel: (st.dDir || 'gave') === 'gave' ? 'Кімге бердіңіз?' : 'Кімнен алдыңыз?',
+          dFocusName: () => this.setState({ dFocus: 'name' }), dFocusAmt: () => this.setState({ dFocus: 'amt' }),
+          dNameCell: C.wglass + (dF === 'name' ? '; box-shadow: inset 0 0 0 1.5px ' + accent : ''), dNameCaret: dF === 'name',
+          dNameShown: st.dName || (dF === 'name' ? '' : 'Аты'), dNameStyle: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;' + (st.dName ? '' : ' opacity: 0.45;'),
+          dAmtShown: st.dAmt ? fmt(Number(st.dAmt)) : '0', dAmtStyle: 'font-size: 40px; font-weight: 600; letter-spacing: -1px;' + (st.dAmt ? '' : ' opacity: 0.35;'), dPad: dF === 'amt',
+          dKeys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '000', '0', '⌫'].map(k => ({ t: k, label: k === '⌫' ? 'Өшіру' : k, press: () => { let a = this.state.dAmt || ''; if (k === '⌫') a = a.slice(0, -1); else if ((a + k).length <= 8) a = (a + k).replace(/^0+/, ''); this.setState({ dAmt: a, dFocus: 'amt' }); } })),
+          dOff: (st.dName || '').trim() && Number(st.dAmt) ? 'false' : 'true', dOp: (st.dName || '').trim() && Number(st.dAmt) ? 1 : 0.4,
+          dSave: () => { const S = this.state; const v = Number(S.dAmt), nm = (S.dName || '').trim(); if (!v || !nm) { this.setState({ dFocus: nm ? 'amt' : 'name' }); return; } this.setState({ debts: (S.debts || []).concat({ id: 'd' + Date.now(), dir: S.dDir || 'gave', name: nm, v, at: Date.now() }), dForm: false, dFocus: null }); }
+        }; })(),
       addOpen: !!st.addOpen, closeAdd: () => this.setState({ addOpen: false, focus: 'none' }),
       kinds: [['out', 'Шығын'], ['in', 'Кіріс']].map(([k, label]) => ({ label, sel: st.kind === k ? 'true' : 'false', style: seg(st.kind === k), pick: () => this.setState({ kind: k }) })),
       amtShown: (st.amt ? (st.kind === 'in' ? '+' : '−') : '') + (st.amt ? fmt(Number(st.amt)) : '0'), amtBig: 'font-size: 44px; font-weight: 600; letter-spacing: -1px; color: ' + (st.kind === 'in' ? C.plusCol : C.minusCol) + ';' + (st.amt ? '' : ' opacity: 0.35;'),
@@ -613,7 +748,10 @@ class Component extends DCLogic {
       save: () => { const S = this.state; const v = Number(S.amt); if (!v) return this.setState({ focus: 'amt' });
         const rec = { d: S.d, t: S.tm, title: S.title.trim() || (S.kind === 'in' ? 'Кіріс' : catName[catEff]), cat: S.kind === 'in' ? 'in' : catEff, v: S.kind === 'in' ? v : -v };
         const tx = S.editId ? S.tx.map(x => x.id === S.editId ? { ...x, ...rec } : x) : S.tx.concat({ id: Math.max(0, ...S.tx.map(x => x.id)) + 1, ...rec });
-        this.setState({ tx, addOpen: false, editId: null, focus: 'none' }); this.countFrom(shownBal, shownToday); }
+        this.setState({ tx, addOpen: false, editId: null, focus: 'none' }); this.countFrom(shownBal, shownToday);
+        if (S.kind !== 'in') { const lim = (S.limits || {})[catEff]; if (lim) { const m0 = -(new Date(this.today0()).getDate() - 1); const sum = (list) => list.filter(x => x.cat === catEff && x.v < 0 && x.d >= m0 && x.d <= 0).reduce((a, x) => a - x.v, 0); const before = sum(S.tx), after = sum(tx); const nm = catName[catEff];
+          if (after >= lim && before < lim) setTimeout(() => this.notice(nm + ': айлық шектен асты', 'Осы айда ' + fmt(after) + ' ₸ жұмсалды, шек ' + fmt(lim) + ' ₸ еді.'), 450);
+          else if (after >= lim * 0.8 && before < lim * 0.8) setTimeout(() => this.notice(nm + ': шектің ' + Math.round(after / lim * 100) + '%-ы жұмсалды', 'Айдың соңына дейін ' + fmt(lim - after) + ' ₸ қалды.'), 450); } } }
     };
   }
 }
